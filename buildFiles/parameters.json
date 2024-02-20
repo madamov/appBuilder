@@ -2,15 +2,15 @@
   "actionMac": "BUILD_COMPILED_STRUCTURE",
   "actionWin": "BUILD_APP",
   "appName": "CXR7",
-  "build": 1080,
+  "build": 1000,
   "version": "7.200",
   "buildDestinationFolder": "MyBuild",
-  "uploadMacStandalone": "sftp://cvssftp.clearviewsys.com/var/www/html/cxr/cxr7_updates/",
-  "uploadWinStandalone": "sftp://cvssftp.clearviewsys.com/var/www/html/cxr/cxr7_updates/",
-  "uploadCompiledStruct": "sftp://cvssftp.clearviewsys.com/var/www/html/cxr/cxr7_updates/",
-  "versionFileUploadURL": "sftp://cvssftp.clearviewsys.com/var/www/html/cxr/cxr7_updates/",
-  "versionURL": "http://cvssftp.clearviewsys.com/cxr/cxr7_updates/version.json",
-  "repo": "github.com/clearviewsys/cxr_update_cs",
+  "uploadMacStandalone": "sftp://bombur.dreamhost.com//home/dh_tz8msi/4dmethod.4d.rs/appBuilder/",
+  "uploadWinStandalone": "sftp://bombur.dreamhost.com//home/dh_tz8msi/4dmethod.4d.rs/appBuilder/",
+  "uploadCompiledStruct": "sftp://bombur.dreamhost.com//home/dh_tz8msi/4dmethod.4d.rs/appBuilder/",
+  "versionFileUploadURL": "ssftp://bombur.dreamhost.com//home/dh_tz8msi/4dmethod.4d.rs/appBuilder/",
+  "versionURL": "http://4dmethod.4d.rs/appBuilder/version.json",
+  "repo": "github.com/madamov/appBuilder_public",
   "maclicenses_URL": "https://binaries.4d.rs/dev_mac.zip",
   "winlicenses_URL": "https://binaries.4d.rs/dev_win.zip",
   "mac4D_URL": "https://binaries.4d.rs/4D_20_mac.zip",
@@ -23,7 +23,9 @@
     "signing": {
       "sign": "False",
       "adHoc": "False",
-      "certificateName": "for4D"
+      "certificateName": "Developer ID Application: ADAMOV KONSULTACIJE DOO BEOGRAD (JZ5A5UZ7M5)"
     }
   }
 }
+
+sftp://bombur.dreamhost.com//home/dh_tz8msi/4dmethod.4d.rs/appBuilder/

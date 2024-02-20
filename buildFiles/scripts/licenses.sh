@@ -7,7 +7,12 @@ workingDirectory=$(pwd)
 
 myurl=$(echo $1 | sed 's/https:\/\//&'"$BINARIES_USER:$BINARIES_PASSWORD@/")
 
-curl -s -o $HOME/Documents/dev_lic.zip $myurl
+echo $myurl
+
+# curl -s -o $HOME/Documents/dev_lic.zip $myurl
+curl -o $HOME/Documents/dev_lic.zip $myurl
+
+ls -al $HOME/Documents/
 
 echo "🐚:🐚:: Licenses downloaded"
 
@@ -25,12 +30,14 @@ if [ -d "$HOME/Library/Application support/4D" ]; then
 	echo "🐚:🐚:: 4D folder exists"
 else 
 	mkdir "$HOME/Library/Application support/4D"
+	echo created Application support 4D folder
 fi
 
 if [ -d "$HOME/Library/Application support/4D/Licenses" ]; then
 	echo "🐚:🐚:: Licenses folder exists"
 else 
 	mkdir "$HOME/Library/Application Support/4D/Licenses"
+	echo created license folder
 fi
 
 # copy licenses so 4D is licensed as Developer Professional

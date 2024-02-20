@@ -15,7 +15,7 @@ workingDirectory=$(pwd)
 # install gdrive to support uploading to Google Drive
 # brew install gdrive
 
-cat $workingDirectory/buildFiles/parameters.json
+# cat $workingDirectory/buildFiles/parameters.json
 
 action=$(jq -r '.actionMac' $workingDirectory/buildFiles/parameters.json)
 
@@ -24,7 +24,7 @@ rm $workingDirectory/Project/settings.4DSettings
 ls -al $workingDirectory/Project/
 cp -fv $workingDirectory/buildFiles/Default_settings.4DSettings $workingDirectory/Project/Sources/settings.4DSettings
 echo settings fie copied to repo
-ls -al $workingDirectory/Project/
+ls -al $workingDirectory/Project/Sources/
 
 if [[ $action == *"BUILD_APP"* ]]; then
 	if [[ $1 == "NOVL" ]]; then

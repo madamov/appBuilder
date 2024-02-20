@@ -8,7 +8,7 @@
   "uploadMacStandalone": "sftp://bombur.dreamhost.com//home/dh_tz8msi/4dmethod.4d.rs/appBuilder/",
   "uploadWinStandalone": "sftp://bombur.dreamhost.com//home/dh_tz8msi/4dmethod.4d.rs/appBuilder/",
   "uploadCompiledStruct": "sftp://bombur.dreamhost.com//home/dh_tz8msi/4dmethod.4d.rs/appBuilder/",
-  "versionFileUploadURL": "ssftp://bombur.dreamhost.com//home/dh_tz8msi/4dmethod.4d.rs/appBuilder/",
+  "versionFileUploadURL": "sftp://bombur.dreamhost.com//home/dh_tz8msi/4dmethod.4d.rs/appBuilder/",
   "versionURL": "http://4dmethod.4d.rs/appBuilder/version.json",
   "repo": "github.com/madamov/appBuilder_public",
   "maclicenses_URL": "https://binaries.4d.rs/dev_mac.zip",

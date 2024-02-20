@@ -3,8 +3,7 @@ for /f %%i in ('%jq% -r .actionWin %params%') do set action=%%i
 rem install curl with support for SFTP protocol
 choco install -no-progress -y curl
 
-rem install gdrive to upload to Google Drive
-rem choco install -no-progress gdrive
+cd
 
 for /f %%i in ('%jq% -r .winlicenses_URL %params%') do set urllicenses=%%i
 

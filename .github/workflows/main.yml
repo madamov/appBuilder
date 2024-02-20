@@ -28,6 +28,8 @@ jobs:
           BUILD_CERTIFICATE_BASE64: ${{ secrets.MACOS_ADHOC_CERTIFICATE }}
           KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
         run: |
+          echo in certificate installation
+          pwd
           # create variables
           # CERTIFICATE_PATH=$RUNNER_TEMP/cxr.cer
           # KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
@@ -58,11 +60,13 @@ jobs:
 # env:  MY_ENV_VAR: ${{ github.ref == 'refs/heads/main' && 'value_for_main_branch' || 'value_for_other_branches' }}
 
         run: |
+         pwd
          if [ "$(basename $GITHUB_REF)" == "ma_github_actions_builder" ]; then
             # Use test server for uploads
             echo Using test server parameters
             mv ./buildFiles/parameters_testserver.json ./buildFiles/parameters.json
          fi
+         pwd
          ./buildFiles/scripts/build_all.sh
          STATUSFILE=/Users/runner/Documents/artifacts/status.log
          if [[ -f "$STATUSFILE" ]]; then
@@ -76,7 +80,7 @@ jobs:
            echo "status=OK" >> "$GITHUB_OUTPUT"
          fi
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
          name: 'Uploading macOS artifacts'
          path: /Users/runner/Documents/artifacts/           

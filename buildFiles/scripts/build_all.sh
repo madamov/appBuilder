@@ -15,6 +15,8 @@ workingDirectory=$(pwd)
 # install gdrive to support uploading to Google Drive
 # brew install gdrive
 
+cat $workingDirectory/buildFiles/parameters.json
+
 action=$(jq -r '.actionMac' $workingDirectory/buildFiles/parameters.json)
 
 ls -al $workingDirectory/Project/

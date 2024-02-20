@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?><preferences stamp="7">
+	<com.4d>
+		<compiler>
+			<options compilation_path="3"/>
+			<typage default_for_button="2" default_for_numeric="1"/>
+		</compiler>
+		<general allow_user_settings="true" startup_environnement="1"/>
+		<interface>
+			<user splash_screen="false"/>
+			<shortcuts>
+				<add_subform key_code="47" shift="false"/>
+				<cancel_input_form command="true" key_code="46"/>
+				<accept_input_form key_code="3"/>
+			</shortcuts>
+		</interface>
+	</com.4d>
+</preferences>

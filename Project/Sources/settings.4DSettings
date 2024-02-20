@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?><preferences stamp="2">
+	<com.4d>
+		<interface>
+			<user splash_screen="false"/>
+		</interface>
+		<compiler>
+			<options compilation_path="3" target="all"/>
+			<typage default_for_button="2" default_for_numeric="1"/>
+		</compiler>
+		<general allow_user_settings="true"/>
+	</com.4d>
+</preferences>

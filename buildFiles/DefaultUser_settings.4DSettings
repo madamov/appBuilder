@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?><preferences stamp="1194">
+	<com.4d>
+		<server>
+			<network>
+				<client_server connections_timeout="10"/>
+				<options publication_name="myApp" publication_port="19813"/>
+			</network>
+		</server>
+		<sql>
+			<engine case_sensitive="false"/>
+		</sql>
+		<web>
+			<standalone_server>
+				<configuration https_port_number="443" port_number="8080" publish_at_startup="false"/>
+				<log format="1"/>
+			</standalone_server>
+		</web>
+		<database>
+			<cache adaptative="true" flush_buffer_delay="20s" size_fixed="2048"/>
+		</database>
+		<interface>
+			<user color_scheme="light" splash_screen="false"/>
+		</interface>
+	</com.4d>
+</preferences>

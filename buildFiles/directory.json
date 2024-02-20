@@ -1,0 +1,62 @@
+{
+	"users": {
+		"designer": {
+			"password": "$2y$10$44ffVnv9cKxHgeIbcFQ69./K95Dvh1G4X.4S0qL3FrPkfW2/YVNAi",
+			"alias": "Designer"
+		},
+		"administrator": {
+			"password": "$2y$10$1h3l6fhtBdb8bw6USZVvgOtfFaxQgsH9SKXUPpzE/x5nbrq/zM7dC",
+			"alias": "Administrator"
+		},
+		"User": {},
+		"Support": {
+			"password": "$2y$10$3YmylFYPnGFFGm7Bi81XT.Aqm.F18x4xO8egxjEWCGstGAzxD1e9S"
+		}
+	},
+	"groups": {
+		"Administrators": {
+			"users": [
+				"Administrator",
+				"Support"
+			]
+		},
+		"Designers": {
+			"users": [
+				"Designer"
+			]
+		},
+		"Clerks": {
+			"users": [
+				"User",
+				"Support"
+			]
+		},
+		"Managers": {},
+		"Support": {
+			"users": [
+				"Support"
+			]
+		}
+	},
+	"sqlSchemaGranters": {
+		"DEFAULT_SCHEMA": {
+			"readOnlyAccessGroup": "*",
+			"readWriteAccessGroup": "*",
+			"allAccessGroup": ""
+		}
+	},
+	"remoteGranters": {
+		"web": "*",
+		"soap": "*",
+		"write": "*",
+		"view": "*"
+	},
+	"settings": {
+		"localGenericWebUser": "Designer",
+		"designAccessGroup": "*",
+		"localMobileAccessGroupRW": "*",
+		"remoteMobileAccessGroupRW": "*",
+		"remoteGenericWebUser": "Designer",
+		"remoteDefaultUser": "User"
+	}
+}

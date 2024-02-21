@@ -9,10 +9,10 @@ myurl=$(echo $1 | sed 's/https:\/\//&'"$BINARIES_USER:$BINARIES_PASSWORD@/")
 
 echo $myurl
 
-# curl -s -o $HOME/Documents/dev_lic.zip $myurl
-curl -o $HOME/Documents/dev_lic.zip $myurl
+curl -s -o $HOME/Documents/dev_lic.zip $myurl
+# curl -o $HOME/Documents/dev_lic.zip $myurl
 
-ls -al $HOME/Documents/
+# ls -al $HOME/Documents/
 
 echo "🐚:🐚:: Licenses downloaded"
 

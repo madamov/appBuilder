@@ -18,14 +18,14 @@ else
 	# curl -s -o $HOME/Documents/4D.zip $myurl
 
 	# curl -s -o $thisBuildDestinationFolder/4D.zip $myurl
-	curl -o $thisBuildDestinationFolder/4D.zip $myurl
+	curl -o $HOME/Downloads/4D.zip $myurl
 
 	echo "🐚:🐚: $1 4D downloaded, unzipping archive ..."
 	# unzip -q $HOME/Documents/4D.zip -d $HOME/Documents/
-	unzip -q $thisBuildDestinationFolder/4D.zip -d $thisBuildDestinationFolder/
+	unzip -q $HOME/Downloads/4D.zip -d $HOME/Downloads/
 	echo "🐚🐚:: 4D unzipped"
 
 	# copy it to Applications folder
-	cp -R $thisBuildDestinationFolder/4D.app /Applications/4D.app
+	cp -R $HOME/Downloads/4D.app /Applications/4D.app
 
 fi

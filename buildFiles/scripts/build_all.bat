@@ -41,4 +41,4 @@ for /f "delims=" %%a in ('dir /b *.4DProject') do (call set projectName=%%projec
 cd ..
 
 rem %HOMEDRIVE%%HOMEPATH%\Documents\4D\4D\4D.exe --headless --dataless --project %workingDirectory%\Project\CXR7.4DProject --user-param "%b64%"
-%HOMEDRIVE%%HOMEPATH%\Documents\4D\4D\4D.exe --headless --dataless --project %workingDirectory%\Project\%projectName%.4DProject --user-param "%b64%"
+%HOMEDRIVE%%HOMEPATH%\Documents\4D\4D\4D.exe --headless --dataless --project %workingDirectory%\Project\%projectName% --user-param "%b64%"

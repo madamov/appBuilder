@@ -27,12 +27,12 @@ echo $thisBuildDestinationFolder
 
 action=$(jq -r '.actionMac' $workingDirectory/buildFiles/parameters.json)
 
-ls -al $workingDirectory/Project/
+# ls -al $workingDirectory/Project/
 rm $workingDirectory/Project/settings.4DSettings
-ls -al $workingDirectory/Project/
+# ls -al $workingDirectory/Project/
 cp -fv $workingDirectory/buildFiles/Default_settings.4DSettings $workingDirectory/Project/Sources/settings.4DSettings
 echo settings file copied to repo
-ls -al $workingDirectory/Project/Sources/
+# ls -al $workingDirectory/Project/Sources/
 
 if [[ $action == *"BUILD_APP"* ]]; then
 	if [[ $1 == "NOVL" ]]; then

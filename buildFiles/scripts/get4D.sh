@@ -15,10 +15,8 @@ else
 
 	echo "🐚:🐚: Downloading 4D ..."
 
-	# curl -s -o $HOME/Documents/4D.zip $myurl
-
-	# curl -s -o $thisBuildDestinationFolder/4D.zip $myurl
-	curl -o $HOME/Downloads/4D.zip $myurl
+	curl -s -o $HOME/Downloads/4D.zip $myurl
+	# curl -o $HOME/Downloads/4D.zip $myurl
 
 	echo "🐚:🐚: $1 4D downloaded, unzipping archive ..."
 	# unzip -q $HOME/Documents/4D.zip -d $HOME/Documents/

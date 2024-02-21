@@ -40,7 +40,4 @@ cd Project
 for /f "delims=" %%a in ('dir /b *.4DProject') do (call set projectName=%%projectName%%%%a)
 cd ..
 
-dir %HOMEDRIVE%%HOMEPATH%\Documents\
-dir %HOMEDRIVE%%HOMEPATH%\Documents\4D
-
 %HOMEDRIVE%%HOMEPATH%\Documents\4D\4D\4D.exe --headless --dataless --project %workingDirectory%\Project\%projectName% --user-param "%b64%"

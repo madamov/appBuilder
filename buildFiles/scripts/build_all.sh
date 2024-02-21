@@ -69,6 +69,8 @@ compiler="/Applications/4D.app/Contents/MacOS/4D"
 # projectFile=$workingDirectory/Project/CXR7.4DProject
 projectFile=$workingDirectory/Project/$projectName.4DProject
 
+echo $projectFile
+
 # run 4D and let 4D do the work
 echo "🐚: Starting 4D at $(date)"
 

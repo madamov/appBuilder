@@ -1,14 +1,14 @@
 name: CXR builder
 
 on:
-  push:
+  # push:
     # branches: 
 
   workflow_dispatch:
      branches: 
        - main
        - develop
-       - ma_github_actions_builder
+
   # schedule:
     # - cron: '30 4 * * *' #build every day at 4:30 UTC
 env:
@@ -29,7 +29,7 @@ jobs:
           KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
         run: |
           echo in certificate installation
-          pwd
+
           # create variables
           # CERTIFICATE_PATH=$RUNNER_TEMP/cxr.cer
           # KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db

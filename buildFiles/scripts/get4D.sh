@@ -25,5 +25,7 @@ else
 
 	# copy it to Applications folder
 	cp -R $HOME/Downloads/4D.app /Applications/4D.app
-
+	
+	ls -al /Applications/
+	
 fi

@@ -3,6 +3,14 @@
 echo "🐚 : Start of script: $(date), running in $RUNNER"
 
 workingDirectory=$(pwd)
+next_build=$(jq -r '.build' ./buildFiles/parameters.json)
+thisBuildDestinationFolder=$HOME/Documents/$next_build
+	
+mkdir $thisBuildDestinationFolder
+
+echo created destination folder: 
+echo $thisBuildDestinationFolder
+
 
 # disable Gatekeeper and application translocating, may save us some processing cycles
 # sudo spctl --master-disable
@@ -23,7 +31,7 @@ ls -al $workingDirectory/Project/
 rm $workingDirectory/Project/settings.4DSettings
 ls -al $workingDirectory/Project/
 cp -fv $workingDirectory/buildFiles/Default_settings.4DSettings $workingDirectory/Project/Sources/settings.4DSettings
-echo settings fie copied to repo
+echo settings file copied to repo
 ls -al $workingDirectory/Project/Sources/
 
 if [[ $action == *"BUILD_APP"* ]]; then
@@ -58,8 +66,8 @@ else
 fi
 
 compiler="/Applications/4D.app/Contents/MacOS/4D"
-projectFile=$workingDirectory/Project/CXR7.4DProject
-
+# projectFile=$workingDirectory/Project/CXR7.4DProject
+projectFile=$workingDirectory/Project/$projectName.4DProject
 
 # run 4D and let 4D do the work
 echo "🐚: Starting 4D at $(date)"

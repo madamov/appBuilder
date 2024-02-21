@@ -9,7 +9,9 @@ destinationFolder=$HOME/Documents/$next_build
 myurl=$(echo $1 | sed 's/https:\/\//&'"$BINARIES_USER:$BINARIES_PASSWORD@/")
 
 echo "🐚:🐚: Downloading 4D Volume Desktop ..."
-curl -s -o $destinationFolder/4D_VL.zip $myurl
+# curl -s -o $destinationFolder/4D_VL.zip $myurl
+curl -o $destinationFolder/4D_VL.zip $myurl
+
 echo "🐚:🐚: 4D Volume Desktop $1 downloaded, unzipping archive ..."
 unzip -q $destinationFolder/4D_VL -d $destinationFolder/
 echo "🐚:🐚: 4D Volume Desktop unzipped"

@@ -82,3 +82,6 @@ C_TEXT(build_setDestinationPath; $2)
 
 //build_checkForArtifactsFolder
 C_TEXT(build_checkForArtifactsFolder; $0)
+
+//build_getBuildNumber
+C_TEXT(build_getBuildNumber; $0)

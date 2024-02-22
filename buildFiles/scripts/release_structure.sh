@@ -41,7 +41,7 @@ myStructDest="$destinationFolder/comp_struct"
 # mkdir $myStructDest/CXR7/Settings
 # cp $workingDirectory/buildFiles/directory.json $myStructDest/CXR7/Settings/directory.json
 # cp -R $workingDirectory/Flags_Exported $myStructDest/CXR7/Flags_Exported
-cp -R $workingDirectory/WebFolder $myStructDest/CXR7/WebFolder
+# cp -R $workingDirectory/WebFolder $myStructDest/CXR7/WebFolder
 
 # create zip archive
 cd $myStructDest

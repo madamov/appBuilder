@@ -5,6 +5,11 @@ choco install -no-progress -y curl
 
 cd
 
+for /f %%i in ('%jq% -r .build %params%') do set nextbuildnumber=%%i
+
+mkdir %HOMEDRIVE%%HOMEPATH%\Documents\%nextbuildnumber%
+mkdir %HOMEDRIVE%%HOMEPATH%\Documents\%nextbuildnumber%\artifacts
+
 for /f %%i in ('%jq% -r .winlicenses_URL %params%') do set urllicenses=%%i
 
 @call %scripts%\licenses.bat %urllicenses%
@@ -41,3 +46,5 @@ for /f "delims=" %%a in ('dir /b *.4DProject') do (call set projectName=%%projec
 cd ..
 
 %HOMEDRIVE%%HOMEPATH%\Documents\4D\4D\4D.exe --headless --dataless --project %workingDirectory%\Project\%projectName% --user-param "%b64%"
+
+set nextbuildnumber=

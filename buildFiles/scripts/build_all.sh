@@ -22,12 +22,10 @@ projectName=$(basename $project4DFile ".4DProject")
 
 # we are using DMG Canvas command line tool now
 
-# we use https://github.com/create-dmg/create-dmg to build dmg for our application
+# we were using https://github.com/create-dmg/create-dmg to build dmg for our application
 #mkdir $HOME/Documents/createdmg
 #git clone https://github.com/create-dmg/create-dmg.git $HOME/Documents/createdmg
 
-# install gdrive to support uploading to Google Drive
-# brew install gdrive
 
 # cat $workingDirectory/buildFiles/parameters.json
 
@@ -72,18 +70,12 @@ else
 fi
 
 compiler="/Applications/4D.app/Contents/MacOS/4D"
-# projectFile=$workingDirectory/Project/CXR7.4DProject
 projectFile=$workingDirectory/Project/$projectName.4DProject
 
-echo $projectFile
+# echo $projectFile
 
 # run 4D and let 4D do the work
 echo "🐚: Starting 4D at $(date)"
-
-# some examples:
-#"$compiler" $compilerOptions --project "$projectFile" --user-param "{\"action\":\"COMPILE_ONLY\"}"
-#"$compiler" --headless --dataless --project "Project/CXR7.4DProject" --user-param "{\"action\":\"COMPILE_ONLY\"}"
-#"$compiler" --headless --dataless --project "Project/CXR7.4DProject" --user-param "{\"action\":\"COMPILED_STRUCTURE\"}"
 
 userParams=$(jq -r '.' $workingDirectory/buildFiles/parameters.json)
 "$compiler" --headless --dataless --project "$projectFile" --user-param "$userParams"

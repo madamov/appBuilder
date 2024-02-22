@@ -34,6 +34,7 @@ echo "Repo for compiled structure is $repoURL, release tag is $releasetag"
 
 cd $destinationFolder
 mv Compiled\ Database comp_struct
+ls -al
 
 myStructDest="$destinationFolder/comp_struct"
 
@@ -45,6 +46,7 @@ myStructDest="$destinationFolder/comp_struct"
 
 # create zip archive
 cd $myStructDest
+pwd
 zip -rqy $thisBuildDestinationFolder/${appName}_struct.zip *
 
 
@@ -62,12 +64,11 @@ else
 	
 	myStructURL=$uploadURL$version/$build
 	echo "Uploading to folder: $myStructURL"
-	
-#	/usr/local/opt/curl/bin/curl -k -s -u ${UPLOAD_USER}:${UPLOAD_PASSWORD} -T $HOME/Documents/${appName}_struct.dmg ${uploadURL}
-#	/usr/local/opt/curl/bin/curl -k -s -u ${UPLOAD_USER}:${UPLOAD_PASSWORD} -T $HOME/Documents/${appName}_struct.zip ${uploadURL}
+
 #	/usr/local/opt/curl/bin/curl -k -s -u ${UPLOAD_USER}:${UPLOAD_PASSWORD} --ftp-create-dirs -T $HOME/Documents/${appName}_struct.dmg ${myStructURL}/${appName}_struct.dmg
 #	/usr/local/opt/curl/bin/curl -k -s -u ${UPLOAD_USER}:${UPLOAD_PASSWORD} --ftp-create-dirs -T $HOME/Documents/${appName}_struct.zip ${myStructURL}/${appName}_struct.zip
-	/usr/local/opt/curl/bin/curl -k -s -u ${UPLOAD_USER}:${UPLOAD_PASSWORD} --ftp-create-dirs -T $thisBuildDestinationFolder/${appName}_struct.zip ${myStructURL}/${appName}_struct.zip
+#	/usr/local/opt/curl/bin/curl -k -s -u ${UPLOAD_USER}:${UPLOAD_PASSWORD} --ftp-create-dirs -T $thisBuildDestinationFolder/${appName}_struct.zip ${myStructURL}/${appName}_struct.zip
+	/usr/local/opt/curl/bin/curl -k -u ${UPLOAD_USER}:${UPLOAD_PASSWORD} --ftp-create-dirs -T $thisBuildDestinationFolder/${appName}_struct.zip ${myStructURL}/${appName}_struct.zip
 
 fi
 

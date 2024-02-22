@@ -11,10 +11,16 @@ mkdir $thisBuildDestinationFolder
 echo created destination folder: 
 echo $thisBuildDestinationFolder
 
-
+# get project name from a 4DProject filename
+project4DFile=$(find ./Project -type f -name "*.4DProject")
+projectName=$(basename $project4DFile ".4DProject")
+         
+         
 # disable Gatekeeper and application translocating, may save us some processing cycles
 # sudo spctl --master-disable
 # echo "🐚 : macOS Gatekeeper disabled"
+
+# we are using DMG Canvas command line tool now
 
 # we use https://github.com/create-dmg/create-dmg to build dmg for our application
 #mkdir $HOME/Documents/createdmg

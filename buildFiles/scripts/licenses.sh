@@ -4,6 +4,8 @@
 # 4D will run as Development Professional allowing us to compile and build
 
 workingDirectory=$(pwd)
+next_build=$(jq -r '.build' ./buildFiles/parameters.json)
+thisBuildDestinationFolder=$HOME/Documents/$next_build
 
 myurl=$(echo $1 | sed 's/https:\/\//&'"$BINARIES_USER:$BINARIES_PASSWORD@/")
 

@@ -5,8 +5,8 @@ if [ -d /Applications/4D.app ]; then
 else
 
 	workingDirectory=$(pwd)
-#	next_build=$(jq -r '.build' ./buildFiles/parameters.json)
-#	thisBuildDestinationFolder=$HOME/Documents/$next_build
+	next_build=$(jq -r '.build' ./buildFiles/parameters.json)
+	thisBuildDestinationFolder=$HOME/Documents/$next_build
 
 #	echo destination folder is:
 #	echo $thisBuildDestinationFolder

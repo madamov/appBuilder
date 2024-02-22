@@ -7,6 +7,7 @@ next_build=$(jq -r '.build' ./buildFiles/parameters.json)
 thisBuildDestinationFolder=$HOME/Documents/$next_build
 	
 mkdir $thisBuildDestinationFolder
+mkdir c
 
 echo created destination folder: 
 echo $thisBuildDestinationFolder
@@ -81,5 +82,9 @@ userParams=$(jq -r '.' $workingDirectory/buildFiles/parameters.json)
 "$compiler" --headless --dataless --project "$projectFile" --user-param "$userParams"
 
 echo "🐚: 4D done at $(date)"
+
+ls -al $thisBuildDestinationFolder/artifacts
+ls -al $thisBuildDestinationFolder/MyBuild
+
 
 echo "🐚: Build script done at $(date)"

@@ -1,0 +1,26 @@
+name: My app builder
+
+on:
+  # push:
+    # branches: 
+
+  workflow_dispatch:
+     branches: 
+       - main
+       - develop
+jobs:
+  build-on-mac:
+    runs-on: macos-latest
+    env:
+        BINARIES_USER: ${{secrets.BINARIES_USER}}
+        BINARIES_PASSWORD: ${{secrets.BINARIES_PASSWORD}}
+    run: |
+        echo "artifacts_path=/Users/runner/Documents/1010/artifacts" >> "$GITHUB_OUTPUT"
+        mkdir $HOME/Documents/1010
+        mkdir $HOME/Documents/1010/artifacts
+        ls -al $HOME > $HOME/Documents/1010/artifacts
+
+    - uses: actions/upload-artifact@v4
+        with:
+        name: 'Uploading macOS artifacts'
+        path: ${{ env.artifacts_path }}  

@@ -71,7 +71,7 @@ jobs:
          projectName=$(basename $project4DFile ".4DProject")
          
          next_build=$(jq -r '.build' ./buildFiles/parameters.json)
-
+         echo "artifacts_path=/Users/runner/Documents/$nextbuild/artifacts"
          ./buildFiles/scripts/build_all.sh
          STATUSFILE=/Users/runner/Documents/$nextbuild/artifacts/status.log
          if [[ -f "$STATUSFILE" ]]; then
@@ -88,7 +88,8 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
          name: 'Uploading macOS artifacts'
-         path: /Users/runner/Documents/$(nextbuild)/artifacts/           
+         # path: /Users/runner/Documents/$(nextbuild)/artifacts/           
+         path: ${{ env.artifacts_path }}           
 
   build-on-windows:
     if: ${{ needs.build-on-mac.outputs.out_mac=='OK' }}

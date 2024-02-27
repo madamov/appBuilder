@@ -20,7 +20,7 @@ jobs:
             mkdir $HOME/Documents/1010/artifacts
             ls -al $HOME > $HOME/Documents/1010/artifacts
 
-        - uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v4
         with:
-        name: 'Uploading macOS artifacts'
-        path: ${{ env.artifacts_path }}  
+          name: 'Uploading macOS artifacts'
+          path: ${{ env.artifacts_path }}  

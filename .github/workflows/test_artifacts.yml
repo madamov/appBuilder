@@ -13,10 +13,10 @@ jobs:
        runs-on: macos-latest
        steps:
           - name: 'Kreiraj foldeer i fajlove u njemu'
-              env:
+            env:
                 BINARIES_USER: ${{secrets.BINARIES_USER}}
                 BINARIES_PASSWORD: ${{secrets.BINARIES_PASSWORD}}
-          run: |
+            run: |
               echo "artifacts_path=/Users/runner/Documents/1010/artifacts" >> "$GITHUB_OUTPUT"
               mkdir $HOME/Documents/1010
               mkdir $HOME/Documents/1010/artifacts

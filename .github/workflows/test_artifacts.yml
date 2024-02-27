@@ -1,8 +1,6 @@
 name: My app builder
 
 on:
-  # push:
-    # branches: 
 
   workflow_dispatch:
      branches: 
@@ -12,7 +10,8 @@ jobs:
     build-on-mac:
        runs-on: macos-latest
        steps:
-          - name: 'Kreiraj foldeer i fajlove u njemu'
+          - uses: actions/checkout@v4
+          - name: 'Kreiraj folder i fajlove u njemu'
             env:
                 BINARIES_USER: ${{secrets.BINARIES_USER}}
                 BINARIES_PASSWORD: ${{secrets.BINARIES_PASSWORD}}

@@ -18,7 +18,7 @@ jobs:
             run: |
               mkdir $HOME/Documents/1010
               mkdir $HOME/Documents/1010/artifacts
-              ls -al $HOME > $HOME/Documents/1010/artifacts
+              ls -al $HOME > $HOME/Documents/1010/artifacts/listing.txt
               echo "artifacts_path=/Users/runner/Documents/1010/artifacts" >> $GITHUB_ENV
 
           - uses: actions/upload-artifact@v4

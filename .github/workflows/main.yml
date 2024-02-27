@@ -71,8 +71,10 @@ jobs:
          projectName=$(basename $project4DFile ".4DProject")
          
          next_build=$(jq -r '.build' ./buildFiles/parameters.json)
-         echo "artifacts_path=/Users/runner/Documents/$nextbuild/artifacts"
+         echo "artifacts_path=$HOME/Documents/$nextbuild/artifacts" >> $GITHUB_ENV
+
          ./buildFiles/scripts/build_all.sh
+         
          STATUSFILE=/Users/runner/Documents/$nextbuild/artifacts/status.log
          if [[ -f "$STATUSFILE" ]]; then
            msg="*Compilation or build failed!* at $(date)"

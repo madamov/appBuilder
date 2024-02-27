@@ -12,6 +12,7 @@ jobs:
     build-on-mac:
         runs-on: macos-latest
         steps:
+          name: 'Kreiraj foldeer i fajlove u njemu'
           env:
               BINARIES_USER: ${{secrets.BINARIES_USER}}
               BINARIES_PASSWORD: ${{secrets.BINARIES_PASSWORD}}
@@ -21,7 +22,7 @@ jobs:
               mkdir $HOME/Documents/1010/artifacts
               ls -al $HOME > $HOME/Documents/1010/artifacts
 
-          uses: actions/upload-artifact@v4
-          with:
-            name: 'Uploading macOS artifacts'
-            path: ${{ env.artifacts_path }}  
+          - uses: actions/upload-artifact@v4
+            with:
+              name: 'Uploading macOS artifacts'
+              path: ${{ env.artifacts_path }}  

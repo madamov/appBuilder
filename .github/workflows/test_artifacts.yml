@@ -49,26 +49,17 @@ jobs:
             env:
                 BINARIES_USER: ${{secrets.BINARIES_USER}}
                 BINARIES_PASSWORD: ${{secrets.BINARIES_PASSWORD}}
+                MYBRANCH: ${{github.ref}}
                 
             run: |
+                echo %MYBRANCH% 
+                if [%MYBRANCH%] == [refs/heads/MA/testing-checking-branch] echo YESSSSS
+                
+                mkdir %HOMEDRIVE%%%HOMEPATH%\Documents\artifacts
+                dir /s *.* > %HOMEDRIVE%%HOMEPATH%\Documents\artifacts\dirlisting_uploadbat.txt
+                
+                echo artifacts_path=%HOMEDRIVE%%%HOMEPATH%\Documents\artifacts >> $GITHUB_ENV
 
-              workingDirectory=$(pwd)
-
-              ls -al $workingDirectory/buildFiles/
-              if [[ ${{ github.ref == 'refs/heads/MA/testing-checking-branch' }} ]]; then
-                 echo in checking branch
-                 mv $workingDirectory/buildFiles/parameters_testserver.json $workingDirectory/buildFiles/parameters.json
-              fi
-              
-              myfolder=$(jq -r '.build' $workingDirectory/buildFiles/parameters.json)
-              mkdir $HOME/Documents/$myfolder
-              mkdir $HOME/Documents/$myfolder/artifacts
-              ls -al $HOME > $HOME/Documents/$myfolder/artifacts/listing.txt
-              echo "artifacts_path=$HOME/Documents/$myfolder/artifacts" >> $GITHUB_ENV   
-              win4d=$(jq -r '.win4D_URL' $workingDirectory/buildFiles/parameters.json)
-              winvl=$(jq -r '.winVL_URL' $workingDirectory/buildFiles/parameters.json)
-              echo 4D binary is $win4d
-              echo volume desktop binary is $winvl
 
           - uses: actions/upload-artifact@v4
             with:

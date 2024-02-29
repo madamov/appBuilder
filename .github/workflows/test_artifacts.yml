@@ -23,7 +23,7 @@ jobs:
               ls -al $workingDirectory/buildFiles/
               if [[ ${{ github.ref == 'refs/heads/MA/testing-checking-branch' }} ]]; then
                  echo in checking branch
-                 mv $workingDirectory/buildFiles/parameters-testserver.json $workingDirectory/buildFiles/parameters.json
+                 mv $workingDirectory/buildFiles/parameters_testserver.json $workingDirectory/buildFiles/parameters.json
               fi
               
               myfolder=$(jq -r '.build' $workingDirectory/buildFiles/parameters.json)

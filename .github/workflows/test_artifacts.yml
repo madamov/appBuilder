@@ -41,5 +41,37 @@ jobs:
               name: 'Uploading macOS artifacts'
               path: ${{ env.artifacts_path }}  
 
-# env:  MY_ENV_VAR: ${{ github.ref == 'refs/heads/main' && 'value_for_main_branch' || 'value_for_other_branches' }}
+    build-on-windows:
+       runs-on: windows-latest
+       steps:
+          - uses: actions/checkout@v4
+          - name: 'Kreiraj folder i fajlove u njemu'
+            env:
+                BINARIES_USER: ${{secrets.BINARIES_USER}}
+                BINARIES_PASSWORD: ${{secrets.BINARIES_PASSWORD}}
+                
+            run: |
+
+              workingDirectory=$(pwd)
+
+              ls -al $workingDirectory/buildFiles/
+              if [[ ${{ github.ref == 'refs/heads/MA/testing-checking-branch' }} ]]; then
+                 echo in checking branch
+                 mv $workingDirectory/buildFiles/parameters_testserver.json $workingDirectory/buildFiles/parameters.json
+              fi
+              
+              myfolder=$(jq -r '.build' $workingDirectory/buildFiles/parameters.json)
+              mkdir $HOME/Documents/$myfolder
+              mkdir $HOME/Documents/$myfolder/artifacts
+              ls -al $HOME > $HOME/Documents/$myfolder/artifacts/listing.txt
+              echo "artifacts_path=$HOME/Documents/$myfolder/artifacts" >> $GITHUB_ENV   
+              win4d=$(jq -r '.win4D_URL' $workingDirectory/buildFiles/parameters.json)
+              winvl=$(jq -r '.winVL_URL' $workingDirectory/buildFiles/parameters.json)
+              echo 4D binary is $win4d
+              echo volume desktop binary is $winvl
+
+          - uses: actions/upload-artifact@v4
+            with:
+              name: 'Uploading windows artifacts'
+              path: ${{ env.artifacts_path }}  
 

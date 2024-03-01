@@ -46,27 +46,32 @@ jobs:
        runs-on: windows-latest
        steps:
           - uses: actions/checkout@v4
-          - name: 'Kreiraj folder i fajlove u njemu'
+          - id: step1
+            name: 'Kreiraj folder i fajlove u njemu'
             env:
                 BINARIES_USER: ${{secrets.BINARIES_USER}}
                 BINARIES_PASSWORD: ${{secrets.BINARIES_PASSWORD}}
                 MYBRANCH: ${{github.ref}}
                 
             run: |
-                echo artifacts_path=%HOMEDRIVE%%HOMEPATH%\Documents\artifacts >> $env:GITHUB_ENV
-                echo %artifacts_path%
 
-                echo %MYBRANCH% 
+                echo I am in branch %MYBRANCH% 
                 if [%MYBRANCH%] == [refs/heads/MA/testing-checking-branch] (move /y buildFiles\parameters_testserver.json  buildFiles\parameters.json)
 
                 mkdir %HOMEDRIVE%%HOMEPATH%\Documents\artifacts
                 dir /s *.* > %HOMEDRIVE%%HOMEPATH%\Documents\artifacts\dirlisting_uploadbat.txt
-                
-                
             shell: cmd
 
+          - id: step2
+            name: 'Set artifacts path env variable'
+            
+            run: |
+                
+                $artifact_win_path = %HOMEDRIVE%%HOMEPATH%\Documents\artifacts
+                echo "::set-env name=MY_ARTIFACT_PATH::$artifact_win_path"
+                
           - uses: actions/upload-artifact@v4
             with:
-              name: Uploading windows artifacts ${{ env.artifacts_path }}
-              path: ${{ env.artifacts_path }}  
+              name: Uploading windows artifacts ${{ env.MY_ARTIFACT_PATH }}
+              path: ${{ env.MY_ARTIFACT_PATH }}  
 

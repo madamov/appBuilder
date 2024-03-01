@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
      branches: 
        - main
-
+       - MA/testing-checking-branch
 jobs:
     build-on-mac:
        runs-on: macos-latest

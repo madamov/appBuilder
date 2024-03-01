@@ -66,11 +66,12 @@ jobs:
             name: 'Set artifacts path env variable'
             
             run: |
-                echo "This is a file to upload" > $HOME/Documents/artifacts/file.txt
-                echo "MY_ARTIFACT_PATH=$HOME" >> $GITHUB_ENV
+               mkdir testing
+               echo "This is a file to upload" > testing/file.txt
+               echo "artifactPath=testing/file.txt" >> $GITHUB_ENV  
                 
           - uses: actions/upload-artifact@v4
             with:
-              name: Uploading windows artifacts ${{ env.MY_ARTIFACT_PATH }}
-              path: ${{ env.MY_ARTIFACT_PATH }}  
+              name: Uploading windows artifacts ${{ env.artifactPath }}
+              path: ${{ env.artifactPath }}  
 

@@ -55,7 +55,6 @@ jobs:
                 echo artifacts_path=%HOMEDRIVE%%%HOMEPATH%\Documents\artifacts >> $GITHUB_ENV
 
                 echo %MYBRANCH% 
-#                if ("%MYBRANCH%" == "refs/heads/MA/testing-checking-branch") (echo YESSSSS)
                 if [%MYBRANCH%] == [refs/heads/MA/testing-checking-branch] (echo YESSSSS)
 
                 mkdir %HOMEDRIVE%%%HOMEPATH%\Documents\artifacts

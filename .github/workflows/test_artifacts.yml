@@ -59,7 +59,7 @@ jobs:
 
                 mkdir %HOMEDRIVE%%HOMEPATH%\Documents\artifacts
                 dir /s *.* > %HOMEDRIVE%%HOMEPATH%\Documents\artifacts\dirlisting_uploadbat.txt
-                
+                dir %HOMEDRIVE%%HOMEPATH%\Documents\artifacts
                 
             shell: cmd
 

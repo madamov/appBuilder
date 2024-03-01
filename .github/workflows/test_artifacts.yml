@@ -53,13 +53,14 @@ jobs:
                 
             run: |
                 echo %MYBRANCH% 
-                if "%MYBRANCH%"" == "refs/heads/MA/testing-checking-branch" (echo YESSSSS)
+                if ("%MYBRANCH%"" == "refs/heads/MA/testing-checking-branch") (echo YESSSSS)
                 
                 mkdir %HOMEDRIVE%%%HOMEPATH%\Documents\artifacts
                 dir /s *.* > %HOMEDRIVE%%HOMEPATH%\Documents\artifacts\dirlisting_uploadbat.txt
                 
                 echo artifacts_path=%HOMEDRIVE%%%HOMEPATH%\Documents\artifacts >> $GITHUB_ENV
-
+                
+            shell: cmd
 
           - uses: actions/upload-artifact@v4
             with:

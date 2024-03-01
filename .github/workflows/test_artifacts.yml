@@ -53,7 +53,7 @@ jobs:
                 
             run: |
                 echo %MYBRANCH% 
-                if ("%MYBRANCH%"" == "refs/heads/MA/testing-checking-branch") (echo YESSSSS)
+                if ("%MYBRANCH%" == "refs/heads/MA/testing-checking-branch") (echo YESSSSS)
                 
                 mkdir %HOMEDRIVE%%%HOMEPATH%\Documents\artifacts
                 dir /s *.* > %HOMEDRIVE%%HOMEPATH%\Documents\artifacts\dirlisting_uploadbat.txt

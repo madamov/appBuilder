@@ -67,7 +67,7 @@ jobs:
             
             run: |
                 
-                $artifact_win_path = %HOMEDRIVE%%HOMEPATH%\Documents\artifacts
+                $artifact_win_path = $HOME\Documents\artifacts
                 echo "::set-env name=MY_ARTIFACT_PATH::$artifact_win_path"
                 
           - uses: actions/upload-artifact@v4

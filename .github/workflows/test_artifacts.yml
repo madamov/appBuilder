@@ -52,12 +52,12 @@ jobs:
                 MYBRANCH: ${{github.ref}}
                 
             run: |
-                echo artifacts_path=%HOMEDRIVE%%%HOMEPATH%\Documents\artifacts >> $GITHUB_ENV
+                echo artifacts_path=%HOMEDRIVE%%HOMEPATH%\Documents\artifacts >> $GITHUB_ENV
 
                 echo %MYBRANCH% 
                 if [%MYBRANCH%] == [refs/heads/MA/testing-checking-branch] (echo YESSSSS)
 
-                mkdir %HOMEDRIVE%%%HOMEPATH%\Documents\artifacts
+                mkdir %HOMEDRIVE%%HOMEPATH%\Documents\artifacts
                 dir /s *.* > %HOMEDRIVE%%HOMEPATH%\Documents\artifacts\dirlisting_uploadbat.txt
                 
                 

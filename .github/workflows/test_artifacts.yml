@@ -66,8 +66,8 @@ jobs:
             name: 'Set artifacts path env variable'
             
             run: |
-                echo "This is a file to upload" > $HOME\Documents\artifacts\file.txt
-                echo "MY_ARTIFACT_PATH=$HOME\Documents\artifacts\" >> $GITHUB_ENV
+                echo "This is a file to upload" > $HOME/Documents/artifacts/file.txt
+                echo "MY_ARTIFACT_PATH=$HOME/Documents/artifacts/" >> $GITHUB_ENV
                 
           - uses: actions/upload-artifact@v4
             with:

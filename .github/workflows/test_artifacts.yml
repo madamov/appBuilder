@@ -37,10 +37,6 @@ jobs:
               echo 4D binary is $win4d
               echo volume desktop binary is $winvl
 
-          - uses: actions/upload-artifact@v4
-            with:
-              name: 'Uploading macOS artifacts'
-              path: ${{ env.artifacts_path }}  
 
     build-on-windows:
        runs-on: windows-latest
@@ -87,7 +83,7 @@ jobs:
                UPLOAD_PASSWORD: ${{secrets.UPLOAD_PASSWORD}} 
                    
             run: |
-               apt update
+               # apt update
                apt install curl
                
                workingDirectory=$(pwd)

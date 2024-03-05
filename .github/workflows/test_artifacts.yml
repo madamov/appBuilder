@@ -85,7 +85,11 @@ jobs:
               UPLOAD_PASSWORD: |
                 main: ${{secrets.UPLOAD_PASSWORD}}
                 MA/testing-checking-branch: ${{secrets.UPLOAD_TEST_PASSWORD}}
-                
+
+              TESTME: |
+                main: I am in main
+                MA/testing-checking-branch: MA BRANCH IS THIS
+                                
           - uses: actions/checkout@v4
           - id: stepinubuntu
             name: 'Testing CURL and other things'
@@ -94,6 +98,8 @@ jobs:
                UPLOAD_PASSWORD: ${{secrets.UPLOAD_PASSWORD}} 
                    
             run: |
+               
+               echo $TESTME
                
                workingDirectory=$(pwd)
                ls -al $workingDirectory/buildFiles/

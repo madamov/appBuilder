@@ -92,6 +92,8 @@ jobs:
                fi
               
                myfolder=$(jq -r '.build' $workingDirectory/buildFiles/parameters.json)
+               uploadurl=$(jq -r '.uploadMacStandalone' $workingDirectory/buildFiles/parameters.json)
+
                echo $myfolder
                echo $HOME
                
@@ -104,7 +106,7 @@ jobs:
                echo 4D binary is $win4d
                echo volume desktop binary is $winvl
                
-               curl -k -u ${UPLOAD_USER}:${UPLOAD_PASSWORD} --ftp-create-dirs -T $HOME/$myfolder/artifacts/listing.txt listing.txt 
+               curl -k -u ${UPLOAD_USER}:${UPLOAD_PASSWORD} --ftp-create-dirs -T $HOME/$myfolder/artifacts/listing.txt $uploadurl/listing.txt 
 
           - uses: actions/upload-artifact@v4
             with:

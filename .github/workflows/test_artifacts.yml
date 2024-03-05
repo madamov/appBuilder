@@ -78,7 +78,7 @@ jobs:
 
     build-on-ubuntu:
        runs-on: ubuntu-latest
-          - uses: iamtheyammer/branch-env-vars@v1.2.1
+          - uses: iamtheyammer/branch-env-vars@...
             name: Set branch-based environment variables
             with:
              UPLOAD_USER: |

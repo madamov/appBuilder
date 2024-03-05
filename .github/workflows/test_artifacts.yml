@@ -38,6 +38,11 @@ jobs:
               echo volume desktop binary is $winvl
 
 
+          - uses: actions/upload-artifact@v4
+            with:
+              name: 'Uploading macOS artifacts'
+              path: ${{ env.artifacts_path }}  
+
     build-on-windows:
        runs-on: windows-latest
        steps:
@@ -64,12 +69,7 @@ jobs:
             run: |
                mkdir testing
                echo "This is a file to upload" > testing/file.txt
-               echo "artifactPath=testing/file.txt" >> $GITHUB_ENV  
-                
-          - uses: actions/upload-artifact@v4
-            with:
-              name: Uploading windows artifacts ${{ env.artifactPath }}
-              path: ${{ env.artifactPath }}  
+               echo "artifactPath=testing/file.txt" >> $GITHUB_ENV   
 
 
     build-on-ubuntu:
@@ -83,8 +83,6 @@ jobs:
                UPLOAD_PASSWORD: ${{secrets.UPLOAD_PASSWORD}} 
                    
             run: |
-               # apt update
-               apt install curl
                
                workingDirectory=$(pwd)
                ls -al $workingDirectory/buildFiles/

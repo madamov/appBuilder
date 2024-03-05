@@ -78,16 +78,7 @@ jobs:
 
     build-on-ubuntu:
        runs-on: ubuntu-latest
-          - name: Branch-based environment variables that rock
-            uses: iamtheyammer/branch-env-vars@v1.2.1
-            with:
-              UPLOAD_USER: |
-                main: ${{secrets.UPLOAD_USER}}
-                MA/testing-checking-branch: ${{secrets.UPLOAD_TEST_USER}}
 
-              UPLOAD_PASSWORD: |
-                main: ${{secrets.UPLOAD_PASSWORD}}
-                MA/testing-checking-branch: ${{secrets.UPLOAD_TEST_PASSWORD}}
 
           - uses: actions/checkout@v4
             name: 'Testing CURL and other things'

@@ -78,8 +78,7 @@ jobs:
 
     build-on-ubuntu:
        runs-on: ubuntu-latest
-       steps:
-       
+       steps:    
           - uses: actions/checkout@v4
             name: 'Testing CURL and other things'
             env:
@@ -112,6 +111,3 @@ jobs:
             with:
               name: 'Uploading Ubuntu artifacts'
               path: ${{ env.artifacts_path }}          
-
-
-

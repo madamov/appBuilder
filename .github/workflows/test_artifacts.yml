@@ -78,9 +78,9 @@ jobs:
 
     build-on-ubuntu:
        runs-on: ubuntu-latest
-         - name: Set branch-based environment variables
-           uses: iamtheyammer/branch-env-vars@v1.2.1
-           with:
+          - name: Set branch-based environment variables
+            uses: iamtheyammer/branch-env-vars@v1.2.1
+            with:
              UPLOAD_USER: |
                main: ${{secrets.UPLOAD_USER}}
                MA/testing-checking-branch: ${{secrets.UPLOAD_TEST_USER}}

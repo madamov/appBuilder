@@ -80,10 +80,12 @@ jobs:
        runs-on: ubuntu-latest
        steps:    
           - uses: actions/checkout@v4
+          - id: stepinubuntu
             name: 'Testing CURL and other things'
             env:
                UPLOAD_USER: ${{secrets.UPLOAD_USER}}
-               UPLOAD_PASSWORD: ${{secrets.UPLOAD_PASSWORD}}     
+               UPLOAD_PASSWORD: ${{secrets.UPLOAD_PASSWORD}} 
+                   
             run: |
                apt update
                apt install curl

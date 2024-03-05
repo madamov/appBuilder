@@ -75,3 +75,54 @@ jobs:
               name: Uploading windows artifacts ${{ env.artifactPath }}
               path: ${{ env.artifactPath }}  
 
+
+    build-on-ubuntu:
+       runs-on: ubuntu-latest
+         - name: Set branch-based environment variables
+           uses: iamtheyammer/branch-env-vars@v1.2.1
+           with:
+             UPLOAD_USER: |
+               main: ${{secrets.UPLOAD_USER}}
+               MA/testing-checking-branch: ${{secrets.UPLOAD_TEST_USER}}
+
+             UPLOAD_PASSWORD: |
+               main: ${{secrets.UPLOAD_PASSWORD}}
+               MA/testing-checking-branch: ${{secrets.UPLOAD_TEST_PASSWORD}}
+
+          - uses: actions/checkout@v4
+            name: 'Testing CURL and other things'
+            env:
+               UPLOAD_USER: ${{secrets.UPLOAD_USER}}
+               UPLOAD_PASSWORD: ${{secrets.UPLOAD_PASSWORD}}     
+            run: |
+               apt update
+               apt install curl
+               
+               workingDirectory=$(pwd)
+               ls -al $workingDirectory/buildFiles/
+               if [[ ${{ github.ref == 'refs/heads/MA/testing-checking-branch' }} ]]; then
+                 echo in checking branch
+                 mv $workingDirectory/buildFiles/parameters_testserver.json $workingDirectory/buildFiles/parameters.json
+               fi
+              
+               myfolder=$(jq -r '.build' $workingDirectory/buildFiles/parameters.json)
+               mkdir $HOME/Documents/$myfolder
+               mkdir $HOME/Documents/$myfolder/artifacts
+               ls -al $HOME > $HOME/Documents/$myfolder/artifacts/listing.txt
+               echo "artifacts_path=$HOME/Documents/$myfolder/artifacts" >> $GITHUB_ENV   
+               win4d=$(jq -r '.win4D_URL' $workingDirectory/buildFiles/parameters.json)
+               winvl=$(jq -r '.winVL_URL' $workingDirectory/buildFiles/parameters.json)
+               echo 4D binary is $win4d
+               echo volume desktop binary is $winvl
+               
+               /usr/bin/curl -k -u ${UPLOAD_USER}:${UPLOAD_PASSWORD} --ftp-create-dirs -T listing.txt $HOME/Documents/$myfolder/artifacts/listing.txt
+
+          - uses: actions/upload-artifact@v4
+            with:
+              name: 'Uploading Ubuntu artifacts'
+              path: ${{ env.artifacts_path }}          
+
+
+# env:  MY_ENV_VAR: ${{ github.ref == 'refs/heads/main' && 'value_for_main_branch' || 'value_for_other_branches' }}
+
+

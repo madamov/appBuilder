@@ -78,8 +78,8 @@ jobs:
 
     build-on-ubuntu:
        runs-on: ubuntu-latest
-
-
+       steps:
+       
           - uses: actions/checkout@v4
             name: 'Testing CURL and other things'
             env:
@@ -113,7 +113,5 @@ jobs:
               name: 'Uploading Ubuntu artifacts'
               path: ${{ env.artifacts_path }}          
 
-
-# env:  MY_ENV_VAR: ${{ github.ref == 'refs/heads/main' && 'value_for_main_branch' || 'value_for_other_branches' }}
 
 

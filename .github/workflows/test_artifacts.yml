@@ -92,16 +92,16 @@ jobs:
                fi
               
                myfolder=$(jq -r '.build' $workingDirectory/buildFiles/parameters.json)
-               mkdir $HOME/Documents/$myfolder
-               mkdir $HOME/Documents/$myfolder/artifacts
-               ls -al $HOME > $HOME/Documents/$myfolder/artifacts/listing.txt
-               echo "artifacts_path=$HOME/Documents/$myfolder/artifacts" >> $GITHUB_ENV   
+               mkdir $HOME/$myfolder
+               mkdir $HOME/$myfolder/artifacts
+               ls -al $HOME > $HOME/$myfolder/artifacts/listing.txt
+               echo "artifacts_path=$HOME/$myfolder/artifacts" >> $GITHUB_ENV   
                win4d=$(jq -r '.win4D_URL' $workingDirectory/buildFiles/parameters.json)
                winvl=$(jq -r '.winVL_URL' $workingDirectory/buildFiles/parameters.json)
                echo 4D binary is $win4d
                echo volume desktop binary is $winvl
                
-               /usr/bin/curl -k -u ${UPLOAD_USER}:${UPLOAD_PASSWORD} --ftp-create-dirs -T listing.txt $HOME/Documents/$myfolder/artifacts/listing.txt
+               /usr/bin/curl -k -u ${UPLOAD_USER}:${UPLOAD_PASSWORD} --ftp-create-dirs -T listing.txt $HOME/$myfolder/artifacts/listing.txt
 
           - uses: actions/upload-artifact@v4
             with:

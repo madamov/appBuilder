@@ -92,6 +92,9 @@ jobs:
                fi
               
                myfolder=$(jq -r '.build' $workingDirectory/buildFiles/parameters.json)
+               echo $myfolder
+               echo $HOME
+               
                mkdir $HOME/$myfolder
                mkdir $HOME/$myfolder/artifacts
                ls -al $HOME > $HOME/$myfolder/artifacts/listing.txt
@@ -101,7 +104,7 @@ jobs:
                echo 4D binary is $win4d
                echo volume desktop binary is $winvl
                
-               /usr/bin/curl -k -u ${UPLOAD_USER}:${UPLOAD_PASSWORD} --ftp-create-dirs -T listing.txt $HOME/$myfolder/artifacts/listing.txt
+               curl -k -u ${UPLOAD_USER}:${UPLOAD_PASSWORD} --ftp-create-dirs -T $HOME/$myfolder/artifacts/listing.txt listing.txt 
 
           - uses: actions/upload-artifact@v4
             with:

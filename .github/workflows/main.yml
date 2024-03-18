@@ -54,9 +54,15 @@ jobs:
           BINARIES_PASSWORD: ${{secrets.BINARIES_PASSWORD}}
           UPLOAD_USER: ${{secrets.UPLOAD_USER}}
           UPLOAD_PASSWORD: ${{secrets.UPLOAD_PASSWORD}}
-          
+          REPO_BUILD_NUMBER: ${{ vars.APP_BUILDNUMBER }}
+          REPO_VERSION: ${{ vars.APP_VERSION }}
         run: |
-         if [ "$(basename $GITHUB_REF)" == "ma_github_actions_builder" ]; then
+         if [ "$(basename $GITHUB_REF)" == "release" ]; then
+            # Use test server for uploads
+            echo Using release branch server parameters
+            mv ./buildFiles/parameters_release.json ./buildFiles/parameters.json
+         fi
+         if [ "$(basename $GITHUB_REF)" == "test" ]; then
             # Use test server for uploads
             echo Using test server parameters
             mv ./buildFiles/parameters_testserver.json ./buildFiles/parameters.json

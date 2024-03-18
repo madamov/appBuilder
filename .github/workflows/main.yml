@@ -6,6 +6,7 @@ on:
      branches: 
        - main
        - develop
+       - test
 
 env:
   GH_TOKEN: ${{ secrets.MILANTOK }} # setting GH_TOKEN for the entire workflow

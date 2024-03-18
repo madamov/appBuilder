@@ -9,8 +9,6 @@ on:
        - main
        - develop
 
-  # schedule:
-    # - cron: '30 4 * * *' #build every day at 4:30 UTC
 env:
   GH_TOKEN: ${{ secrets.MILANTOK }} # setting GH_TOKEN for the entire workflow
 
@@ -22,29 +20,29 @@ jobs:
       release_tag: ${{ steps.step1.outputs.release_tag }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Install signing certificate
         env:
-          BUILD_CERTIFICATE_BASE64: ${{ secrets.MACOS_ADHOC_CERTIFICATE }}
+          BUILD_CERTIFICATE_BASE64: ${{ secrets.MY_APPLE_CERTIFICATE }}
           KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
+          P12_PASSWORD: ${{ secrets.MY_APPLE_CERT_PASSWORD }}
         run: |
-          echo in certificate installation
-
           # create variables
-          # CERTIFICATE_PATH=$RUNNER_TEMP/cxr.cer
-          # KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
+          CERTIFICATE_PATH=$RUNNER_TEMP/my_certificate.p12
+          KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
 
-          # import certificate from secrets
-          # echo -n "$BUILD_CERTIFICATE_BASE64" | base64 --decode -o $CERTIFICATE_PATH
+          # get certificate from secrets
+          echo -n "$BUILD_CERTIFICATE_BASE64" | base64 --decode -o $CERTIFICATE_PATH
 
           # create temporary keychain
-          # security create-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
-          # security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
-          # security unlock-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+          security create-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+          security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
+          security unlock-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
 
           # import certificate to keychain
-          # security import $CERTIFICATE_PATH -A -t cert -k $KEYCHAIN_PATH
-          # security list-keychain -d user -s $KEYCHAIN_PATH
+          security import $CERTIFICATE_PATH -P "$P12_PASSWORD" -A -t cert -f pkcs12 -k $KEYCHAIN_PATH
+          security set-key-partition-list -S apple-tool:,apple: -k "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+          security list-keychain -d user -s $KEYCHAIN_PATH
 
       - id: step1
         name: Build Action Mac
@@ -57,8 +55,6 @@ jobs:
           UPLOAD_USER: ${{secrets.UPLOAD_USER}}
           UPLOAD_PASSWORD: ${{secrets.UPLOAD_PASSWORD}}
           
-# env:  MY_ENV_VAR: ${{ github.ref == 'refs/heads/main' && 'value_for_main_branch' || 'value_for_other_branches' }}
-
         run: |
          if [ "$(basename $GITHUB_REF)" == "ma_github_actions_builder" ]; then
             # Use test server for uploads
@@ -83,7 +79,7 @@ jobs:
            ./buildFiles/scripts/postBuild.sh
            echo "🐚: POSTBUILD done at $(date)"
            msg="**macOS Build of version $version build $buildnumber successful!** at $(date)"
-           # set output so the next runner will know if we are succesful
+           # set output so the next runner will know that we are succesful
            echo "status=OK" >> "$GITHUB_OUTPUT"
          fi
 
@@ -101,7 +97,7 @@ jobs:
       out_win: ${{ steps.step2.outputs.status }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - id: step1
         name: Build Action Windows
         env:
@@ -146,7 +142,7 @@ jobs:
       - name: Install curl using Homebrew
         run: brew install curl
 
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Increase build number
         env:
           WHO_TO_TRUST: ${{secrets.MYTOKEN}}

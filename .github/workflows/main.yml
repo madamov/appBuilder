@@ -115,6 +115,8 @@ jobs:
            echo "status=OK" >> "$GITHUB_OUTPUT"
            # set new build number
            REPO_BUILD_NUMBER=$((REPO_BUILD_NUMBER+1))
+           old_version=${{ vars.APP_VERSION }}
+           echo stara vezija direktno
            gh variable list
            gh variable set APP_BUILDNUMBER --body "$REPO_BUILD_NUMBER"
            gh variable list

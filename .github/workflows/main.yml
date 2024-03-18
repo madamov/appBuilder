@@ -92,19 +92,30 @@ jobs:
          
          next_build=$(jq -r '.build' ./buildFiles/parameters.json)
          echo "artifacts_path=$HOME/Documents/$nextbuild/artifacts" >> $GITHUB_ENV
+         
+         echo build number from parameters.json is $next_build
+         echo build number from repository variable is $REPO_BUILD_NUMBER
+         echo version number from repositroy variable is $REPO_BUILD_NUMBER
 
-         ./buildFiles/scripts/build_all.sh
+
+#         ./buildFiles/scripts/build_all.sh
          
          STATUSFILE=/Users/runner/Documents/$nextbuild/artifacts/status.log
          if [[ -f "$STATUSFILE" ]]; then
            msg="*Compilation or build failed!* at $(date)"
            echo "status=FAIL" >> "$GITHUB_OUTPUT"
          else
-           ./buildFiles/scripts/postBuild.sh
+#           ./buildFiles/scripts/postBuild.sh
            echo "🐚: POSTBUILD done at $(date)"
            msg="**macOS Build of version $version build $buildnumber successful!** at $(date)"
            # set output so the next runner will know that we are succesful
            echo "status=OK" >> "$GITHUB_OUTPUT"
+           # set new build number
+           REPO_BUILD_NUMBER=$((REPO_BUILD_NUMBER+1))
+           gh variable list
+           gh variable set APP_BUILDNUMBER --body "$REPO_BUILD_NUMBER"
+           gh variable list
+
          fi
 
       - uses: actions/upload-artifact@v4
@@ -134,7 +145,7 @@ jobs:
           UPLOAD_PASSWORD: ${{secrets.UPLOAD_PASSWORD}}
           RELEASE_TAG: ${{ needs.build-on-mac.outputs.release_tag }}
         run: |
-         ./buildFiles/scripts/mainyml.bat
+#           ./buildFiles/scripts/mainyml.bat
 
       - id: step2
         name: Checking for status file
@@ -183,7 +194,7 @@ jobs:
           ryver_version=$(jq -r '.version' ./buildFiles/parameters.json)
           ryver_build=$(jq -r '.build' ./buildFiles/parameters.json)
           
-          ./buildFiles/scripts/incbuildnumber.sh
+#          ./buildFiles/scripts/incbuildnumber.sh
  
           echo RYVER VERSIONS
           echo $ryver_version

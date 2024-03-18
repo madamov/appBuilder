@@ -60,6 +60,8 @@ jobs:
           security import $CERTIFICATE_PATH -P "$P12_PASSWORD" -A -t cert -f pkcs12 -k $KEYCHAIN_PATH
           security set-key-partition-list -S apple-tool:,apple: -k "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
           security list-keychain -d user -s $KEYCHAIN_PATH
+          
+          
 
       - id: step1
         name: Build Action Mac
@@ -98,14 +100,14 @@ jobs:
          echo version number from repositroy variable is $REPO_BUILD_NUMBER
 
 
-#         ./buildFiles/scripts/build_all.sh
+         # ./buildFiles/scripts/build_all.sh
          
          STATUSFILE=/Users/runner/Documents/$nextbuild/artifacts/status.log
          if [[ -f "$STATUSFILE" ]]; then
            msg="*Compilation or build failed!* at $(date)"
            echo "status=FAIL" >> "$GITHUB_OUTPUT"
          else
-#           ./buildFiles/scripts/postBuild.sh
+           # ./buildFiles/scripts/postBuild.sh
            echo "🐚: POSTBUILD done at $(date)"
            msg="**macOS Build of version $version build $buildnumber successful!** at $(date)"
            # set output so the next runner will know that we are succesful
@@ -115,7 +117,6 @@ jobs:
            gh variable list
            gh variable set APP_BUILDNUMBER --body "$REPO_BUILD_NUMBER"
            gh variable list
-
          fi
 
       - uses: actions/upload-artifact@v4
@@ -194,7 +195,7 @@ jobs:
           ryver_version=$(jq -r '.version' ./buildFiles/parameters.json)
           ryver_build=$(jq -r '.build' ./buildFiles/parameters.json)
           
-#          ./buildFiles/scripts/incbuildnumber.sh
+          # ./buildFiles/scripts/incbuildnumber.sh
  
           echo RYVER VERSIONS
           echo $ryver_version

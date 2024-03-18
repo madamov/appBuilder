@@ -1,8 +1,6 @@
 name: My app builder
 
 on:
-  # push:
-    # branches: 
 
   workflow_dispatch:
      branches: 
@@ -19,6 +17,25 @@ jobs:
       out_mac: ${{ steps.step1.outputs.status }}
       release_tag: ${{ steps.step1.outputs.release_tag }}
     steps:
+      - id: envvarsseting
+        name: Branch-based environment variables setting
+        uses: iamtheyammer/branch-env-vars@v1.2.1
+        with:
+          UPLOAD_USER: |
+            main: ${{secrets.UPLOAD_USER}}
+            test: ${{secrets.UPLOAD_TEST_USER}}
+            release: ${{secrets.UPLOAD_USER}}
+
+          UPLOAD_PASSWORD: |
+            main: ${{secrets.UPLOAD_PASSWORD}}
+            test: ${{secrets.UPLOAD_TEST_PASSWORD}}
+            release: ${{secrets.UPLOAD_USER}}
+
+          TESTME: |
+            main: I am in main branch
+            test: In test branch
+            release: In release branch
+
       - name: Checkout repository
         uses: actions/checkout@v4
       - name: Install signing certificate
@@ -52,10 +69,11 @@ jobs:
           RUNNER: GIT
           BINARIES_USER: ${{secrets.BINARIES_USER}}
           BINARIES_PASSWORD: ${{secrets.BINARIES_PASSWORD}}
-          UPLOAD_USER: ${{secrets.UPLOAD_USER}}
-          UPLOAD_PASSWORD: ${{secrets.UPLOAD_PASSWORD}}
+          # UPLOAD_USER: ${{secrets.UPLOAD_USER}}
+          # UPLOAD_PASSWORD: ${{secrets.UPLOAD_PASSWORD}}
           REPO_BUILD_NUMBER: ${{ vars.APP_BUILDNUMBER }}
           REPO_VERSION: ${{ vars.APP_VERSION }}
+          
         run: |
          if [ "$(basename $GITHUB_REF)" == "release" ]; then
             # Use test server for uploads

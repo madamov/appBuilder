@@ -146,7 +146,7 @@ jobs:
           REPO_VERSION: ${{ vars.APP_VERSION }}
           
         run: |
-#           ./buildFiles/scripts/mainyml.bat
+           # ./buildFiles/scripts/mainyml.bat
 
       - id: step2
         name: Checking for status file

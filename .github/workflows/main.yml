@@ -1,16 +1,19 @@
 name: My app builder
 
 on:
-  # push:
-    # branches: 
-
+  pull_request:
+     types: [submitted]
+     branches:
+       - main
+       - develop
+       - release
+       
   workflow_dispatch:
      branches: 
        - main
        - develop
+       - test
 
-  # schedule:
-    # - cron: '30 4 * * *' #build every day at 4:30 UTC
 env:
   GH_TOKEN: ${{ secrets.MILANTOK }} # setting GH_TOKEN for the entire workflow
 
@@ -21,30 +24,51 @@ jobs:
       out_mac: ${{ steps.step1.outputs.status }}
       release_tag: ${{ steps.step1.outputs.release_tag }}
     steps:
+      - id: envvarsseting
+        name: Branch-based environment variables setting
+        uses: iamtheyammer/branch-env-vars@v1.2.1
+        with:
+          UPLOAD_USER: |
+            main: ${{secrets.UPLOAD_USER}}
+            test: ${{secrets.UPLOAD_TEST_USER}}
+            release: ${{secrets.UPLOAD_USER}}
+
+          UPLOAD_PASSWORD: |
+            main: ${{secrets.UPLOAD_PASSWORD}}
+            test: ${{secrets.UPLOAD_TEST_PASSWORD}}
+            release: ${{secrets.UPLOAD_USER}}
+
+          TESTME: |
+            main: I am in main branch
+            test: In test branch
+            release: In release branch
+
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Install signing certificate
         env:
-          BUILD_CERTIFICATE_BASE64: ${{ secrets.MACOS_ADHOC_CERTIFICATE }}
+          BUILD_CERTIFICATE_BASE64: ${{ secrets.MY_APPLE_CERTIFICATE }}
           KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
+          P12_PASSWORD: ${{ secrets.MY_APPLE_CERT_PASSWORD }}
         run: |
-          echo in certificate installation
-
           # create variables
-          # CERTIFICATE_PATH=$RUNNER_TEMP/cxr.cer
-          # KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
+          CERTIFICATE_PATH=$RUNNER_TEMP/my_certificate.p12
+          KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
 
-          # import certificate from secrets
-          # echo -n "$BUILD_CERTIFICATE_BASE64" | base64 --decode -o $CERTIFICATE_PATH
+          # get certificate from secrets
+          echo -n "$BUILD_CERTIFICATE_BASE64" | base64 --decode -o $CERTIFICATE_PATH
 
           # create temporary keychain
-          # security create-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
-          # security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
-          # security unlock-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+          security create-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+          security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
+          security unlock-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
 
           # import certificate to keychain
-          # security import $CERTIFICATE_PATH -A -t cert -k $KEYCHAIN_PATH
-          # security list-keychain -d user -s $KEYCHAIN_PATH
+          security import $CERTIFICATE_PATH -P "$P12_PASSWORD" -A -t cert -f pkcs12 -k $KEYCHAIN_PATH
+          security set-key-partition-list -S apple-tool:,apple: -k "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+          security list-keychain -d user -s $KEYCHAIN_PATH
+          
+          
 
       - id: step1
         name: Build Action Mac
@@ -54,13 +78,18 @@ jobs:
           RUNNER: GIT
           BINARIES_USER: ${{secrets.BINARIES_USER}}
           BINARIES_PASSWORD: ${{secrets.BINARIES_PASSWORD}}
-          UPLOAD_USER: ${{secrets.UPLOAD_USER}}
-          UPLOAD_PASSWORD: ${{secrets.UPLOAD_PASSWORD}}
+          # UPLOAD_USER: ${{secrets.UPLOAD_USER}}
+          # UPLOAD_PASSWORD: ${{secrets.UPLOAD_PASSWORD}}
+          REPO_BUILD_NUMBER: ${{ vars.APP_BUILDNUMBER }}
+          REPO_VERSION: ${{ vars.APP_VERSION }}
           
-# env:  MY_ENV_VAR: ${{ github.ref == 'refs/heads/main' && 'value_for_main_branch' || 'value_for_other_branches' }}
-
         run: |
-         if [ "$(basename $GITHUB_REF)" == "ma_github_actions_builder" ]; then
+         if [ "$(basename $GITHUB_REF)" == "release" ]; then
+            # Use test server for uploads
+            echo Using release branch server parameters
+            mv ./buildFiles/parameters_release.json ./buildFiles/parameters.json
+         fi
+         if [ "$(basename $GITHUB_REF)" == "test" ]; then
             # Use test server for uploads
             echo Using test server parameters
             mv ./buildFiles/parameters_testserver.json ./buildFiles/parameters.json
@@ -73,17 +102,17 @@ jobs:
          next_build=$(jq -r '.build' ./buildFiles/parameters.json)
          echo "artifacts_path=$HOME/Documents/$nextbuild/artifacts" >> $GITHUB_ENV
 
-         ./buildFiles/scripts/build_all.sh
+         # ./buildFiles/scripts/build_all.sh
          
          STATUSFILE=/Users/runner/Documents/$nextbuild/artifacts/status.log
          if [[ -f "$STATUSFILE" ]]; then
            msg="*Compilation or build failed!* at $(date)"
            echo "status=FAIL" >> "$GITHUB_OUTPUT"
          else
-           ./buildFiles/scripts/postBuild.sh
+           # ./buildFiles/scripts/postBuild.sh
            echo "🐚: POSTBUILD done at $(date)"
            msg="**macOS Build of version $version build $buildnumber successful!** at $(date)"
-           # set output so the next runner will know if we are succesful
+           # set output so the next runner will know that we are succesful
            echo "status=OK" >> "$GITHUB_OUTPUT"
          fi
 
@@ -101,7 +130,7 @@ jobs:
       out_win: ${{ steps.step2.outputs.status }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - id: step1
         name: Build Action Windows
         env:
@@ -113,8 +142,11 @@ jobs:
           UPLOAD_USER: ${{secrets.UPLOAD_USER}}
           UPLOAD_PASSWORD: ${{secrets.UPLOAD_PASSWORD}}
           RELEASE_TAG: ${{ needs.build-on-mac.outputs.release_tag }}
+          REPO_BUILD_NUMBER: ${{ vars.APP_BUILDNUMBER }}
+          REPO_VERSION: ${{ vars.APP_VERSION }}
+          
         run: |
-         ./buildFiles/scripts/mainyml.bat
+           # ./buildFiles/scripts/mainyml.bat
 
       - id: step2
         name: Checking for status file
@@ -146,7 +178,7 @@ jobs:
       - name: Install curl using Homebrew
         run: brew install curl
 
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Increase build number
         env:
           WHO_TO_TRUST: ${{secrets.MYTOKEN}}
@@ -156,6 +188,9 @@ jobs:
           RELEASE_TAG: ${{ needs.build-on-mac.outputs.release_tag }}
           UPLOAD_USER: ${{secrets.UPLOAD_USER}}
           UPLOAD_PASSWORD: ${{secrets.UPLOAD_PASSWORD}}
+          REPO_BUILD_NUMBER: ${{ vars.APP_BUILDNUMBER }}
+          REPO_VERSION: ${{ vars.APP_VERSION }}
+          
         run: |
           echo "Running build number increase job, release is $RELEASE"
           echo "OUTPUT2 (out_win)  is : $OUTPUT2"
@@ -163,12 +198,20 @@ jobs:
           ryver_version=$(jq -r '.version' ./buildFiles/parameters.json)
           ryver_build=$(jq -r '.build' ./buildFiles/parameters.json)
           
-          ./buildFiles/scripts/incbuildnumber.sh
+          # ./buildFiles/scripts/incbuildnumber.sh
  
           echo RYVER VERSIONS
           echo $ryver_version
           echo $ryver_build 
           
+           # set new build number in repository variable
+           
+           REPO_BUILD_NUMBER=$((REPO_BUILD_NUMBER+1))
+           gh variable list
+           gh variable set APP_BUILDNUMBER --body "$REPO_BUILD_NUMBER"
+           gh variable list
+
+
           msg="**Build of version ${ryver_version} build ${ryver_build} successful!** at $(date)"
           
           if [ "$(basename $GITHUB_REF)" == "main" ]; then

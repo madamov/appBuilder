@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
      branches: 
        - main
-       - MA/testing-checking-branch
+       - test
 jobs:
     build-on-mac:
        runs-on: macos-latest
@@ -36,6 +36,7 @@ jobs:
               winvl=$(jq -r '.winVL_URL' $workingDirectory/buildFiles/parameters.json)
               echo 4D binary is $win4d
               echo volume desktop binary is $winvl
+
 
           - uses: actions/upload-artifact@v4
             with:
@@ -68,27 +69,37 @@ jobs:
             run: |
                mkdir testing
                echo "This is a file to upload" > testing/file.txt
-               echo "artifactPath=testing/file.txt" >> $GITHUB_ENV  
-                
-          - uses: actions/upload-artifact@v4
-            with:
-              name: Uploading windows artifacts ${{ env.artifactPath }}
-              path: ${{ env.artifactPath }}  
+               echo "artifactPath=testing/file.txt" >> $GITHUB_ENV   
 
 
     build-on-ubuntu:
        runs-on: ubuntu-latest
        steps:    
+          - name: Branch-based environment variables that rock
+            uses: iamtheyammer/branch-env-vars@v1.2.1
+            with:
+              UPLOAD_USER: |
+                main: ${{secrets.UPLOAD_USER}}
+                MA/testing-checking-branch: ${{secrets.UPLOAD_TEST_USER}}
+
+              UPLOAD_PASSWORD: |
+                main: ${{secrets.UPLOAD_PASSWORD}}
+                MA/testing-checking-branch: ${{secrets.UPLOAD_TEST_PASSWORD}}
+
+              TESTME: |
+                main: I am in main
+                MA/testing-checking-branch: MA BRANCH IS THIS
+                                
           - uses: actions/checkout@v4
           - id: stepinubuntu
             name: 'Testing CURL and other things'
             env:
-               UPLOAD_USER: ${{secrets.UPLOAD_USER}}
-               UPLOAD_PASSWORD: ${{secrets.UPLOAD_PASSWORD}} 
+               # UPLOAD_USER: ${{secrets.UPLOAD_USER}}
+               # UPLOAD_PASSWORD: ${{secrets.UPLOAD_PASSWORD}} 
                    
             run: |
-               apt update
-               apt install curl
+               
+               echo $TESTME
                
                workingDirectory=$(pwd)
                ls -al $workingDirectory/buildFiles/
@@ -98,16 +109,23 @@ jobs:
                fi
               
                myfolder=$(jq -r '.build' $workingDirectory/buildFiles/parameters.json)
-               mkdir $HOME/Documents/$myfolder
-               mkdir $HOME/Documents/$myfolder/artifacts
-               ls -al $HOME > $HOME/Documents/$myfolder/artifacts/listing.txt
-               echo "artifacts_path=$HOME/Documents/$myfolder/artifacts" >> $GITHUB_ENV   
+               uploadurl=$(jq -r '.uploadMacStandalone' $workingDirectory/buildFiles/parameters.json)
+
+               echo $myfolder
+               echo $HOME
+               echo $uploadurl
+               
+               mkdir $HOME/$myfolder
+               mkdir $HOME/$myfolder/artifacts
+               ls -Ral $workingDirectory/buildFiles/ > $HOME/$myfolder/artifacts/listing.txt
+               ls -al $HOME/$myfolder/artifacts/
+               echo "artifacts_path=$HOME/$myfolder/artifacts" >> $GITHUB_ENV   
                win4d=$(jq -r '.win4D_URL' $workingDirectory/buildFiles/parameters.json)
                winvl=$(jq -r '.winVL_URL' $workingDirectory/buildFiles/parameters.json)
                echo 4D binary is $win4d
                echo volume desktop binary is $winvl
                
-               /usr/bin/curl -k -u ${UPLOAD_USER}:${UPLOAD_PASSWORD} --ftp-create-dirs -T listing.txt $HOME/Documents/$myfolder/artifacts/listing.txt
+               curl -k -u ${UPLOAD_USER}:${UPLOAD_PASSWORD} --ftp-create-dirs -T $HOME/$myfolder/artifacts/listing.txt $uploadurl/listing.txt 
 
           - uses: actions/upload-artifact@v4
             with:

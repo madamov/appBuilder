@@ -1,7 +1,7 @@
 name: My app builder
 
 on:
-  pull_request:
+  pull_request_review:
      types: [submitted]
      branches:
        - main

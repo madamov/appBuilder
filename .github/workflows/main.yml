@@ -1,7 +1,13 @@
 name: My app builder
 
 on:
-
+  pull_request:
+     types: [submitted]
+     branches:
+       - main
+       - develop
+       - release
+       
   workflow_dispatch:
      branches: 
        - main
@@ -95,11 +101,6 @@ jobs:
          
          next_build=$(jq -r '.build' ./buildFiles/parameters.json)
          echo "artifacts_path=$HOME/Documents/$nextbuild/artifacts" >> $GITHUB_ENV
-         
-         echo build number from parameters.json is $next_build
-         echo build number from repository variable is $REPO_BUILD_NUMBER
-         echo version number from repositroy variable is $REPO_BUILD_NUMBER
-
 
          # ./buildFiles/scripts/build_all.sh
          
@@ -113,13 +114,6 @@ jobs:
            msg="**macOS Build of version $version build $buildnumber successful!** at $(date)"
            # set output so the next runner will know that we are succesful
            echo "status=OK" >> "$GITHUB_OUTPUT"
-           # set new build number
-           REPO_BUILD_NUMBER=$((REPO_BUILD_NUMBER+1))
-           old_version=${{ vars.APP_VERSION }}
-           echo stara vezija direktno
-           gh variable list
-           gh variable set APP_BUILDNUMBER --body "$REPO_BUILD_NUMBER"
-           gh variable list
          fi
 
       - uses: actions/upload-artifact@v4
@@ -148,6 +142,9 @@ jobs:
           UPLOAD_USER: ${{secrets.UPLOAD_USER}}
           UPLOAD_PASSWORD: ${{secrets.UPLOAD_PASSWORD}}
           RELEASE_TAG: ${{ needs.build-on-mac.outputs.release_tag }}
+          REPO_BUILD_NUMBER: ${{ vars.APP_BUILDNUMBER }}
+          REPO_VERSION: ${{ vars.APP_VERSION }}
+          
         run: |
 #           ./buildFiles/scripts/mainyml.bat
 
@@ -191,6 +188,9 @@ jobs:
           RELEASE_TAG: ${{ needs.build-on-mac.outputs.release_tag }}
           UPLOAD_USER: ${{secrets.UPLOAD_USER}}
           UPLOAD_PASSWORD: ${{secrets.UPLOAD_PASSWORD}}
+          REPO_BUILD_NUMBER: ${{ vars.APP_BUILDNUMBER }}
+          REPO_VERSION: ${{ vars.APP_VERSION }}
+          
         run: |
           echo "Running build number increase job, release is $RELEASE"
           echo "OUTPUT2 (out_win)  is : $OUTPUT2"
@@ -204,6 +204,14 @@ jobs:
           echo $ryver_version
           echo $ryver_build 
           
+           # set new build number in repository variable
+           
+           REPO_BUILD_NUMBER=$((REPO_BUILD_NUMBER+1))
+           gh variable list
+           gh variable set APP_BUILDNUMBER --body "$REPO_BUILD_NUMBER"
+           gh variable list
+
+
           msg="**Build of version ${ryver_version} build ${ryver_build} successful!** at $(date)"
           
           if [ "$(basename $GITHUB_REF)" == "main" ]; then

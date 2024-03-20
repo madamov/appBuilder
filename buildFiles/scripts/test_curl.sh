@@ -2,14 +2,6 @@
 
 workingDirectory=$(pwd)
 
-localrepobuild=${{ vars.APP_BUILDNUMBER }}
-localrepoversion=${{ vars.APP_VERSION }}
-
-echo $localrepobuild  $localrepoversion
-
-LOCAL_USER=${{secrets.UPLOAD_TEST_USER}}
-LOCAL_PASSWORD=${{secrets.UPLOAD_TEST_PASSWORD}}
-
 uploadURL=$(jq -r '.uploadCompiledStruct' $workingDirectory/buildFiles/parameters.json)
 
 echo "User je $UPLOAD_USER"
@@ -31,7 +23,6 @@ curl -k -u ${UPLOAD_USER}:${UPLOAD_PASSWORD} -T $HOME/Documents/test.txt ${uploa
 
 curl -k -u ${TEST_USER}:${TEST_PASSWORD} -T $HOME/Documents/test.txt ${uploadURL}test_002.txt
 
-curl -k -u ${LOCAL_USER}:${LOCAL_PASSWORD} -T $HOME/Documents/test.txt ${uploadURL}test_002.txt
 
 # echo $SFTP_USER      $SFTP_PASSWORD
 

@@ -80,8 +80,8 @@ jobs:
           RUNNER: GIT
           BINARIES_USER: ${{secrets.BINARIES_USER}}
           BINARIES_PASSWORD: ${{secrets.BINARIES_PASSWORD}}
-          UPLOAD_USER: ${SFTP_USER}
-          UPLOAD_PASSWORD: ${SFTP_PASSWORD}
+          # UPLOAD_USER: ${SFTP_USER}
+          # UPLOAD_PASSWORD: ${SFTP_PASSWORD}
           REPO_BUILD_NUMBER: ${{ vars.APP_BUILDNUMBER }}
           REPO_VERSION: ${{ vars.APP_VERSION }}
           TEST_USER: ${{secrets.UPLOAD_TEST_USER}}
@@ -93,16 +93,22 @@ jobs:
             # Use test server for uploads
             echo Using release branch server parameters
             mv ./buildFiles/parameters_releases.json ./buildFiles/parameters.json
+            UPLOAD_USER=${{secrets.UPLOAD_USER}}
+            UPLOAD_PASSWORD=${{secrets.UPLOAD_PASSWORD}}
          fi
          if [ "$(basename $GITHUB_REF)" == "test" ]; then
             # Use test server for uploads
             echo Using test server parameters for branch test
             mv ./buildFiles/parameters_testserver.json ./buildFiles/parameters.json
+            UPLOAD_USER=${{secrets.UPLOAD_TEST_USER}}
+            UPLOAD_PASSWORD=${{secrets.UPLOAD_TEST_PASSWORD}}
          fi
          if [ "$(basename $GITHUB_REF)" == "develop" ]; then
             # Use test server for uploads
             echo Using test server parameters for branch develop
             mv ./buildFiles/parameters_testserver.json ./buildFiles/parameters.json
+            UPLOAD_USER=${{secrets.UPLOAD_TEST_USER}}
+            UPLOAD_PASSWORD=${{secrets.UPLOAD_TEST_PASSWORD}}
          fi
          
          # install curl from Homebrew

@@ -90,7 +90,7 @@ jobs:
         run: |
          pwd
          if [ "$(basename $GITHUB_REF)" == "release" ]; then
-            # Use test server for uploads
+            # Use release server for uploads
             echo Using release branch server parameters
             mv ./buildFiles/parameters_releases.json ./buildFiles/parameters.json
             UPLOAD_USER=${{secrets.UPLOAD_USER}}
@@ -107,12 +107,9 @@ jobs:
             # Use test server for uploads
             echo Using test server parameters for branch develop
             mv ./buildFiles/parameters_testserver.json ./buildFiles/parameters.json
-            UPLOAD_USER=${{secrets.UPLOAD_TEST_USER}}
-            UPLOAD_PASSWORD=${{secrets.UPLOAD_TEST_PASSWORD}}
+            UPLOAD_USER=$TEST_USER
+            UPLOAD_PASSWORD=$TEST_PASSWORD
          fi
-         
-         # install curl from Homebrew
-         # brew install curl
          
          # test SFTP credentials
          ./buildFiles/scripts/test_curl.sh

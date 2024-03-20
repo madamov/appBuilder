@@ -36,9 +36,9 @@ jobs:
 
           UPLOAD_PASSWORD: |
             main: ${{secrets.UPLOAD_PASSWORD}}
-            develop: ${{secrets.UPLOAD_TEST_USER}}
+            develop: ${{secrets.UPLOAD_TEST_PASSWORD}}
             test: ${{secrets.UPLOAD_TEST_PASSWORD}}
-            release: ${{secrets.UPLOAD_USER}}
+            release: ${{secrets.UPLOAD_TEST_PASSWORD}}
 
           TESTME: |
             main: I am in main branch

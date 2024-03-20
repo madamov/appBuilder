@@ -30,16 +30,19 @@ jobs:
         with:
           UPLOAD_USER: |
             main: ${{secrets.UPLOAD_USER}}
+            develop: ${{secrets.UPLOAD_TEST_USER}}
             test: ${{secrets.UPLOAD_TEST_USER}}
             release: ${{secrets.UPLOAD_USER}}
 
           UPLOAD_PASSWORD: |
             main: ${{secrets.UPLOAD_PASSWORD}}
+            develop: ${{secrets.UPLOAD_TEST_USER}}
             test: ${{secrets.UPLOAD_TEST_PASSWORD}}
             release: ${{secrets.UPLOAD_USER}}
 
           TESTME: |
             main: I am in main branch
+            develop: I am in develop branch
             test: In test branch
             release: In release branch
 

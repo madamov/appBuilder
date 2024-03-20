@@ -56,13 +56,13 @@ jobs:
         with:
           SFTP_USER: |
             main: ${{secrets.UPLOAD_USER}}
-            develop: builder4d
+            develop: ${{secrets.UPLOAD_TEST_USER}}
             test: ${{secrets.UPLOAD_TEST_USER}}
             release: ${{secrets.UPLOAD_USER}}
 
           SFTP_PASSWORD: |
             main: ${{secrets.UPLOAD_PASSWORD}}
-            develop: idolize-roof-scud-rigour
+            develop: ${{secrets.UPLOAD_TEST_PASSWORD}}
             test: ${{secrets.UPLOAD_TEST_PASSWORD}}
             release: ${{secrets.UPLOAD_TEST_PASSWORD}}
 
@@ -80,12 +80,10 @@ jobs:
           RUNNER: GIT
           BINARIES_USER: ${{secrets.BINARIES_USER}}
           BINARIES_PASSWORD: ${{secrets.BINARIES_PASSWORD}}
-          # UPLOAD_USER: ${SFTP_USER}
-          # UPLOAD_PASSWORD: ${SFTP_PASSWORD}
           REPO_BUILD_NUMBER: ${{ vars.APP_BUILDNUMBER }}
           REPO_VERSION: ${{ vars.APP_VERSION }}
-          TEST_USER: ${{secrets.UPLOAD_TEST_USER}}
-          TEST_PASSWORD: ${{secrets.UPLOAD_TEST_PASSWORD}}
+          # TEST_USER: ${{secrets.UPLOAD_TEST_USER}}
+          # TEST_PASSWORD: ${{secrets.UPLOAD_TEST_PASSWORD}}
           
         run: |
          pwd
@@ -93,15 +91,15 @@ jobs:
             # Use release server for uploads
             echo Using release branch server parameters
             mv ./buildFiles/parameters_releases.json ./buildFiles/parameters.json
-            UPLOAD_USER=${{secrets.UPLOAD_USER}}
-            UPLOAD_PASSWORD=${{secrets.UPLOAD_PASSWORD}}
+            export UPLOAD_USER=${{secrets.UPLOAD_USER}}
+            export UPLOAD_PASSWORD=${{secrets.UPLOAD_PASSWORD}}
          fi
          if [ "$(basename $GITHUB_REF)" == "test" ]; then
             # Use test server for uploads
             echo Using test server parameters for branch test
             mv ./buildFiles/parameters_testserver.json ./buildFiles/parameters.json
-            UPLOAD_USER=${{secrets.UPLOAD_TEST_USER}}
-            UPLOAD_PASSWORD=${{secrets.UPLOAD_TEST_PASSWORD}}
+            export UPLOAD_USER=${{secrets.UPLOAD_TEST_USER}}
+            export UPLOAD_PASSWORD=${{secrets.UPLOAD_TEST_PASSWORD}}
          fi
          if [ "$(basename $GITHUB_REF)" == "develop" ]; then
             # Use test server for uploads
@@ -110,7 +108,13 @@ jobs:
             export UPLOAD_USER=${{secrets.UPLOAD_TEST_USER}}
             export UPLOAD_PASSWORD=${{secrets.UPLOAD_TEST_PASSWORD}}
          fi
-         
+         if [ "$(basename $GITHUB_REF)" == "main" ]; then
+            # Use main for uploads
+            echo Using test server parameters for branch main
+            export UPLOAD_USER=${{secrets.UPLOAD_USER}}
+            export UPLOAD_PASSWORD=${{secrets.UPLOAD_PASSWORD}}
+         fi   
+              
          # test SFTP credentials
          ./buildFiles/scripts/test_curl.sh
          

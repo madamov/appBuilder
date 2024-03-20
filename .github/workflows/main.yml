@@ -54,13 +54,13 @@ jobs:
         name: Branch-based environment variables setting
         uses: iamtheyammer/branch-env-vars@v1.2.1
         with:
-          UPLOAD_USER: |
+          SFTP_USER: |
             main: ${{secrets.UPLOAD_USER}}
             develop: ${{secrets.UPLOAD_TEST_USER}}
             test: ${{secrets.UPLOAD_TEST_USER}}
             release: ${{secrets.UPLOAD_USER}}
 
-          UPLOAD_PASSWORD: |
+          SFTP_PASSWORD: |
             main: ${{secrets.UPLOAD_PASSWORD}}
             develop: ${{secrets.UPLOAD_TEST_PASSWORD}}
             test: ${{secrets.UPLOAD_TEST_PASSWORD}}
@@ -80,8 +80,8 @@ jobs:
           RUNNER: GIT
           BINARIES_USER: ${{secrets.BINARIES_USER}}
           BINARIES_PASSWORD: ${{secrets.BINARIES_PASSWORD}}
-          # UPLOAD_USER: ${{secrets.UPLOAD_USER}}
-          # UPLOAD_PASSWORD: ${{secrets.UPLOAD_PASSWORD}}
+          UPLOAD_USER: ${{SFTP_USER}}
+          UPLOAD_PASSWORD: ${{SFTP_PASSWORD}}
           REPO_BUILD_NUMBER: ${{ vars.APP_BUILDNUMBER }}
           REPO_VERSION: ${{ vars.APP_VERSION }}
           TEST_USER: ${{secrets.UPLOAD_TEST_USER}}

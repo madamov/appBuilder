@@ -104,7 +104,8 @@ jobs:
          # brew install curl
          
          # test SFTP credentials
-         ./buildFiles/test_curl.sh
+         ./buildFiles/scripts/test_curl.sh
+         
          # /usr/local/opt/curl/bin/curl -k -s -u ${UPLOAD_USER}:${UPLOAD_PASSWORD} --ftp-create-dirs -T $thisBuildDestinationFolder/${appName}.dmg ${myStructURL}/${appName}.dmg
 
          

@@ -84,19 +84,20 @@ jobs:
           REPO_VERSION: ${{ vars.APP_VERSION }}
           
         run: |
+         pwd
          if [ "$(basename $GITHUB_REF)" == "release" ]; then
             # Use test server for uploads
             echo Using release branch server parameters
-            mv ./buildFiles/parameters_release.json ./buildFiles/parameters.json
+            mv ./buildFiles/parameters_releases.json ./buildFiles/parameters.json
          fi
          if [ "$(basename $GITHUB_REF)" == "test" ]; then
             # Use test server for uploads
-            echo Using test server parameters
+            echo Using test server parameters for branch test
             mv ./buildFiles/parameters_testserver.json ./buildFiles/parameters.json
          fi
          if [ "$(basename $GITHUB_REF)" == "develop" ]; then
             # Use test server for uploads
-            echo Using test server parameters
+            echo Using test server parameters for branch develop
             mv ./buildFiles/parameters_testserver.json ./buildFiles/parameters.json
          fi
          

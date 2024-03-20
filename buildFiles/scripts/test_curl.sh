@@ -1,5 +1,7 @@
 #!/bin/bash
 
+workingDirectory=$(pwd)
+
 uploadURL=$(jq -r '.uploadCompiledStruct' $workingDirectory/buildFiles/parameters.json)
 
 echo "User je $UPLOAD_USER"

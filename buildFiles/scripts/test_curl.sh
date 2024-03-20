@@ -6,6 +6,8 @@ uploadURL=$(jq -r '.uploadCompiledStruct' $workingDirectory/buildFiles/parameter
 
 echo "User je $UPLOAD_USER"
 echo "URL je $uploadURL"
+echo ${uploadURL}test_002.txt
+echo $TESTME
 
 ls -al /usr/local/opt/ > $HOME/Documents/test.txt
 
@@ -24,3 +26,4 @@ which curl
 
 curl -k -u ${UPLOAD_USER}:${UPLOAD_PASSWORD} -T $HOME/Documents/test.txt ${uploadURL}test_001.txt
 
+curl -k -u ${TEST_USER}:${TEST_PASSWORD} -T $HOME/Documents/test.txt ${uploadURL}test_002.txt

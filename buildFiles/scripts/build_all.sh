@@ -7,7 +7,6 @@ next_build=$(jq -r '.build' ./buildFiles/parameters.json)
 thisBuildDestinationFolder=$HOME/Documents/$next_build
 	
 mkdir $thisBuildDestinationFolder
-mkdir c
 
 echo created destination folder: 
 echo $thisBuildDestinationFolder
@@ -36,7 +35,7 @@ action=$(jq -r '.actionMac' $workingDirectory/buildFiles/parameters.json)
 rm $workingDirectory/Project/settings.4DSettings
 # ls -al $workingDirectory/Project/
 cp -fv $workingDirectory/buildFiles/Default_settings.4DSettings $workingDirectory/Project/Sources/settings.4DSettings
-echo settings file copied to repo
+echo "settings file copied to repository"
 # ls -al $workingDirectory/Project/Sources/
 
 if [[ $action == *"BUILD_APP"* ]]; then

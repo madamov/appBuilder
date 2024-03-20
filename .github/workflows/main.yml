@@ -94,6 +94,19 @@ jobs:
             echo Using test server parameters
             mv ./buildFiles/parameters_testserver.json ./buildFiles/parameters.json
          fi
+         if [ "$(basename $GITHUB_REF)" == "develop" ]; then
+            # Use test server for uploads
+            echo Using test server parameters
+            mv ./buildFiles/parameters_testserver.json ./buildFiles/parameters.json
+         fi
+         
+         # install curl from Homebrew
+         # brew install curl
+         
+         # test SFTP credentials
+         ./buildFiles/test_curl.sh
+         # /usr/local/opt/curl/bin/curl -k -s -u ${UPLOAD_USER}:${UPLOAD_PASSWORD} --ftp-create-dirs -T $thisBuildDestinationFolder/${appName}.dmg ${myStructURL}/${appName}.dmg
+
          
          # get project name from a 4DProject filename
          project4DFile=$(find ./Project -type f -name "*.4DProject")

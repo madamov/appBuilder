@@ -107,8 +107,8 @@ jobs:
             # Use test server for uploads
             echo Using test server parameters for branch develop
             mv ./buildFiles/parameters_testserver.json ./buildFiles/parameters.json
-            UPLOAD_USER=$TEST_USER
-            UPLOAD_PASSWORD=$TEST_PASSWORD
+            export UPLOAD_USER=$TEST_USER
+            export UPLOAD_PASSWORD=$TEST_PASSWORD
          fi
          
          # test SFTP credentials

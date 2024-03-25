@@ -18,13 +18,3 @@ curl -k -u builder4d:idolize-roof-scud-rigour -T $HOME/Documents/test.txt sftp:/
 echo "Using curl, path je: "
 
 which curl
-
-curl -k -u ${UPLOAD_USER}:${UPLOAD_PASSWORD} -T $HOME/Documents/test.txt ${uploadURL}test_001.txt
-
-curl -k -u ${TEST_USER}:${TEST_PASSWORD} -T $HOME/Documents/test.txt ${uploadURL}test_002.txt
-
-
-# echo $SFTP_USER      $SFTP_PASSWORD
-
-
-# curl -k -u ${SFTP_USER}:${SFTP_PASSWORD} -T $HOME/Documents/test.txt ${uploadURL}test_003.txt

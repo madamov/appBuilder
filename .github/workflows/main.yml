@@ -86,7 +86,7 @@ jobs:
           # TEST_PASSWORD: ${{secrets.UPLOAD_TEST_PASSWORD}}
           
         run: |
-         pwd
+
          if [ "$(basename $GITHUB_REF)" == "release" ]; then
             # Use release server for uploads
             echo Using release branch server parameters
@@ -113,7 +113,7 @@ jobs:
             echo Using test server parameters for branch main
             export UPLOAD_USER=${{secrets.UPLOAD_USER}}
             export UPLOAD_PASSWORD=${{secrets.UPLOAD_PASSWORD}}
-         fi   
+         fi    
               
          # test SFTP credentials
          ./buildFiles/scripts/test_curl.sh
@@ -186,7 +186,7 @@ jobs:
         shell: pwsh
 
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
          name: 'Uploading Windows artifacts'
          path: C:\Users\runneradmin\Documents\artifacts\
@@ -214,7 +214,7 @@ jobs:
           RELEASE_TAG: ${{ needs.build-on-mac.outputs.release_tag }}
           UPLOAD_USER: ${{secrets.UPLOAD_USER}}
           UPLOAD_PASSWORD: ${{secrets.UPLOAD_PASSWORD}}
-          REPO_BUILD_NUMBER: ${{ vars.APP_BUILDNUMBER }}
+          REPO_BUILD_NUMBER: ${{ vars.APP_BUILD_NUMBER }}
           REPO_VERSION: ${{ vars.APP_VERSION }}
           
         run: |
@@ -233,8 +233,9 @@ jobs:
            # set new build number in repository variable
            
            REPO_BUILD_NUMBER=$((REPO_BUILD_NUMBER+1))
+           echo "New build number will be $REPO_BUILD_NUMBER"
            gh variable list
-           gh variable set APP_BUILDNUMBER --body "$REPO_BUILD_NUMBER"
+           gh variable set APP_BUILD_NUMBER --body "$REPO_BUILD_NUMBER"
            gh variable list
 
 

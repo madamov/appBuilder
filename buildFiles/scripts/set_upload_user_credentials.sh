@@ -20,8 +20,8 @@
             # Use test server for uploads
             echo "Using test server parameters for branch develop"
             mv ./buildFiles/parameters_testserver.json ./buildFiles/parameters.json
-            export UPLOAD_USER=${{secrets.UPLOAD_TEST_USER}}
-            export UPLOAD_PASSWORD=${{secrets.UPLOAD_TEST_PASSWORD}}
+            export UPLOAD_USER=${{ secrets.UPLOAD_TEST_USER }}
+            export UPLOAD_PASSWORD=${{ secrets.UPLOAD_TEST_PASSWORD }}
     
          fi
          if [ "$(basename $GITHUB_REF)" == "main" ]; then

@@ -49,7 +49,7 @@ jobs:
           security set-key-partition-list -S apple-tool:,apple: -k "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
           security list-keychain -d user -s $KEYCHAIN_PATH
 
-      - name: Set UPLOAD credentials based on branch
+      - name: Set UPLOAD credentials based on branch main
         if: ${{ startsWith(github.ref, 'refs/heads/main')}}
         env:
            UPLOAD_USER: ${{ secrets.UPLOAD_USER }}
@@ -57,7 +57,7 @@ jobs:
         run: |
           echo "Using secret for main branch: $UPLOAD_TEST_USER"
 
-      - name: Set UPLOAD credentials based on branch
+      - name: Set UPLOAD credentials based on branch develop
         if: ${{ startsWith(github.ref, 'refs/heads/develop')}}
         env:
            UPLOAD_USER: ${{ secrets.UPLOAD_TEST_USER }}
@@ -65,7 +65,7 @@ jobs:
         run: |
           echo "Using secret for develop branch: $UPLOAD_TEST_USER"
 
-      - name: Set UPLOAD credentials based on branch
+      - name: Set UPLOAD credentials based on branch release
         if: ${{ startsWith(github.ref, 'refs/heads/release')}}
         env:
            UPLOAD_USER: ${{ secrets.UPLOAD_USER }}
@@ -130,6 +130,31 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: Set UPLOAD credentials based on branch main
+        if: ${{ startsWith(github.ref, 'refs/heads/main')}}
+        env:
+           UPLOAD_USER: ${{ secrets.UPLOAD_USER }}
+           UPLOAD_PASSWORD: ${{ secrets.UPLOAD_PASSWORD }}
+        run: |
+          echo "Using secret for main branch: $UPLOAD_TEST_USER"
+
+      - name: Set UPLOAD credentials based on branch develop
+        if: ${{ startsWith(github.ref, 'refs/heads/develop')}}
+        env:
+           UPLOAD_USER: ${{ secrets.UPLOAD_TEST_USER }}
+           UPLOAD_PASSWORD: ${{ secrets.UPLOAD_TEST_PASSWORD }}
+        run: |
+          echo "Using secret for develop branch: $UPLOAD_TEST_USER"
+
+      - name: Set UPLOAD credentials based on branch release
+        if: ${{ startsWith(github.ref, 'refs/heads/release')}}
+        env:
+           UPLOAD_USER: ${{ secrets.UPLOAD_USER }}
+           UPLOAD_PASSWORD: ${{ secrets.UPLOAD_PASSWORD }}
+        run: |
+          echo "Using secret for release branch: $UPLOAD_TEST_USER"
+
       - id: step1
         name: Build Action Windows
         env:
@@ -138,8 +163,6 @@ jobs:
           RUNNER: GIT
           BINARIES_USER: ${{secrets.BINARIES_USER}}
           BINARIES_PASSWORD: ${{secrets.BINARIES_PASSWORD}}
-          UPLOAD_USER: ${{secrets.UPLOAD_USER}}
-          UPLOAD_PASSWORD: ${{secrets.UPLOAD_PASSWORD}}
           RELEASE_TAG: ${{ needs.build-on-mac.outputs.release_tag }}
           REPO_BUILD_NUMBER: ${{ vars.APP_BUILDNUMBER }}
           REPO_VERSION: ${{ vars.APP_VERSION }}
@@ -187,7 +210,15 @@ jobs:
         run: |
           echo "Using secret for main branch: $UPLOAD_TEST_USER"
 
-      - name: Set UPLOAD credentials based on branch
+      - name: Set UPLOAD credentials based on branch main
+        if: ${{ startsWith(github.ref, 'refs/heads/main')}}
+        env:
+           UPLOAD_USER: ${{ secrets.UPLOAD_USER }}
+           UPLOAD_PASSWORD: ${{ secrets.UPLOAD_PASSWORD }}
+        run: |
+          echo "Using secret for main branch: $UPLOAD_TEST_USER"
+
+      - name: Set UPLOAD credentials based on branch develop
         if: ${{ startsWith(github.ref, 'refs/heads/develop')}}
         env:
            UPLOAD_USER: ${{ secrets.UPLOAD_TEST_USER }}
@@ -195,14 +226,13 @@ jobs:
         run: |
           echo "Using secret for develop branch: $UPLOAD_TEST_USER"
 
-      - name: Set UPLOAD credentials based on branch
+      - name: Set UPLOAD credentials based on branch release
         if: ${{ startsWith(github.ref, 'refs/heads/release')}}
         env:
            UPLOAD_USER: ${{ secrets.UPLOAD_USER }}
            UPLOAD_PASSWORD: ${{ secrets.UPLOAD_PASSWORD }}
         run: |
           echo "Using secret for release branch: $UPLOAD_TEST_USER"
-
 
       - name: Increase build number
         env:
@@ -211,8 +241,6 @@ jobs:
           OUTPUT1: ${{ needs.build-on-mac.outputs.out_mac }}
           OUTPUT2: ${{ needs.build-on-windows.outputs.out_win }}
           RELEASE_TAG: ${{ needs.build-on-mac.outputs.release_tag }}
-          # UPLOAD_USER: ${{secrets.UPLOAD_USER}}
-          # UPLOAD_PASSWORD: ${{secrets.UPLOAD_PASSWORD}}
           REPO_BUILD_NUMBER: ${{ vars.APP_BUILD_NUMBER }}
           REPO_VERSION: ${{ vars.APP_VERSION }}
           
@@ -223,7 +251,7 @@ jobs:
           ryver_version=$(jq -r '.version' ./buildFiles/parameters.json)
           ryver_build=$(jq -r '.build' ./buildFiles/parameters.json)
 
-          ./buildFiles/scripts/set_upload_user_credentials.sh
+          ./buildFiles/scripts/set_parameters_for_branch.sh
           
           # ./buildFiles/scripts/incbuildnumber.sh
  

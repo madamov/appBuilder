@@ -48,29 +48,24 @@ jobs:
           security import $CERTIFICATE_PATH -P "$P12_PASSWORD" -A -t cert -f pkcs12 -k $KEYCHAIN_PATH
           security set-key-partition-list -S apple-tool:,apple: -k "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
           security list-keychain -d user -s $KEYCHAIN_PATH
-          
-          
-      - id: envvarsseting
-        name: Branch-based environment variables setting
-        uses: iamtheyammer/branch-env-vars@v1.2.1
-        with:
-          SFTP_USER: |
-            main: ${{secrets.UPLOAD_USER}}
-            develop: ${{secrets.UPLOAD_TEST_USER}}
-            test: ${{secrets.UPLOAD_TEST_USER}}
-            release: ${{secrets.UPLOAD_USER}}
 
-          SFTP_PASSWORD: |
-            main: ${{secrets.UPLOAD_PASSWORD}}
-            develop: ${{secrets.UPLOAD_TEST_PASSWORD}}
-            test: ${{secrets.UPLOAD_TEST_PASSWORD}}
-            release: ${{secrets.UPLOAD_TEST_PASSWORD}}
+      - name: Set UPLOAD credentials based on branch
+        if: ${{ startsWith(github.ref, 'refs/heads/main')}}
+        env::
+           UPLOAD_USER: ${{ secrets.UPLOAD_USER }}
+           UPLOAD_PASSWORD: ${{ secrets.UPLOAD_PASSWORD }}
 
-          TESTME: |
-            main: I am in main branch
-            develop: I am in develop branch
-            test: In test branch
-            release: In release branch
+      - name: Set UPLOAD credentials based on branch
+        if: ${{ startsWith(github.ref, 'refs/heads/develop')}}
+        env::
+           UPLOAD_USER: ${{ secrets.UPLOAD_TEST_USER }}
+           UPLOAD_PASSWORD: ${{ secrets.UPLOAD_TEST_PASSWORD }}
+
+      - name: Set UPLOAD credentials based on branch
+        if: ${{ startsWith(github.ref, 'refs/heads/release')}}
+        env::
+           UPLOAD_USER: ${{ secrets.UPLOAD_USER }}
+           UPLOAD_PASSWORD: ${{ secrets.UPLOAD_PASSWORD }}
 
       - id: step1
         name: Build Action Mac
@@ -88,7 +83,7 @@ jobs:
          # test SFTP credentials
          # ./buildFiles/scripts/test_curl.sh
 
-         ./buildFiles/scripts/set_upload_user_credentials.sh
+         ./buildFiles/scripts/set_parameters_for_branch.sh
          
          # /usr/local/opt/curl/bin/curl -k -s -u ${UPLOAD_USER}:${UPLOAD_PASSWORD} --ftp-create-dirs -T $thisBuildDestinationFolder/${appName}.dmg ${myStructURL}/${appName}.dmg
 
@@ -177,6 +172,25 @@ jobs:
         run: brew install curl
 
       - uses: actions/checkout@v4
+      
+      - name: Set UPLOAD credentials based on branch
+        if: ${{ startsWith(github.ref, 'refs/heads/main')}}
+        env::
+           UPLOAD_USER: ${{ secrets.UPLOAD_USER }}
+           UPLOAD_PASSWORD: ${{ secrets.UPLOAD_PASSWORD }}
+
+      - name: Set UPLOAD credentials based on branch
+        if: ${{ startsWith(github.ref, 'refs/heads/develop')}}
+        env::
+           UPLOAD_USER: ${{ secrets.UPLOAD_TEST_USER }}
+           UPLOAD_PASSWORD: ${{ secrets.UPLOAD_TEST_PASSWORD }}
+
+      - name: Set UPLOAD credentials based on branch
+        if: ${{ startsWith(github.ref, 'refs/heads/release')}}
+        env::
+           UPLOAD_USER: ${{ secrets.UPLOAD_USER }}
+           UPLOAD_PASSWORD: ${{ secrets.UPLOAD_PASSWORD }}
+
       - name: Increase build number
         env:
           WHO_TO_TRUST: ${{secrets.MYTOKEN}}

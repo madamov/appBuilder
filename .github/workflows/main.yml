@@ -51,19 +51,19 @@ jobs:
 
       - name: Set UPLOAD credentials based on branch
         if: ${{ startsWith(github.ref, 'refs/heads/main')}}
-        env::
+        env:
            UPLOAD_USER: ${{ secrets.UPLOAD_USER }}
            UPLOAD_PASSWORD: ${{ secrets.UPLOAD_PASSWORD }}
 
       - name: Set UPLOAD credentials based on branch
         if: ${{ startsWith(github.ref, 'refs/heads/develop')}}
-        env::
+        env:
            UPLOAD_USER: ${{ secrets.UPLOAD_TEST_USER }}
            UPLOAD_PASSWORD: ${{ secrets.UPLOAD_TEST_PASSWORD }}
 
       - name: Set UPLOAD credentials based on branch
         if: ${{ startsWith(github.ref, 'refs/heads/release')}}
-        env::
+        env:
            UPLOAD_USER: ${{ secrets.UPLOAD_USER }}
            UPLOAD_PASSWORD: ${{ secrets.UPLOAD_PASSWORD }}
 
@@ -175,19 +175,19 @@ jobs:
       
       - name: Set UPLOAD credentials based on branch
         if: ${{ startsWith(github.ref, 'refs/heads/main')}}
-        env::
+        env:
            UPLOAD_USER: ${{ secrets.UPLOAD_USER }}
            UPLOAD_PASSWORD: ${{ secrets.UPLOAD_PASSWORD }}
 
       - name: Set UPLOAD credentials based on branch
         if: ${{ startsWith(github.ref, 'refs/heads/develop')}}
-        env::
+        env:
            UPLOAD_USER: ${{ secrets.UPLOAD_TEST_USER }}
            UPLOAD_PASSWORD: ${{ secrets.UPLOAD_TEST_PASSWORD }}
 
       - name: Set UPLOAD credentials based on branch
         if: ${{ startsWith(github.ref, 'refs/heads/release')}}
-        env::
+        env:
            UPLOAD_USER: ${{ secrets.UPLOAD_USER }}
            UPLOAD_PASSWORD: ${{ secrets.UPLOAD_PASSWORD }}
 

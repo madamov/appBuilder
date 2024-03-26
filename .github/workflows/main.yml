@@ -54,21 +54,24 @@ jobs:
         env:
            UPLOAD_USER: ${{ secrets.UPLOAD_USER }}
            UPLOAD_PASSWORD: ${{ secrets.UPLOAD_PASSWORD }}
-        run: echo "Using secret for main branch: $UPLOAD_TEST_USER"
+        run: |
+          echo "Using secret for main branch: $UPLOAD_TEST_USER"
 
       - name: Set UPLOAD credentials based on branch
         if: ${{ startsWith(github.ref, 'refs/heads/develop')}}
         env:
            UPLOAD_USER: ${{ secrets.UPLOAD_TEST_USER }}
            UPLOAD_PASSWORD: ${{ secrets.UPLOAD_TEST_PASSWORD }}
-        run: echo "Using secret for develop branch: $UPLOAD_TEST_USER"
+        run: |
+          echo "Using secret for develop branch: $UPLOAD_TEST_USER"
 
       - name: Set UPLOAD credentials based on branch
         if: ${{ startsWith(github.ref, 'refs/heads/release')}}
         env:
            UPLOAD_USER: ${{ secrets.UPLOAD_USER }}
            UPLOAD_PASSWORD: ${{ secrets.UPLOAD_PASSWORD }}
-        run: echo "Using secret for release branch: $UPLOAD_TEST_USER"
+        run: |
+          echo "Using secret for release branch: $UPLOAD_TEST_USER"
 
       - id: step1
         name: Build Action Mac

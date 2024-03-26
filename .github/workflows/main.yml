@@ -82,41 +82,13 @@ jobs:
           BINARIES_PASSWORD: ${{secrets.BINARIES_PASSWORD}}
           REPO_BUILD_NUMBER: ${{ vars.APP_BUILDNUMBER }}
           REPO_VERSION: ${{ vars.APP_VERSION }}
-          # TEST_USER: ${{secrets.UPLOAD_TEST_USER}}
-          # TEST_PASSWORD: ${{secrets.UPLOAD_TEST_PASSWORD}}
           
         run: |
 
-         if [ "$(basename $GITHUB_REF)" == "release" ]; then
-            # Use release server for uploads
-            echo Using release branch server parameters
-            mv ./buildFiles/parameters_releases.json ./buildFiles/parameters.json
-            export UPLOAD_USER=${{secrets.UPLOAD_USER}}
-            export UPLOAD_PASSWORD=${{secrets.UPLOAD_PASSWORD}}
-         fi
-         if [ "$(basename $GITHUB_REF)" == "test" ]; then
-            # Use test server for uploads
-            echo Using test server parameters for branch test
-            mv ./buildFiles/parameters_testserver.json ./buildFiles/parameters.json
-            export UPLOAD_USER=${{secrets.UPLOAD_TEST_USER}}
-            export UPLOAD_PASSWORD=${{secrets.UPLOAD_TEST_PASSWORD}}
-         fi
-         if [ "$(basename $GITHUB_REF)" == "develop" ]; then
-            # Use test server for uploads
-            echo Using test server parameters for branch develop
-            mv ./buildFiles/parameters_testserver.json ./buildFiles/parameters.json
-            export UPLOAD_USER=${{secrets.UPLOAD_TEST_USER}}
-            export UPLOAD_PASSWORD=${{secrets.UPLOAD_TEST_PASSWORD}}
-         fi
-         if [ "$(basename $GITHUB_REF)" == "main" ]; then
-            # Use main for uploads
-            echo Using test server parameters for branch main
-            export UPLOAD_USER=${{secrets.UPLOAD_USER}}
-            export UPLOAD_PASSWORD=${{secrets.UPLOAD_PASSWORD}}
-         fi    
-              
          # test SFTP credentials
-         ./buildFiles/scripts/test_curl.sh
+         # ./buildFiles/scripts/test_curl.sh
+
+         ./buildFiles/scripts/set_upload_user_credentials.sh
          
          # /usr/local/opt/curl/bin/curl -k -s -u ${UPLOAD_USER}:${UPLOAD_PASSWORD} --ftp-create-dirs -T $thisBuildDestinationFolder/${appName}.dmg ${myStructURL}/${appName}.dmg
 
@@ -212,8 +184,8 @@ jobs:
           OUTPUT1: ${{ needs.build-on-mac.outputs.out_mac }}
           OUTPUT2: ${{ needs.build-on-windows.outputs.out_win }}
           RELEASE_TAG: ${{ needs.build-on-mac.outputs.release_tag }}
-          UPLOAD_USER: ${{secrets.UPLOAD_USER}}
-          UPLOAD_PASSWORD: ${{secrets.UPLOAD_PASSWORD}}
+          # UPLOAD_USER: ${{secrets.UPLOAD_USER}}
+          # UPLOAD_PASSWORD: ${{secrets.UPLOAD_PASSWORD}}
           REPO_BUILD_NUMBER: ${{ vars.APP_BUILD_NUMBER }}
           REPO_VERSION: ${{ vars.APP_VERSION }}
           
@@ -223,6 +195,8 @@ jobs:
           echo "OUTPUT1 (out_mac)  is : $OUTPUT1"
           ryver_version=$(jq -r '.version' ./buildFiles/parameters.json)
           ryver_build=$(jq -r '.build' ./buildFiles/parameters.json)
+
+          ./buildFiles/scripts/set_upload_user_credentials.sh
           
           # ./buildFiles/scripts/incbuildnumber.sh
  

@@ -11,11 +11,6 @@ mkdir $thisBuildDestinationFolder
 echo created destination folder: 
 echo $thisBuildDestinationFolder
 
-# get project name from a 4DProject filename
-project4DFile=$(find ./Project -type f -name "*.4DProject")
-projectName=$(basename $project4DFile ".4DProject")
-         
-         
 # disable Gatekeeper and application translocating, may save us some processing cycles
 # sudo spctl --master-disable
 # echo "🐚 : macOS Gatekeeper disabled"
@@ -69,15 +64,17 @@ else
 	/bin/bash $workingDirectory/buildFiles/scripts/get4D.sh $url4d
 fi
 
+# get project name from a 4DProject filename
+project4DFile=$(find ./Project -type f -name "*.4DProject")
+projectName=$(basename $project4DFile ".4DProject")
 compiler="/Applications/4D.app/Contents/MacOS/4D"
 projectFile=$workingDirectory/Project/$projectName.4DProject
-
-# echo $projectFile
 
 # run 4D and let 4D do the work
 echo "🐚: Starting 4D at $(date)"
 
 userParams=$(jq -r '.' $workingDirectory/buildFiles/parameters.json)
+
 "$compiler" --headless --dataless --project "$projectFile" --user-param "$userParams"
 
 echo "🐚: 4D done at $(date)"

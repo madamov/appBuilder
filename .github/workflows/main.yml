@@ -88,6 +88,8 @@ jobs:
 
          # test SFTP credentials
          # ./buildFiles/scripts/test_curl.sh
+         
+         env
 
          ./buildFiles/scripts/set_parameters_for_branch.sh
          
@@ -169,7 +171,11 @@ jobs:
           
         run: |
            # ./buildFiles/scripts/mainyml.bat
-
+           
+           set
+           
+        shell: cmd
+        
       - id: step2
         name: Checking for status file
         run: |
@@ -250,6 +256,8 @@ jobs:
           echo "OUTPUT1 (out_mac)  is : $OUTPUT1"
           ryver_version=$(jq -r '.version' ./buildFiles/parameters.json)
           ryver_build=$(jq -r '.build' ./buildFiles/parameters.json)
+          
+          env
 
           ./buildFiles/scripts/set_parameters_for_branch.sh
           

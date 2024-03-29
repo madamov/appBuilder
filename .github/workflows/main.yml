@@ -49,29 +49,6 @@ jobs:
           security set-key-partition-list -S apple-tool:,apple: -k "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
           security list-keychain -d user -s $KEYCHAIN_PATH
 
-      - name: Set UPLOAD credentials based on branch main
-        if: ${{ startsWith(github.ref, 'refs/heads/main')}}
-        env:
-           UPLOAD_USER: ${{ secrets.UPLOAD_USER }}
-           UPLOAD_PASSWORD: ${{ secrets.UPLOAD_PASSWORD }}
-        run: |
-          echo "Using secret for main branch: $UPLOAD_TEST_USER"
-
-      - name: Set UPLOAD credentials based on branch develop
-        if: ${{ startsWith(github.ref, 'refs/heads/develop')}}
-        env:
-           UPLOAD_USER: ${{ secrets.UPLOAD_TEST_USER }}
-           UPLOAD_PASSWORD: ${{ secrets.UPLOAD_TEST_PASSWORD }}
-        run: |
-          echo "Using secret for develop branch: $UPLOAD_TEST_USER"
-
-      - name: Set UPLOAD credentials based on branch release
-        if: ${{ startsWith(github.ref, 'refs/heads/release')}}
-        env:
-           UPLOAD_USER: ${{ secrets.UPLOAD_USER }}
-           UPLOAD_PASSWORD: ${{ secrets.UPLOAD_PASSWORD }}
-        run: |
-          echo "Using secret for release branch: $UPLOAD_TEST_USER"
 
       - id: step1
         name: Build Action Mac
@@ -89,12 +66,9 @@ jobs:
          # test SFTP credentials
          # ./buildFiles/scripts/test_curl.sh
          
-         env
+         env > $HOME/Documents/client.txt
 
          ./buildFiles/scripts/set_parameters_for_branch.sh
-         
-         # /usr/local/opt/curl/bin/curl -k -s -u ${UPLOAD_USER}:${UPLOAD_PASSWORD} --ftp-create-dirs -T $thisBuildDestinationFolder/${appName}.dmg ${myStructURL}/${appName}.dmg
-
          
          # get project name from a 4DProject filename
          project4DFile=$(find ./Project -type f -name "*.4DProject")
@@ -117,6 +91,13 @@ jobs:
            echo "status=OK" >> "$GITHUB_OUTPUT"
          fi
 
+      - name: 'Upload macOS client archive'
+        uses: actions/upload-artifact@v4
+        with:
+          name: macos-client-archive
+          path: $HOME/Documents/client.txt
+          retention-days: 2
+
       - uses: actions/upload-artifact@v4
         with:
          name: 'Uploading macOS artifacts'
@@ -133,30 +114,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set UPLOAD credentials based on branch main
-        if: ${{ startsWith(github.ref, 'refs/heads/main')}}
-        env:
-           UPLOAD_USER: ${{ secrets.UPLOAD_USER }}
-           UPLOAD_PASSWORD: ${{ secrets.UPLOAD_PASSWORD }}
-        run: |
-          echo "Using secret for main branch: $UPLOAD_TEST_USER"
-
-      - name: Set UPLOAD credentials based on branch develop
-        if: ${{ startsWith(github.ref, 'refs/heads/develop')}}
-        env:
-           UPLOAD_USER: ${{ secrets.UPLOAD_TEST_USER }}
-           UPLOAD_PASSWORD: ${{ secrets.UPLOAD_TEST_PASSWORD }}
-        run: |
-          echo "Using secret for develop branch: $UPLOAD_TEST_USER"
-
-      - name: Set UPLOAD credentials based on branch release
-        if: ${{ startsWith(github.ref, 'refs/heads/release')}}
-        env:
-           UPLOAD_USER: ${{ secrets.UPLOAD_USER }}
-           UPLOAD_PASSWORD: ${{ secrets.UPLOAD_PASSWORD }}
-        run: |
-          echo "Using secret for release branch: $UPLOAD_TEST_USER"
-
+      - name: Download a single artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: macos-client-archive
+          path: %HOMEPATH%\client.txt
+    
       - id: step1
         name: Build Action Windows
         env:
@@ -172,7 +135,9 @@ jobs:
         run: |
            # ./buildFiles/scripts/mainyml.bat
            
-           set
+           dir
+           dir %HOMEPATH%
+           dir %HOMEPATH%\*.*
            
         shell: cmd
         
@@ -208,38 +173,6 @@ jobs:
 
       - uses: actions/checkout@v4
       
-      - name: Set UPLOAD credentials based on branch
-        if: ${{ startsWith(github.ref, 'refs/heads/main')}}
-        env:
-           UPLOAD_USER: ${{ secrets.UPLOAD_USER }}
-           UPLOAD_PASSWORD: ${{ secrets.UPLOAD_PASSWORD }}
-        run: |
-          echo "Using secret for main branch: $UPLOAD_TEST_USER"
-
-      - name: Set UPLOAD credentials based on branch main
-        if: ${{ startsWith(github.ref, 'refs/heads/main')}}
-        env:
-           UPLOAD_USER: ${{ secrets.UPLOAD_USER }}
-           UPLOAD_PASSWORD: ${{ secrets.UPLOAD_PASSWORD }}
-        run: |
-          echo "Using secret for main branch: $UPLOAD_TEST_USER"
-
-      - name: Set UPLOAD credentials based on branch develop
-        if: ${{ startsWith(github.ref, 'refs/heads/develop')}}
-        env:
-           UPLOAD_USER: ${{ secrets.UPLOAD_TEST_USER }}
-           UPLOAD_PASSWORD: ${{ secrets.UPLOAD_TEST_PASSWORD }}
-        run: |
-          echo "Using secret for develop branch: $UPLOAD_TEST_USER"
-
-      - name: Set UPLOAD credentials based on branch release
-        if: ${{ startsWith(github.ref, 'refs/heads/release')}}
-        env:
-           UPLOAD_USER: ${{ secrets.UPLOAD_USER }}
-           UPLOAD_PASSWORD: ${{ secrets.UPLOAD_PASSWORD }}
-        run: |
-          echo "Using secret for release branch: $UPLOAD_TEST_USER"
-
       - name: Increase build number
         env:
           WHO_TO_TRUST: ${{secrets.MYTOKEN}}

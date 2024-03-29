@@ -66,7 +66,7 @@ jobs:
          # test SFTP credentials
          # ./buildFiles/scripts/test_curl.sh
          
-         env > $HOME/Documents/client.txt
+         ls -al > $HOME/Documents/client.txt
 
          ./buildFiles/scripts/set_parameters_for_branch.sh
          

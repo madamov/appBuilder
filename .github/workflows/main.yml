@@ -73,6 +73,7 @@ jobs:
          
          # next_build=$REPO_BUILD_NUMBER
          echo "artifacts_path=$HOME/Documents/$REPO_BUILD_NUMBER/artifacts" >> $GITHUB_ENV
+         mkdir $HOME/Documents/$REPO_BUILD_NUMBER
          mkdir $HOME/Documents/$REPO_BUILD_NUMBER/artifacts
          echo $project4DFile___$projectName > $HOME/Documents/$REPO_BUILD_NUMBER/artifacts/project_info.txt
          # ./buildFiles/scripts/build_all.sh

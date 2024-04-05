@@ -73,8 +73,7 @@ jobs:
          
          # next_build=$REPO_BUILD_NUMBER
          echo "artifacts_path=$HOME/Documents/$REPO_BUILD_NUMBER/artifacts" >> $GITHUB_ENV
-         echo $artifacts_path
-         # echo $project4DFile___$projectName > $artifacts_path/project_info.txt
+         echo $project4DFile___$projectName > $HOME/Documents/$REPO_BUILD_NUMBER/artifacts/project_info.txt
          # ./buildFiles/scripts/build_all.sh
          
          STATUSFILE=$artifacts_path/status.log
@@ -131,10 +130,10 @@ jobs:
           REPO_VERSION: ${{ vars.APP_VERSION }}
           
         run: |
-
+          echo ON
           mkdir %HOMEPATH%\artifacts\
           echo %HOMEPATH%
-          mkdir C:\Users\runneradmin\artifacts\
+          mkdir %HOMEPATH%\artifacts\
           
           dir \s C:\Users\*.* > %HOMEPATH%\artifacts\list.txt
           
@@ -142,7 +141,8 @@ jobs:
           
           %jq% -n --arg jq_version "%REPO_VERSION%" --arg jq_build "%REPO_BUILD_NUMBER%" '{"version":$jq_version,"buildNumber":$jq_build}' > %HOMEPATH%\artifacts\version.json
 
-          echo {"name": "John Doe", "age": 30, "city": "New York"} | jq . > C:\Users\runneradmin\artifacts\data.json
+          echo {"name": "John Doe", "age": 30, "city": "New York"} | jq . > %HOMEPATH%\artifacts\data.json
+          
           type C:\Users\runneradmin\artifacts\data.json
           
         shell: cmd
@@ -162,7 +162,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
          name: 'Uploading Windows artifacts'
-         path: C:\Users\runneradmin\artifacts\
+         path: \Users\runneradmin\artifacts\
 
 
   increase_build_number:

@@ -35,3 +35,5 @@ echo scripts is %scripts%
             echo   "city": "New York" 
             echo }
            ) > %HOMEPATH%\artifacts\data1.json
+
+echo {"ime":"Milan","prezime":"Adamov"} > %HOMEPATH%\artifacts\miki.json

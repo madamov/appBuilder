@@ -1,5 +1,9 @@
 rem set all env variables
 
+set jq=jq
+set curl=curl
+set sevenzip=7z
+
 set myscript=%HOMEDRIVE%%HOMEPATH%\Documents\builderMainFolder\builderDemo\My4DApp\buildFiles\scripts\local_mainyml.bat
 
 set workingDirectory=%GITHUB_WORKSPACE%

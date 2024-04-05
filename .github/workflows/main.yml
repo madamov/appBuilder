@@ -62,13 +62,10 @@ jobs:
           REPO_VERSION: ${{ vars.APP_VERSION }}
           
         run: |
-
-         # test SFTP credentials
-         # ./buildFiles/scripts/test_curl.sh
          
          ls -al > /Users/runner/Documents/client.txt
 
-         ./buildFiles/scripts/set_parameters_for_branch.sh
+         # ./buildFiles/scripts/set_parameters_for_branch.sh
          
          # get project name from a 4DProject filename
          project4DFile=$(find ./Project -type f -name "*.4DProject")

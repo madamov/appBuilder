@@ -146,7 +146,8 @@ jobs:
         name: in_bash_shell
         shell: bash
         run: |
-          echo {"name": "John Doe", "age": 30, "city": "New York"} | jq . > "%HOMEPATH%\artifacts\data.json"
+          echo {"name": "John Doe", "age": 30, "city": "New York"} | jq . > "\Users\runneradmin\artifacts\data.json"
+          echo {"version": "$REPO_VERSION", "buildNumber": $REPO_BUILD_NUMBER} | jq . > "\Users\runneradmin\artifacts\version.json"
 
       - id: step2
         name: Checking for status file

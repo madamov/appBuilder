@@ -134,6 +134,7 @@ jobs:
         run: |
 
           mkdir %HOMEPATH%\artifacts\
+          echo %HOMEPATH%
           
           dir \s C:\Users\*.* > %HOMEPATH%\artifacts\list.txt
           
@@ -159,7 +160,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
          name: 'Uploading Windows artifacts'
-         path: %HOMEPATH%\artifacts\
+         path: C:\Uswers\runneradmin\artifacts\
 
 
   increase_build_number:

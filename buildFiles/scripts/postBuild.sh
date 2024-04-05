@@ -4,7 +4,7 @@
 
 workingDirectory=$(pwd)
 next_build=$(jq -r '.build' ./buildFiles/parameters.json)
-destinationFolder=$HOME/Documents/$next_build
+destinationFolder=$HOME/Documents/$REPO_BUILD_NUMBER
 
 echo "🐚🐚:: Starting postBuild script ..."
 

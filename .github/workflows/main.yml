@@ -71,13 +71,14 @@ jobs:
          project4DFile=$(find ./Project -type f -name "*.4DProject")
          projectName=$(basename $project4DFile ".4DProject")
          
-         # next_build=$REPO_BUILD_NUMBER
          echo "artifacts_path=$HOME/Documents/$REPO_BUILD_NUMBER/artifacts" >> $GITHUB_ENV
          mkdir $HOME/Documents/$REPO_BUILD_NUMBER
          mkdir $HOME/Documents/$REPO_BUILD_NUMBER/artifacts
          echo $project4DFile___$projectName > $HOME/Documents/$REPO_BUILD_NUMBER/artifacts/project_info.txt
          # ./buildFiles/scripts/build_all.sh
-         echo {\"version\": \"$REPO_VERSION\", \"buildNumber\": $REPO_BUILD_NUMBER} > $HOME/Documents/$REPO_BUILD_NUMBER/artifacts/version_direct.json
+         echo {\"version\": \"$REPO_VERSION\", \"buildNumber\": $REPO_BUILD_NUMBER} > $HOME/Documents/$REPO_BUILD_NUMBER/artifacts/version.json
+         cp $HOME/Documents/$REPO_BUILD_NUMBER/artifacts/version.json ./Resources/version.json
+         ls Resources/ > $HOME/Documents/$REPO_BUILD_NUMBER/artifacts/restlist.txt
          
          STATUSFILE=$HOME/Documents/$REPO_BUILD_NUMBER/artifacts/status.log
          
@@ -143,22 +144,12 @@ jobs:
           
           ./buildFiles/scripts/setenvvars.bat
           
-          (
-            echo { 
-            echo   "name": "John Doe", 
-            echo   "age": 30, 
-            echo   "city": "New York" 
-            echo }
-           ) > %HOMEPATH%\artifacts\data.json
-          
+          echo {"version":"%REPO_VERSION%","buildNumber":%REPO_BUILD_NUMBER%} > %HOMEPATH%\artifacts\version_test.json
+          cp %HOMEPATH%\artifacts\version_test.json Resources\version.json
+          dir Resources\ > %HOMEPATH%\artifacts\reslist.txt
+
         shell: cmd
         
-      - id: step_bash
-        name: in_bash_shell
-        shell: bash
-        run: |
-          echo {\"version\": \"$REPO_VERSION\", \"buildNumber\": $REPO_BUILD_NUMBER} > "\Users\runneradmin\artifacts\version.json"
-
       - id: step2
         name: Checking for status file
         run: |

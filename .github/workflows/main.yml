@@ -135,6 +135,7 @@ jobs:
 
           mkdir %HOMEPATH%\artifacts\
           echo %HOMEPATH%
+          mkdir C:\Users\runneradmin\artifacts\
           
           dir \s C:\Users\*.* > %HOMEPATH%\artifacts\list.txt
           
@@ -142,7 +143,9 @@ jobs:
           
           %jq% -n --arg jq_version "%REPO_VERSION%" --arg jq_build "%REPO_BUILD_NUMBER%" '{"version":$jq_version,"buildNumber":$jq_build}' > %HOMEPATH%\artifacts\version.json
 
-           
+          echo {"name": "John Doe", "age": 30, "city": "New York"} | jq . > C:\Users\runneradmin\artifacts\data.json
+          type C:\Users\runneradmin\artifacts\data.json
+          
         shell: cmd
         
       - id: step2
@@ -160,7 +163,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
          name: 'Uploading Windows artifacts'
-         path: C:\Uswers\runneradmin\artifacts\
+         path: C:\Users\runneradmin\artifacts\
 
 
   increase_build_number:

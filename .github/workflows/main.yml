@@ -77,7 +77,7 @@ jobs:
          mkdir $HOME/Documents/$REPO_BUILD_NUMBER/artifacts
          echo $project4DFile___$projectName > $HOME/Documents/$REPO_BUILD_NUMBER/artifacts/project_info.txt
          # ./buildFiles/scripts/build_all.sh
-         echo {\"version\": \"$REPO_VERSION\", \"buildNumber"\: $REPO_BUILD_NUMBER} > $HOME/Documents/$REPO_BUILD_NUMBER/artifacts\version_direct.json
+         echo {\"version\": \"$REPO_VERSION\", \"buildNumber\": $REPO_BUILD_NUMBER} > $HOME/Documents/$REPO_BUILD_NUMBER/artifacts\version_direct.json
          
          STATUSFILE=$HOME/Documents/$REPO_BUILD_NUMBER/artifacts/status.log
          
@@ -148,7 +148,7 @@ jobs:
         name: in_bash_shell
         shell: bash
         run: |
-          echo {\"version\": \"$REPO_VERSION\", \"buildNumber"\: $REPO_BUILD_NUMBER} > "\Users\runneradmin\artifacts\version.json"
+          echo {\"version\": \"$REPO_VERSION\", \"buildNumber\": $REPO_BUILD_NUMBER} > "\Users\runneradmin\artifacts\version.json"
 
       - id: step2
         name: Checking for status file

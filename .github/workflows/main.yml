@@ -139,16 +139,15 @@ jobs:
           
           dir \s C:\Users\*.* > %HOMEPATH%\artifacts\list.txt
           
-          ./buildFiles/scripts/setenvvars.bat
-          
-          %jq% -n --arg jq_version "%REPO_VERSION%" --arg jq_build "%REPO_BUILD_NUMBER%" '{"version":$jq_version,"buildNumber":$jq_build}' > %HOMEPATH%\artifacts\version.json
-
-          echo {"name": "John Doe", "age": 30, "city": "New York"} | jq . > %HOMEPATH%\artifacts\data.json
-          
-          type C:\Users\runneradmin\artifacts\data.json
-          
+          ./buildFiles/scripts/setenvvars.bat          
         shell: cmd
         
+      - id: step_bash
+        name: in_bash_shell
+        shell: bash
+        run: |
+          echo {"name": "John Doe", "age": 30, "city": "New York"} | jq . > "%HOMEPATH%\artifacts\data.json"
+
       - id: step2
         name: Checking for status file
         run: |

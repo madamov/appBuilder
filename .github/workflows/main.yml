@@ -134,7 +134,7 @@ jobs:
           
         run: |
            # ./buildFiles/scripts/mainyml.bat
-           
+           ./buildFiles/scripts/setenvvars.bat
            dir
            dir %HOMEPATH%
            dir %HOMEPATH%\*.*

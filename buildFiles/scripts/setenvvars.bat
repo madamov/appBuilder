@@ -11,9 +11,15 @@ set STATUSFILE=%HOMEDRIVE%%HOMEPATH%\Documents\artifacts\status.log
 for /f %%i in ('%jq% -r .actionWin %params%') do set action=%%i
 for /f %%i in ('%jq% -r .version %params%') do set version=%%i
 for /f %%i in ('%jq% -r .buildDestinationFolder %params%') do set destination=%%i
-for /f %%i in ('%jq% -r .build %params%') do set build=%%i
+rem for /f %%i in ('%jq% -r .build %params%') do set build=%%i
+
+set build=%REPO_BUILD_NUMBER%
 
 REM for /f %%i in ('%jq% -r .repoWinStandalone %params%') do set repoURL=%%i
 for /f %%i in ('%jq% -r .repo %params%') do set repoURL=%%i
 for /f %%i in ('%jq% -r .uploadWinStandalone %params%') do set uploadURL=%%i
 for /f %%i in ('%jq% -r .appName %params%') do set appName=%%i
+
+echo build is %build%
+echo workingDirectory is %workingDirectory%
+echo scripts is %scripts%

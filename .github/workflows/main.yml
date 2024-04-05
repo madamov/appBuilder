@@ -135,6 +135,8 @@ jobs:
         run: |
 
            ./buildFiles/scripts/setenvvars.bat
+           ./buildFiles/scripts/createversionfile.bat
+           
            dir
            dir %HOMEPATH%
            dir %HOMEPATH%\*.*

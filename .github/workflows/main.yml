@@ -73,10 +73,12 @@ jobs:
          
          # next_build=$REPO_BUILD_NUMBER
          echo "artifacts_path=$HOME/Documents/$REPO_BUILD_NUMBER/artifacts" >> $GITHUB_ENV
-         echo $project4DFile___$projectName > $artifacts_path/project_info.txt
+         echo $artifacts_path
+         # echo $project4DFile___$projectName > $artifacts_path/project_info.txt
          # ./buildFiles/scripts/build_all.sh
          
          STATUSFILE=$artifacts_path/status.log
+         
          if [[ -f "$STATUSFILE" ]]; then
            msg="*Compilation or build failed!* at $(date)"
            echo "status=FAIL" >> "$GITHUB_OUTPUT"

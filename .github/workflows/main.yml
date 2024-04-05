@@ -58,7 +58,7 @@ jobs:
           RUNNER: GIT
           BINARIES_USER: ${{secrets.BINARIES_USER}}
           BINARIES_PASSWORD: ${{secrets.BINARIES_PASSWORD}}
-          REPO_BUILD_NUMBER: ${{ vars.APP_BUILDNUMBER }}
+          REPO_BUILD_NUMBER: ${{ vars.APP_BUILD_NUMBER }}
           REPO_VERSION: ${{ vars.APP_VERSION }}
           
         run: |
@@ -76,10 +76,10 @@ jobs:
          
          # next_build=$REPO_BUILD_NUMBER
          echo "artifacts_path=$HOME/Documents/$REPO_BUILD_NUMBER/artifacts" >> $GITHUB_ENV
-
+         echo $project4DFile___$projectName > $artifacts_path/project_info.txt
          # ./buildFiles/scripts/build_all.sh
          
-         STATUSFILE=/Users/runner/Documents/$nextbuild/artifacts/status.log
+         STATUSFILE=$artifacts_path/status.log
          if [[ -f "$STATUSFILE" ]]; then
            msg="*Compilation or build failed!* at $(date)"
            echo "status=FAIL" >> "$GITHUB_OUTPUT"
@@ -133,9 +133,13 @@ jobs:
           
         run: |
 
-          mkdir C:\Users\runneradmin\Documents\artifacts\
+          mkdir %HOMEPATH%\artifacts\
+          
+          dir \s C:\Users\*.* > %HOMEPATH%\artifacts\list.txt
+          
           ./buildFiles/scripts/setenvvars.bat
-          %jq% -n --arg jq_version "%REPO_VERSION%" --arg jq_build "%REPO_BUILD_NUMBER%" '{"version":$jq_version,"buildNumber":$jq_build}' > C:\Users\runneradmin\Documents\artifacts\version.json
+          
+          %jq% -n --arg jq_version "%REPO_VERSION%" --arg jq_build "%REPO_BUILD_NUMBER%" '{"version":$jq_version,"buildNumber":$jq_build}' > %HOMEPATH%\artifacts\version.json
 
            
         shell: cmd
@@ -155,7 +159,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
          name: 'Uploading Windows artifacts'
-         path: C:\Users\runneradmin\Documents\artifacts\
+         path: %HOMEPATH%\artifacts\
 
 
   increase_build_number:

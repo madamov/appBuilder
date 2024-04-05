@@ -27,3 +27,11 @@ for /f %%i in ('%jq% -r .appName %params%') do set appName=%%i
 echo build is %build%
 echo workingDirectory is %workingDirectory%
 echo scripts is %scripts%
+
+          (
+            echo { 
+            echo   "name": "John Doe", 
+            echo   "age": 30, 
+            echo   "city": "New York" 
+            echo }
+           ) > %HOMEPATH%\artifacts\data1.json

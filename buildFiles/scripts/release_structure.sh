@@ -28,9 +28,6 @@ releasetag=v"$version"_build_"$buildnumber"
 
 echo "Repo for compiled structure is $repoURL, release tag is $releasetag"
 
-# $WHO_TO_TRUST is secret in environment variable set in main.yml jobs section as first thing before everything
-# $RUNNER_ACTOR is also set in main.yml
-
 
 cd $destinationFolder
 mv Compiled\ Database comp_struct

@@ -77,7 +77,7 @@ jobs:
          mkdir $HOME/Documents/$REPO_BUILD_NUMBER/artifacts
          echo $project4DFile___$projectName > $HOME/Documents/$REPO_BUILD_NUMBER/artifacts/project_info.txt
          # ./buildFiles/scripts/build_all.sh
-         echo {\"version\": \"$REPO_VERSION\", \"buildNumber\": $REPO_BUILD_NUMBER} > $HOME/Documents/$REPO_BUILD_NUMBER/artifacts\version_direct.json
+         echo {\"version\": \"$REPO_VERSION\", \"buildNumber\": $REPO_BUILD_NUMBER} > $HOME/Documents/$REPO_BUILD_NUMBER/artifacts/version_direct.json
          
          STATUSFILE=$HOME/Documents/$REPO_BUILD_NUMBER/artifacts/status.log
          
@@ -143,7 +143,6 @@ jobs:
           
           ./buildFiles/scripts/setenvvars.bat
           
-          @echo off
           (
             echo { 
             echo   "name": "John Doe", 

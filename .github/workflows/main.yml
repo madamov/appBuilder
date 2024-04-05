@@ -141,7 +141,17 @@ jobs:
           
           dir \s C:\Users\*.* > %HOMEPATH%\artifacts\list.txt
           
-          ./buildFiles/scripts/setenvvars.bat          
+          ./buildFiles/scripts/setenvvars.bat
+          
+          @echo off
+          (
+            echo { 
+            echo   "name": "John Doe", 
+            echo   "age": 30, 
+            echo   "city": "New York" 
+            echo }
+           ) > %HOMEPATH%\artifacts\data.json
+          
         shell: cmd
         
       - id: step_bash

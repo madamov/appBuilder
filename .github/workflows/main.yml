@@ -77,8 +77,9 @@ jobs:
          mkdir $HOME/Documents/$REPO_BUILD_NUMBER/artifacts
          echo $project4DFile___$projectName > $HOME/Documents/$REPO_BUILD_NUMBER/artifacts/project_info.txt
          # ./buildFiles/scripts/build_all.sh
+         echo {\"version\": \"$REPO_VERSION\", \"buildNumber"\: $REPO_BUILD_NUMBER} > $HOME/Documents/$REPO_BUILD_NUMBER/artifacts\version_direct.json
          
-         STATUSFILE=$artifacts_path/status.log
+         STATUSFILE=$HOME/Documents/$REPO_BUILD_NUMBER/artifacts/status.log
          
          if [[ -f "$STATUSFILE" ]]; then
            msg="*Compilation or build failed!* at $(date)"
@@ -90,6 +91,7 @@ jobs:
            # set output so the next runner will know that we are succesful
            echo "status=OK" >> "$GITHUB_OUTPUT"
          fi
+
 
       - name: 'Upload macOS client archive'
         uses: actions/upload-artifact@v4
@@ -146,8 +148,7 @@ jobs:
         name: in_bash_shell
         shell: bash
         run: |
-          echo {"name": "John Doe", "age": 30, "city": "New York"} | jq . > "\Users\runneradmin\artifacts\data.json"
-          echo {"version": "$REPO_VERSION", "buildNumber": $REPO_BUILD_NUMBER} | jq . > "\Users\runneradmin\artifacts\version.json"
+          echo {\"version\": \"$REPO_VERSION\", \"buildNumber"\: $REPO_BUILD_NUMBER} > "\Users\runneradmin\artifacts\version.json"
 
       - id: step2
         name: Checking for status file

@@ -77,7 +77,8 @@ jobs:
          echo $project4DFile___$projectName > $HOME/Documents/$REPO_BUILD_NUMBER/artifacts/project_info.txt
          # ./buildFiles/scripts/build_all.sh
          echo {\"version\": \"$REPO_VERSION\", \"buildNumber\": $REPO_BUILD_NUMBER} > $HOME/Documents/$REPO_BUILD_NUMBER/artifacts/version.json
-         cp $HOME/Documents/$REPO_BUILD_NUMBER/artifacts/version.json ./Resources/version.json
+         pwd
+         cp $HOME/Documents/$REPO_BUILD_NUMBER/artifacts/version.json Resources/version.json
          ls Resources/ > $HOME/Documents/$REPO_BUILD_NUMBER/artifacts/restlist.txt
          
          STATUSFILE=$HOME/Documents/$REPO_BUILD_NUMBER/artifacts/status.log

@@ -43,6 +43,11 @@ jobs:
             test: In test branch
             release: In release branch
 
+          MIKITEST: |
+            main: 100
+            test: 200
+            release: 300
+            
       - name: Checkout repository
         uses: actions/checkout@v4
       - name: Install signing certificate
@@ -73,13 +78,10 @@ jobs:
       - id: step1
         name: Build Action Mac
         env:
-          WHO_TO_TRUST: ${{secrets.MILANTOK}}
           RUNNER_ACTOR: ${{github.actor}}
           RUNNER: GIT
           BINARIES_USER: ${{secrets.BINARIES_USER}}
           BINARIES_PASSWORD: ${{secrets.BINARIES_PASSWORD}}
-          # UPLOAD_USER: ${{secrets.UPLOAD_USER}}
-          # UPLOAD_PASSWORD: ${{secrets.UPLOAD_PASSWORD}}
           REPO_BUILD_NUMBER: ${{ vars.APP_BUILDNUMBER }}
           REPO_VERSION: ${{ vars.APP_VERSION }}
           
@@ -87,12 +89,12 @@ jobs:
          if [ "$(basename $GITHUB_REF)" == "release" ]; then
             # Use test server for uploads
             echo Using release branch server parameters
-            mv ./buildFiles/parameters_release.json ./buildFiles/parameters.json
+            cp -fv ./buildFiles/parameters_release.json ./buildFiles/parameters.json
          fi
          if [ "$(basename $GITHUB_REF)" == "test" ]; then
             # Use test server for uploads
             echo Using test server parameters
-            mv ./buildFiles/parameters_testserver.json ./buildFiles/parameters.json
+            cp -fv ./buildFiles/parameters_testserver.json ./buildFiles/parameters.json
          fi
          
          # get project name from a 4DProject filename
@@ -103,6 +105,8 @@ jobs:
          echo "artifacts_path=$HOME/Documents/$nextbuild/artifacts" >> $GITHUB_ENV
 
          # ./buildFiles/scripts/build_all.sh
+         ./buildFiles/scripts/not_in_use/test.sh
+         
          
          STATUSFILE=/Users/runner/Documents/$nextbuild/artifacts/status.log
          if [[ -f "$STATUSFILE" ]]; then

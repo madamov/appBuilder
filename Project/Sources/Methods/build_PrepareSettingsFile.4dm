@@ -37,7 +37,8 @@ End if
 
 $buildClientOn:=False
 
-$actions:=Split string($parameters.action; "|")
+// $actions:=Split string($parameters.action; "|")
+$actions:=Split string($parameters.action; "#")
 
 If ($parameters.buildSettingsFileName=Null)
 	$parameters.buildSettingsFileName:="buildApp.4DSettings"

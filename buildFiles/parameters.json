@@ -1,6 +1,6 @@
 {
   "actionMac": "BUILD_COMPILED_STRUCTURE",
-  "actionWin": "BUILD_APP",
+  "actionWin": "BUILD_APP#BUILD_SERVER#BUILD_CLIENT",
   "appName": "App4D",
   "build": 1000,
   "version": "7.200",

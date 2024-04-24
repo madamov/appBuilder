@@ -24,8 +24,10 @@ jobs:
       out_mac: ${{ steps.step1.outputs.status }}
       release_tag: ${{ steps.step1.outputs.release_tag }}
     steps:
+
       - name: Checkout repository
         uses: actions/checkout@v4
+
       - name: Install signing certificate
         env:
           BUILD_CERTIFICATE_BASE64: ${{ secrets.MY_APPLE_CERTIFICATE }}
@@ -53,7 +55,6 @@ jobs:
       - id: step1
         name: Build Action Mac
         env:
-          WHO_TO_TRUST: ${{secrets.MILANTOK}}
           RUNNER_ACTOR: ${{github.actor}}
           RUNNER: GIT
           BINARIES_USER: ${{secrets.BINARIES_USER}}
@@ -127,7 +128,6 @@ jobs:
       - id: step1
         name: Build Action Windows
         env:
-          WHO_TO_TRUST: ${{secrets.MILANTOK}}
           RUNNER_ACTOR: ${{github.actor}}
           RUNNER: GIT
           BINARIES_USER: ${{secrets.BINARIES_USER}}
@@ -180,7 +180,6 @@ jobs:
       
       - name: Increase build number
         env:
-          WHO_TO_TRUST: ${{secrets.MYTOKEN}}
           RUNNER: GIT
           OUTPUT1: ${{ needs.build-on-mac.outputs.out_mac }}
           OUTPUT2: ${{ needs.build-on-windows.outputs.out_win }}

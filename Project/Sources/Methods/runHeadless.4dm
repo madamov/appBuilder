@@ -22,7 +22,7 @@ If ($inHeadless)
 		logLineInLogEvent("parsing user parameters passed to 4D\n"+$startupParam+"\n\n")
 		If (Is Windows)
 			// we use Base64 encoding to pass paramaters on Windows because of the spaces and special characters \
-				 in JSON causing issues in Windows command prompt
+								 in JSON causing issues in Windows command prompt
 			logLineInLogEvent("decoding parameters from Base64\n")
 			BASE64 DECODE($startupParam; $myParams)
 		Else 
@@ -118,7 +118,7 @@ If ($inHeadless)
 					
 					logLineInLogEvent("Making version and build file")
 					
-					build_makeVersionBuildFile
+					// build_makeVersionBuildFile
 					
 					logLineInLogEvent("Start building ...")
 					

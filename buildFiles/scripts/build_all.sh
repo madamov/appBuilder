@@ -60,8 +60,6 @@ projectFile=$workingDirectory/Project/$projectName.4DProject
 
 echo "using Project file $projectFile"
 
-# projectFile=$workingDirectory/Project/CXR7.4DProject
-
 compiler="/Applications/4D.app/Contents/MacOS/4D"
 
 
@@ -74,6 +72,7 @@ echo "🐚: Starting 4D at $(date)"
 #"$compiler" --headless --dataless --project "Project/CXR7.4DProject" --user-param "{\"action\":\"COMPILED_STRUCTURE\"}"
 
 userParams=$(jq -r '.' $workingDirectory/buildFiles/parameters.json)
+
 "$compiler" --headless --dataless --project "$projectFile" --user-param "$userParams"
 
 echo "🐚: 4D done at $(date)"

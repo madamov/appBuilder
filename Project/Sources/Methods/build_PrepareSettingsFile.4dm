@@ -5,7 +5,7 @@
 #DECLARE($parameters : Object)->$path : Text
 
 // $parameters.action - actions to perform: \
-BUILD_APP|COMPILE_ONLY|COMPILED_STRUCTURE|BUILD_SERVER|BUILD_CLIENT|INCLUDE_CLIENT|INCLUDE_MAC_CLIENT|INCLUDE_WINDOWS_CLIENT|RUN_ONLY
+BUILD_APP#COMPILE_ONLY#BUILD_COMPILED_STRUCTURE#BUILD_SERVER#BUILD_CLIENT#INCLUDE_CLIENT#INCLUDE_MAC_CLIENT#INCLUDE_WIN_CLIENT#RUN_ONLY
 // $parameters.buildSettingsFileName - file name of build setting s file we will pass to BUILD APPLICATION command
 // $parameters.templatePath - path to build settings XML template file we are going to build our build settings from
 // $parameters.pathToLicenses - path to a folder containing developer licenses needed to perform compilation and/or building of application or compiled structure
@@ -98,7 +98,7 @@ End if
 
 $new_xml:=build_setAppName($parameters.appName; $new_xml)
 
-logLineInLogEvent("App name set")
+logLineInLogEvent("App name set to "+$parameters.appName)
 
 //========================================================
 // action specific settings in build file
@@ -181,16 +181,6 @@ For each ($oneaction; $actions)
 		
 		$buildClientOn:=True  // allow building of clients and including them for automatic update
 		
-		//If ($parameters.pathToClient=Null)
-		// $parameters.pathToClient:=build_getDefaultClientPath
-		//Else 
-		//If (Is macOS)
-		//$parameters.pathToClient:=Convert path POSIX to system($parameters.pathToClient)
-		//End if 
-		//End if 
-		
-		// $new_xml:=build_setClientLocation($parameters.pathToClient; $new_xml)
-		
 		If ($parameters.pathToVL=Null)
 			$parameters.pathToVL:=build_getDefaultVLPath
 		Else 
@@ -209,7 +199,7 @@ For each ($oneaction; $actions)
 		
 	End if 
 	
-	If (($oneaction="INCLUDE_WINDOWS_CLIENT") & $buildClientOn)  // include Windows client on mac
+	If (($oneaction="INCLUDE_WIN_CLIENT") & $buildClientOn)  // include Windows client on mac
 		If (Is macOS)  // we do this only on macOS
 			$new_xml:=build_setBuildCSUpgradeable($new_xml)  // set BuildCSUpgradeable to True
 			If ($parameters.pathToWindowsVL=Null)

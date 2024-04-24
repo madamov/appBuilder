@@ -1,13 +1,11 @@
 //%attributes = {}
+// this should return path to Volume Desktop when building client on the same platform
+
 #DECLARE->$path : Text
 
-var $params : Object
-
-$params:=build_getCurrentParameters
-
-If (Is macOS:C1572)
-	$path:=System folder:C487(Documents folder:K41:18)+String:C10($params.build)+Folder separator:K24:12+"4D Client.app:"
+If (Is macOS)
+	$path:=System folder(Documents folder)+"4D Client.app:"
 End if 
-If (Is Windows:C1573)
-	$path:=System folder:C487(Documents folder:K41:18)+String:C10($params.build)+Folder separator:K24:12+"4DCLIENT\\4D Client\\"
+If (Is Windows)
+	$path:=System folder(Documents folder)+"4DCLIENT\\4D Client\\"
 End if 

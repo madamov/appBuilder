@@ -6,29 +6,17 @@
 // added error handling ignore because at some clients there is an error displayed, eventhough this method
 // should run during automated build process and in headless mode only
 
-#DECLARE()->$path : Text
+#DECLARE->$path : Text
 
 var $prevErrorHandler : Text
-var $buildNumber : Text
-var $artifactsFolder : 4D.Folder
 
 $prevErrorHandler:=Method called on error
 
 ON ERR CALL("Err_ignore")
 
-$buildNumber:=build_getBuildNumber
-$artifactsFolder:=Folder(fk documents folder).folder($buildNumber).folder("artifacts")
-
-If ($artifactsFolder.exists)
-Else 
-	CREATE FOLDER($artifactsFolder.platformPath; *)
+If (Test path name(System folder(Documents folder)+"artifacts")#Is a folder)
+	CREATE FOLDER(System folder(Documents folder)+"artifacts")
+	$path:=System folder(Documents folder)+"artifacts"
 End if 
-
-$path:=$artifactsFolder.platformPath
-
-//If (Test path name(System folder(Documents folder)+"artifacts")#Is a folder)
-//CREATE FOLDER(System folder(Documents folder)+"artifacts")
-//$path:=System folder(Documents folder)+"artifacts"
-//End if 
 
 ON ERR CALL($prevErrorHandler)

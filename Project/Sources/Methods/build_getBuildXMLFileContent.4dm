@@ -4,16 +4,14 @@
 
 #DECLARE($path : Text)->$xml : Text
 
-If (Count parameters=0)
+If (Count parameters:C259=0)
 	
 	$path:=build_getTemplatePath
 	
 End if 
 
-If (Test path name($path)=Is a document)
+If (Test path name:C476($path)=Is a document:K24:1)
 	
-	$xml:=Document to text($path; "UTF-8")
+	$xml:=Document to text:C1236($path; "UTF-8")
 	
 End if 
-
-

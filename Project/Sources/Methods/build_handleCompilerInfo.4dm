@@ -40,7 +40,7 @@ If (False:C215)  // old code
 				build_checkForArtifactsFolder
 				$json:=JSON Stringify:C1217($status.errors; *)
 				$statusFileName:="compiler_warnings.json"
-				TEXT TO DOCUMENT:C1237(Storage:C1525.buildConfig.artifacts+$statusFileName; $json; "UTF-8")  // upload this via artifact upload github action
+				TEXT TO DOCUMENT:C1237(System folder:C487(Documents folder:K41:18)+"artifacts"+Folder separator:K24:12+$statusFileName; $json; "UTF-8")  // upload this via artifact upload github action
 			End if 
 		End if 
 	Else 
@@ -48,11 +48,11 @@ If (False:C215)  // old code
 		$json:=JSON Stringify:C1217($status.errors.query("isError = :1"; True:C214); *)
 		logLineInLogEvent($json)  // display errors only in console
 		$statusFileName:="compiler_errors.json"
-		TEXT TO DOCUMENT:C1237(Storage:C1525.buildConfig.artifacts+$statusFileName; $json; "UTF-8")  // upload this via artifact upload github action
+		TEXT TO DOCUMENT:C1237(System folder:C487(Documents folder:K41:18)+"artifacts"+Folder separator:K24:12+$statusFileName; $json; "UTF-8")  // upload this via artifact upload github action
 		$warnings:=$status.errors.query("isError = :1"; False:C215)
 		$json:=JSON Stringify:C1217($warnings; *)
 		$statusFileName:="compiler_warnings.json"
-		TEXT TO DOCUMENT:C1237(Storage:C1525.buildConfig.artifacts+$statusFileName; $json; "UTF-8")
+		TEXT TO DOCUMENT:C1237(System folder:C487(Documents folder:K41:18)+"artifacts"+Folder separator:K24:12+$statusFileName; $json; "UTF-8")
 	End if 
 	
 End if 

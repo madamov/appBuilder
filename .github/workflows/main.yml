@@ -122,7 +122,6 @@ jobs:
           RUNNER: GIT
           BINARIES_USER: ${{secrets.BINARIES_USER}}
           BINARIES_PASSWORD: ${{secrets.BINARIES_PASSWORD}}
-          RELEASE_TAG: ${{ needs.build-on-mac.outputs.release_tag }}
           MYBRANCH: ${{github.ref}}
           REPO_BUILD_NUMBER: ${{ vars.APP_BUILD_NUMBER }}
           REPO_VERSION: ${{ vars.APP_VERSION }}

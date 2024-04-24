@@ -18,8 +18,6 @@ If (Position("BUILD_"; $config.action)>0)
 		logLineInLogEvent("Using build number from parameters.json: "+String($config.build))
 	End if 
 	
-	// ON ERR CALL("build_errorHandler")
-	
 	$buildProjectPath:=build_PrepareSettingsFile($config)
 	
 	logLineInLogEvent("Building using action: "+$config.action)

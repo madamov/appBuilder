@@ -15,12 +15,12 @@ echo "🐚 : macOS Gatekeeper disabled"
 
 action=$(jq -r '.actionMac' $workingDirectory/buildFiles/parameters.json)
 
-ls -al $workingDirectory/Project/
 rm $workingDirectory/Project/settings.4DSettings
 ls -al $workingDirectory/Project/
+
+#copy correct Project settings file because of useer settings
 cp -fv $workingDirectory/buildFiles/Default_settings.4DSettings $workingDirectory/Project/Sources/settings.4DSettings
 echo settings file copied to repository
-ls -al $workingDirectory/Project/
 
 if [[ $action == *"BUILD_APP"* ]]; then
 	if [[ $1 == "NOVL" ]]; then

@@ -33,5 +33,9 @@ for /f "Tokens=* Delims=" %%x in (%params%) do set userParams=!userParams!%%x
 
 for /f %%i in ('powershell -command "$bytes = [System.IO.File]::ReadAllBytes('%params%'); [Convert]::ToBase64String($bytes)"') do set b64=%%i
 
+rem get project name
+cd Project
+for /f "delims=" %%a in ('dir /b *.4DProject') do (call set projectName=%%projectName%%%%a)
+cd ..
 
-%HOMEDRIVE%%HOMEPATH%\Documents\4D\4D\4D.exe --headless --dataless --project %workingDirectory%\Project\CXR7.4DProject --user-param "%b64%"
+%HOMEDRIVE%%HOMEPATH%\Documents\4D\4D\4D.exe --headless --dataless --project %workingDirectory%\Project\%projectName% --user-param "%b64%"

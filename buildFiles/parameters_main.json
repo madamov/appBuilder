@@ -1,0 +1,29 @@
+{
+  "actionMac": "BUILD_COMPILED_STRUCTURE",
+  "actionWin": "BUILD_APP#BUILD_SERVER#BUILD_CLIENT",
+  "appName": "App4D",
+  "build": 1000,
+  "version": "7.200",
+  "buildDestinationFolder": "MyBuild",
+  "uploadMacStandalone": "sftp://bombur.dreamhost.com//home/dh_tz8msi/4dmethod.4d.rs/appBuilder/",
+  "uploadWinStandalone": "sftp://bombur.dreamhost.com//home/dh_tz8msi/4dmethod.4d.rs/appBuilder/",
+  "uploadCompiledStruct": "sftp://bombur.dreamhost.com//home/dh_tz8msi/4dmethod.4d.rs/appBuilder/",
+  "versionFileUploadURL": "sftp://bombur.dreamhost.com//home/dh_tz8msi/4dmethod.4d.rs/appBuilder/",
+  "versionURL": "http://4dmethod.4d.rs/appBuilder/version.json",
+  "repo": "github.com/madamov/appBuilder_public",
+  "maclicenses_URL": "https://binaries.4d.rs/dev_mac.zip",
+  "winlicenses_URL": "https://binaries.4d.rs/dev_win.zip",
+  "mac4D_URL": "https://binaries.4d.rs/4D_20_mac.zip",
+  "win4D_URL": "https://binaries.4d.rs/4D_20_win.zip",
+  "macServer_URL": "https://binaries.4d.rs/4D_Server_20_mac.zip",
+  "winServer_URL": "https://binaries.4d.rs/4D_Server_20_win.zip",
+  "macVL_URL": "https://binaries.4d.rs/4D_Volume_Desktop_20_mac.zip",
+  "winVL_URL": "https://binaries.4d.rs/4D_Volume_Desktop_20_win.zip",
+  "macOS": {
+    "signing": {
+      "sign": "False",
+      "adHoc": "False",
+      "certificateName": "Developer ID Application: ADAMOV KONSULTACIJE DOO BEOGRAD (JZ5A5UZ7M5)"
+    }
+  }
+}

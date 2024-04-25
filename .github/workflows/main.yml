@@ -10,7 +10,9 @@ on:
        - develop
        - test
 
-
+concurrency:
+   group: ${{ github.workflow }}
+   
 env:
   GH_TOKEN: ${{ secrets.MILANTOK }} # setting GH_TOKEN for the entire workflow
 
@@ -50,6 +52,8 @@ jobs:
           
       - id: step1
         name: Build Action Mac
+        timeout-minutes: 30
+        
         env:
           RUNNER_ACTOR: ${{github.actor}}
           RUNNER: GIT
@@ -117,6 +121,8 @@ jobs:
 
       - id: step1
         name: Build Action Windows
+        timeout-minutes: 30
+
         env:
           RUNNER_ACTOR: ${{github.actor}}
           RUNNER: GIT

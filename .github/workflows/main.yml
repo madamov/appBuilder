@@ -129,7 +129,7 @@ jobs:
           UPLOAD_PASSWORD: ${{ secrets.UPLOAD_PASSWORD }}
 
         run: |
-          if [%MYBRANCH%] == [refs/heads/MA/test] (copy /y buildFiles\parameters_testserver.json  buildFiles\parameters.json)
+          if [%MYBRANCH%] == [refs/heads/test] (copy /y buildFiles\parameters_testserver.json  buildFiles\parameters.json)
           if [%MYBRANCH%] == [refs/heads/develop] (copy /y buildFiles\parameters_testserver.json  buildFiles\parameters.json)
           if [%MYBRANCH%] == [refs/heads/main] (copy /y buildFiles\parameters_releases.json  buildFiles\parameters.json)
 

@@ -7,6 +7,8 @@
   "buildDestinationFolder": "MyBuild",
   "uploadMacStandalone": "sftp://bombur.dreamhost.com//home/dh_tz8msi/4dmethod.4d.rs/appBuilder/",
   "uploadWinStandalone": "sftp://bombur.dreamhost.com//home/dh_tz8msi/4dmethod.4d.rs/appBuilder/",
+  "uploadMacServer": "sftp://updates.4d.rs/home/builder4d/updates.4d.rs/appBuilder/",
+  "uploadWinServer": "sftp://updates.4d.rs/home/builder4d/updates.4d.rs/appBuilder/",
   "uploadCompiledStruct": "sftp://bombur.dreamhost.com//home/dh_tz8msi/4dmethod.4d.rs/appBuilder/",
   "versionFileUploadURL": "sftp://bombur.dreamhost.com//home/dh_tz8msi/4dmethod.4d.rs/appBuilder/",
   "versionURL": "http://4dmethod.4d.rs/appBuilder/version.json",

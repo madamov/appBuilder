@@ -13,14 +13,11 @@ version=$3
 echo "🐚🐚 : Destination folder path in release_structure.sh: $destinationFolder"
 
 
-# repoURL=$(jq -r '.repoMacStandalone' $workingDirectory/buildFiles/parameters.json)
 repoURL=$(jq -r '.repo' $workingDirectory/buildFiles/parameters.json)
 uploadURL=$(jq -r '.uploadMacStandalone' $workingDirectory/buildFiles/parameters.json)
 appName=$(jq -r '.appName' $workingDirectory/buildFiles/parameters.json)
 
 echo "🐚🐚 : Making release of Mac standalone app ..."
-
-# cd $appName
 
 # make Settings folder for directory.json file
 # mkdir Settings
@@ -28,14 +25,12 @@ echo "🐚🐚 : Making release of Mac standalone app ..."
 
 cd $destinationFolder
 	
-# cd Final\ Application
 # rename destination folder, space in name creates problem for create-dmg.sh
 mv Final\ Application final_app
 
 myAppDest="$destinationFolder/final_app"
 	
-# cp -R $workingDirectory/Flags_Exported $myAppDest/${appName}.app/Contents/Database/Flags_Exported
-cp -R $workingDirectory/WebFolder $myAppDest/${appName}.app/Contents/Database/WebFolder
+# cp -R $workingDirectory/WebFolder $myAppDest/${appName}.app/Contents/Database/WebFolder
 
 version=$(jq -r '.version' $workingDirectory/buildFiles/parameters.json)
 # buildnumber=$(jq -r '.build' $workingDirectory/buildFiles/parameters.json)
@@ -59,7 +54,7 @@ else
 	# hdiutil create -volname "${appName}" -format UDBZ -plist -srcfolder "${myAppDest}" $HOME/Documents/${appName}.dmg
 	# hdiutil create -volname "${appName}" -format UDBZ -srcfolder "${myAppDest}" $HOME/Documents/${appName}.dmg
 
-	myStructURL=$uploadURL$version/$build
+	myStructURL=$uploadURL$version/$buildnumber
 	echo "Uploading to folder: $myStructURL"
 
 	/usr/local/opt/curl/bin/curl -k -s -u ${UPLOAD_USER}:${UPLOAD_PASSWORD} --ftp-create-dirs -T $HOME/Documents/${appName}.dmg ${myStructURL}/${appName}.dmg

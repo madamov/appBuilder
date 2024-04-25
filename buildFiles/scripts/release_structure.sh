@@ -44,7 +44,7 @@ if [ -z "$uploadURL" ]; then
 	echo "no upload of compiled structure"
 else
 
-	#   hdiutil create -format UDBZ -plist -srcfolder "${myStructDest}" $HOME/Documents/${appName}_structtmp.dmg
+	#   hdiutil create -format UDBZ -plist -srcfolder "${myStructDest}" $HOME/Documents/${appName}_struct.dmg
 	
 	myStructURL=$uploadURL$version/$build
 	echo "Uploading to folder: $myStructURL"

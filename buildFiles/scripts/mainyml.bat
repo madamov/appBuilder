@@ -1,6 +1,6 @@
 mkdir %HOMEDRIVE%%HOMEPATH%\Documents\artifacts
 
-echo created artifacts
+echo created artifacts folder
 
 set jq=jq
 set curl=curl
@@ -10,22 +10,18 @@ rem set env vars used in all batch files
 @call %GITHUB_WORKSPACE%\buildFiles\scripts\setenvvars.bat
 echo env vars set
 
-echo {"version":"%REPO_VERSION%","buildNumber":%REPO_BUILD_NUMBER%} > %HOMEDRIVE%%HOMEPATH%\Documents\artifacts\version_test.json
-copy /y %HOMEDRIVE%%HOMEPATH%\Documents\artifacts\version_test.json Resources\version.json
+echo {"version":"%REPO_VERSION%","buildNumber":%REPO_BUILD_NUMBER%} > %HOMEDRIVE%%HOMEPATH%\Documents\artifacts\version_in_artifacts.json
+copy /y %HOMEDRIVE%%HOMEPATH%\Documents\artifacts\version_in_artifacts.json Resources\version.json
 dir Resources\ > %HOMEDRIVE%%HOMEPATH%\Documents\artifacts\reslist.txt
 echo version.json copied to Resources
 
 cat Resources\version.json
-cat %HOMEDRIVE%%HOMEPATH%\Documents\artifacts\version_test.json
 
-echo {"version":"%REPO_VERSION%","buildNumber":%REPO_BUILD_NUMBER%} > %HOMEDRIVE%%HOMEPATH%\Documents\artifacts\version_test.json
-copy /y %HOMEDRIVE%%HOMEPATH%\Documents\artifacts\version_test.json Resources\version.json
-dir Resources\ > %HOMEDRIVE%%HOMEPATH%\Documents\artifacts\reslist.txt
-echo version.json copied to Resources
 
 for /f %%i in ('%jq% -r .actionWin %params%') do set action=%%i
 
 echo got action from paramaters.json
+echo %action%
 
 IF NOT DEFINED action GOTO skipall
 

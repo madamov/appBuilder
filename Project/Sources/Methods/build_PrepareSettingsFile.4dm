@@ -5,7 +5,7 @@
 #DECLARE($parameters : Object)->$path : Text
 
 // $parameters.action - actions to perform: \
-BUILD_APP|COMPILE_ONLY|COMPILED_STRUCTURE|BUILD_SERVER|BUILD_CLIENT|INCLUDE_CLIENT|INCLUDE_MAC_CLIENT|INCLUDE_WINDOWS_CLIENT|RUN_ONLY
+BUILD_APP#COMPILE_ONLY#BUILD_COMPILED_STRUCTURE#BUILD_SERVER#BUILD_CLIENT#INCLUDE_CLIENT#INCLUDE_MAC_CLIENT#INCLUDE_WIN_CLIENT#RUN_ONLY
 // $parameters.buildSettingsFileName - file name of build setting s file we will pass to BUILD APPLICATION command
 // $parameters.templatePath - path to build settings XML template file we are going to build our build settings from
 // $parameters.pathToLicenses - path to a folder containing developer licenses needed to perform compilation and/or building of application or compiled structure
@@ -20,11 +20,9 @@ BUILD_APP|COMPILE_ONLY|COMPILED_STRUCTURE|BUILD_SERVER|BUILD_CLIENT|INCLUDE_CLIE
 
 var $localDevLicensePaths : Collection
 var $old_xml; $new_xml; $oneaction : Text
-var $projectFolder; $params : Object
+var $projectFolder : Object
 var $actions : Collection
 var $buildClientOn : Boolean
-
-$params:=build_getCurrentParameters
 
 logLineInLogEvent("Preparing settings file ...")
 
@@ -37,17 +35,17 @@ End if
 
 $buildClientOn:=False
 
-$actions:=Split string($parameters.action; "|")
+$actions:=Split string($parameters.action; "#")
 
 If ($parameters.buildSettingsFileName=Null)
 	$parameters.buildSettingsFileName:="buildApp.4DSettings"
 End if 
 
-$path:=System folder(Documents folder)+String($params.build)+Folder separator+$parameters.buildSettingsFileName
+$path:=System folder(Documents folder)+$parameters.buildSettingsFileName
 
 logLineInLogEvent("Build settings file path is "+$path)
 
-//MARK: common code for building settings file regardless of action
+// common code for building settings file regardless of action
 
 If ($parameters.templatePath=Null)
 	$parameters.templatePath:=build_getTemplatePath
@@ -65,14 +63,12 @@ $old_xml:=build_getBuildXMLFileContent($parameters.templatePath)
 build_dumpVar2File($old_xml; "buildTemplateAtStart.xml")  // dump template file to artifacts folder for debugging
 
 If ($parameters.pathToLicenses=Null)
-	$parameters.pathToLicenses:=System folder(Documents folder)+String($params.build)+Folder separator+"Licenses"+Folder separator
+	$parameters.pathToLicenses:=System folder(Documents folder)+"Licenses"+Folder separator
 Else 
 	If (Is macOS)
 		$parameters.pathToLicenses:=Convert path POSIX to system($parameters.pathToLicenses)
 	End if 
 End if 
-
-// MARK: get developer licenses and set path to them in XML file
 
 logLineInLogEvent("Getting dev licenses from "+$parameters.pathToLicenses)
 
@@ -85,14 +81,12 @@ $new_xml:=build_setLicensesPath($localDevLicensePaths; $old_xml)
 build_dumpVar2File($new_xml; "new_withlicenses.xml")
 
 If ($parameters.destinationPath=Null)
-	$parameters.destinationPath:=System folder(Documents folder)+String($params.build)+Folder separator+"MyBuild"+Folder separator
+	$parameters.destinationPath:=System folder(Documents folder)+"MyBuild"+Folder separator
 Else 
 	If (Is macOS)
 		$parameters.destinationPath:=Convert path POSIX to system($parameters.destinationPath)
 	End if 
 End if 
-
-// MARK: set build destination path
 
 logLineInLogEvent("Setting destination path to: "+$parameters.destinationPath)
 
@@ -102,20 +96,16 @@ If ($parameters.appName=Null)
 	$parameters.appName:="DefaultAppName"
 End if 
 
-// MARK: set application name
-
 $new_xml:=build_setAppName($parameters.appName; $new_xml)
 
-logLineInLogEvent("App name set")
+logLineInLogEvent("App name set to "+$parameters.appName)
 
 //========================================================
-// MARK: action specific settings in build file
+// action specific settings in build file
 
 For each ($oneaction; $actions)
 	
 	logLineInLogEvent("Checking action "+$oneaction)
-	
-	// MARK: build compied structure
 	
 	If ($oneaction="BUILD_COMPILED_STRUCTURE")
 		
@@ -125,8 +115,6 @@ For each ($oneaction; $actions)
 		
 	End if 
 	
-	
-	// MARK: build standalone application
 	
 	If ($oneaction="BUILD_APP")
 		
@@ -164,7 +152,6 @@ For each ($oneaction; $actions)
 		End if 
 	End if 
 	
-	// MARK: build server
 	
 	If ($oneaction="BUILD_SERVER")
 		
@@ -178,6 +165,8 @@ For each ($oneaction; $actions)
 			End if 
 		End if 
 		
+		$new_xml:=build_setBuildServerApplication($new_xml)
+		
 		$new_xml:=build_setServerLocation($parameters.pathToServer; $new_xml)
 		
 		$new_xml:=build_setServerEmbedsProjectDir($new_xml)  // set ServerEmbedsProjectDirectoryFile to True
@@ -188,21 +177,19 @@ For each ($oneaction; $actions)
 		
 	End if 
 	
-	// MARK: build client
-	
 	If ($oneaction="BUILD_CLIENT")
 		
 		$buildClientOn:=True  // allow building of clients and including them for automatic update
 		
-		If ($parameters.pathToClient=Null)
-			$parameters.pathToClient:=build_getDefaultClientPath
+		If ($parameters.pathToVL=Null)
+			$parameters.pathToVL:=build_getDefaultVLPath
 		Else 
 			If (Is macOS)
-				$parameters.pathToClient:=Convert path POSIX to system($parameters.pathToClient)
+				$parameters.pathToVL:=Convert path POSIX to system($parameters.pathToVL)
 			End if 
 		End if 
 		
-		$new_xml:=build_setClientLocation($parameters.pathToClient; $new_xml)
+		$new_xml:=build_setClientLocation($parameters.pathToVL; $new_xml)
 		
 	End if 
 	
@@ -210,10 +197,9 @@ For each ($oneaction; $actions)
 		
 		$new_xml:=build_setBuildCSUpgradeable($new_xml)  // set BuildCSUpgradeable to True
 		
-		
 	End if 
 	
-	If (($oneaction="INCLUDE_WINDOWS_CLIENT") & $buildClientOn)
+	If (($oneaction="INCLUDE_WIN_CLIENT") & $buildClientOn)  // include Windows client on mac
 		If (Is macOS)  // we do this only on macOS
 			$new_xml:=build_setBuildCSUpgradeable($new_xml)  // set BuildCSUpgradeable to True
 			If ($parameters.pathToWindowsVL=Null)
@@ -225,7 +211,7 @@ For each ($oneaction; $actions)
 		End if 
 	End if 
 	
-	If (($oneaction="INCLUDE_MAC_CLIENT") & $buildClientOn)
+	If (($oneaction="INCLUDE_MAC_CLIENT") & $buildClientOn)  // include Mac client on Windows
 		If (Is Windows)
 			$new_xml:=build_setBuildCSUpgradeable($new_xml)  // set BuildCSUpgradeable to True
 			$new_xml:=build_setClientMacFolderToWin($parameters.pathToMacArchive; $new_xml)

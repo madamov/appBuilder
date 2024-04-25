@@ -4,7 +4,7 @@ echo Creating keychain
 
 # create variables
 CERTIFICATE_PATH=$HOME/Documents/cert/for4D.p12
-KEYCHAIN_PATH=$destinationFolder/build.keychain
+KEYCHAIN_PATH=$HOME/Documents/build.keychain
 KEYCHAIN_PASSWORD=Sr11Ma26
 CERTIFICATE_PASSWORD=Sr11Ma26
 IDENTITY_CERTIFICATE = "Common name from $CERTIFICATE_PATH"

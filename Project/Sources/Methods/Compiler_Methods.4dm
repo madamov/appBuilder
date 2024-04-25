@@ -85,3 +85,17 @@ C_TEXT(build_checkForArtifactsFolder; $0)
 
 //build_getBuildNumber
 C_TEXT(build_getBuildNumber; $0)
+
+//build_getVersionObject
+C_OBJECT(build_getVersionObject; $0)
+
+//build_setBuildServerApplication
+C_TEXT(build_setBuildServerApplication; $0)
+C_TEXT(build_setBuildServerApplication; $1)
+
+//build_setStartElevated
+C_TEXT(build_setStartElevated; $0)
+C_TEXT(build_setStartElevated; $1)
+
+//myAlert
+C_TEXT(myAlert; $1)

@@ -3,41 +3,24 @@
 echo "🐚 : Start of script: $(date), running in $RUNNER"
 
 workingDirectory=$(pwd)
-next_build=$(jq -r '.build' ./buildFiles/parameters.json)
-thisBuildDestinationFolder=$HOME/Documents/$next_build
-	
-mkdir $thisBuildDestinationFolder
-mkdir c
 
-echo created destination folder: 
-echo $thisBuildDestinationFolder
-
-# get project name from a 4DProject filename
-project4DFile=$(find ./Project -type f -name "*.4DProject")
-projectName=$(basename $project4DFile ".4DProject")
-         
-         
 # disable Gatekeeper and application translocating, may save us some processing cycles
-# sudo spctl --master-disable
-# echo "🐚 : macOS Gatekeeper disabled"
+sudo spctl --master-disable
+echo "🐚 : macOS Gatekeeper disabled"
 
-# we are using DMG Canvas command line tool now
-
-# we were using https://github.com/create-dmg/create-dmg to build dmg for our application
+# we used https://github.com/create-dmg/create-dmg to build dmg for our application
 #mkdir $HOME/Documents/createdmg
 #git clone https://github.com/create-dmg/create-dmg.git $HOME/Documents/createdmg
 
 
-# cat $workingDirectory/buildFiles/parameters.json
-
 action=$(jq -r '.actionMac' $workingDirectory/buildFiles/parameters.json)
 
-# ls -al $workingDirectory/Project/
 rm $workingDirectory/Project/settings.4DSettings
-# ls -al $workingDirectory/Project/
+ls -al $workingDirectory/Project/
+
+#copy correct Project settings file because of useer settings
 cp -fv $workingDirectory/buildFiles/Default_settings.4DSettings $workingDirectory/Project/Sources/settings.4DSettings
-echo settings file copied to repo
-# ls -al $workingDirectory/Project/Sources/
+echo settings file copied to repository
 
 if [[ $action == *"BUILD_APP"* ]]; then
 	if [[ $1 == "NOVL" ]]; then
@@ -70,21 +53,28 @@ else
 	/bin/bash $workingDirectory/buildFiles/scripts/get4D.sh $url4d
 fi
 
-compiler="/Applications/4D.app/Contents/MacOS/4D"
+# get project name from a 4DProject filename
+project4DFile=$(find ./Project -type f -name "*.4DProject")
+projectName=$(basename $project4DFile ".4DProject")
 projectFile=$workingDirectory/Project/$projectName.4DProject
 
-# echo $projectFile
+echo "using Project file $projectFile"
+
+compiler="/Applications/4D.app/Contents/MacOS/4D"
+
 
 # run 4D and let 4D do the work
 echo "🐚: Starting 4D at $(date)"
 
+# some examples:
+#"$compiler" $compilerOptions --project "$projectFile" --user-param "{\"action\":\"COMPILE_ONLY\"}"
+#"$compiler" --headless --dataless --project "Project/CXR7.4DProject" --user-param "{\"action\":\"COMPILE_ONLY\"}"
+#"$compiler" --headless --dataless --project "Project/CXR7.4DProject" --user-param "{\"action\":\"COMPILED_STRUCTURE\"}"
+
 userParams=$(jq -r '.' $workingDirectory/buildFiles/parameters.json)
+
 "$compiler" --headless --dataless --project "$projectFile" --user-param "$userParams"
 
 echo "🐚: 4D done at $(date)"
-
-ls -al $thisBuildDestinationFolder/artifacts
-ls -al $thisBuildDestinationFolder/MyBuild
-
 
 echo "🐚: Build script done at $(date)"

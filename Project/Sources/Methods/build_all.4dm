@@ -1,7 +1,7 @@
 //%attributes = {}
 #DECLARE($config : Object)->$status : Object
 
-var $compileStatus : Object
+var $compileStatus; $versionObj : Object
 var $buildProjectPath; $oldErrorHandler; $buildLogPath : Text
 
 $status:=New object
@@ -9,7 +9,14 @@ $status.success:=False
 
 If (Position("BUILD_"; $config.action)>0)
 	
-	// ON ERR CALL("build_errorHandler")
+	$versionObj:=build_getVersionObject
+	
+	If ($versionObj#Null)
+		$config.build:=$versionObj.buildNumber  // get build number from repository variable
+		logLineInLogEvent("Using build number from repository variable: "+String($config.build))
+	Else 
+		logLineInLogEvent("Using build number from parameters.json: "+String($config.build))
+	End if 
 	
 	$buildProjectPath:=build_PrepareSettingsFile($config)
 	

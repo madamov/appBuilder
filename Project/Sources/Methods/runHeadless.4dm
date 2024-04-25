@@ -1,6 +1,5 @@
 //%attributes = {}
 // performs tasks in headless mode: compiling, building, ...
-// usually in GitHub actions runners
 
 #DECLARE->$inHeadless : Boolean
 
@@ -21,8 +20,8 @@ If ($inHeadless)
 	If (Length($startupParam)>0)
 		logLineInLogEvent("parsing user parameters passed to 4D\n"+$startupParam+"\n\n")
 		If (Is Windows)
-			// we use Base64 encoding to pass paramaters on Windows because of the spaces and special characters \
-				 in JSON causing issues in Windows command prompt
+			// we use Base64 encoding to pass parameters on Windows because of the spaces and special characters \
+				in JSON causing issues in Windows command prompt
 			logLineInLogEvent("decoding parameters from Base64\n")
 			BASE64 DECODE($startupParam; $myParams)
 		Else 
@@ -68,79 +67,43 @@ If ($inHeadless)
 			
 			logLineInLogEvent("no run only action")
 			
-			If ($config.testSigning#Null)
+			// always compile regardless of action we have to perform
+			
+			logLineInLogEvent("Compiling ...")
+			
+			$compilerOptions:=build_setCompilerOptions
+			
+			logLineInLogEvent("Compiler options set ...")
+			
+			$status:=build_CompileOnly($compilerOptions)
+			
+			logLineInLogEvent("Compiling done...")
+			
+			If ($status.success)
 				
-				logLineInLogEvent("signing test")
+				logLineInLogEvent("Making version and build file")
 				
-				// called locally from mac to test
+				// build_makeVersionBuildFile
 				
-				$status:=build_CompileOnly
+				logLineInLogEvent("Start building ...")
 				
-				If ($status.success)
-					
-					logLineInLogEvent("compiled ok")
-					
-					// ON ERR CALL("build_errorHandler")
-					
-					BUILD APPLICATION
-					
-					// ON ERR CALL("")
-					
-					If (OK=1)
-						
-						// build done ok
-						logLineInLogEvent("BUILD ok")
-						
-					Else 
-						
-						// build failed
-						logLineInLogEvent("‼️‼️ BUILD FAILED ‼️‼️")
-						QUIT 4D
-						
-					End if 
-					
+				$buildStatus:=build_all($config)
+				
+				If ($buildStatus.success)
+					logLineInLogEvent("Building done OK...")
 				End if 
 				
 			Else 
-				// always compile regardless of action we have to perform
 				
-				logLineInLogEvent("Compiling ...")
+				// compilation failed, dump status file so github action will not run further
 				
-				$compilerOptions:=build_setCompilerOptions
-				
-				logLineInLogEvent("Compiler options set ...")
-				
-				$status:=build_CompileOnly($compilerOptions)
-				
-				logLineInLogEvent("Compiling done...")
-				
-				If ($status.success)
-					
-					logLineInLogEvent("Making version and build file")
-					
-					build_makeVersionBuildFile
-					
-					logLineInLogEvent("Start building ...")
-					
-					$buildStatus:=build_all($config)
-					
-					If ($buildStatus.success)
-						logLineInLogEvent("Building done OK...")
-					End if 
-					
-				Else 
-					
-					// compilation failed, dump status file so github action will not run further
-					
-					build_dumpVar2File("compilation failed"; "status.log")
-					
-				End if 
-				
-				logLineInLogEvent("Quitting 4D")
-				
-				QUIT 4D
+				build_dumpVar2File("compilation failed"; "status.log")
 				
 			End if 
+			
+			logLineInLogEvent("Quitting 4D")
+			
+			QUIT 4D
 			
 		Else 
 			

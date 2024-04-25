@@ -14,10 +14,5 @@ $path:=$buildFolder.platformPath+"parameters.json"
 
 If (Test path name:C476($path)=Is a document:K24:1)
 	$json:=Document to text:C1236($path; "UTF-8")
-End if 
-
-$json:=build_getCurrentJSONParameters
-
-If ($json#"")
 	$parameters:=JSON Parse:C1218($json)
 End if 

@@ -1,9 +1,9 @@
 //%attributes = {}
-C_LONGINT(Error; $i)
+C_LONGINT(Error)
 C_TEXT(Error method; Error formula)
-
 var $output; $errorMsg; $filename : Text
 var $inHeadless : Boolean
+var $i : Integer
 
 $output:="Build error: "+String(Error)+"\nBuild error method: "+Error method+"\nBuild error formula: "+Error formula
 
@@ -32,5 +32,5 @@ If ($inHeadless)
 	build_dumpVar2File("build failed in error handler\n\n"+$output; "status.log")
 	QUIT 4D
 Else 
-	ALERT($errorMsg)
+	myAlert($errorMsg)
 End if 

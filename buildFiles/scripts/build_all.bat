@@ -1,14 +1,7 @@
-for /f %%i in ('%jq% -r .actionWin %params%') do set action=%%i
-
 rem install curl with support for SFTP protocol
 choco install -no-progress -y curl
 
-cd
-
-for /f %%i in ('%jq% -r .build %params%') do set nextbuildnumber=%%i
-
-mkdir %HOMEDRIVE%%HOMEPATH%\Documents\%nextbuildnumber%
-mkdir %HOMEDRIVE%%HOMEPATH%\Documents\%nextbuildnumber%\artifacts
+cp C:\ProgramData\chocolatey\logs\chocolatey.log %HOMEPATH%\artifacts\chocolatey.log
 
 for /f %%i in ('%jq% -r .winlicenses_URL %params%') do set urllicenses=%%i
 
@@ -21,15 +14,15 @@ for /f %%i in ('%jq% -r .win4D_URL %params%') do set url4d=%%i
 @call %scripts%\get4D.bat %url4d%
 
 
-rem always download Volume Desktop, look at @call getVD_on_action.bat to see how it
-rem is supposed to be implemented, but env variable is not set properly
+rem always download Volume Desktop
 
 for /f %%j in ('%jq% -r .winVL_URL %params%') do set getvd=%%j
 @call %scripts%\get4DVL.bat %getvd%
 
+for /f %%k in ('%jq% -r .winServer_URL %params%') do set url4dserver=%%k
 
 if not x%action:BUILD_SERVER=%==x%action% (
-	for /f %%i in ('%jq% -r .winServer_URL %params%') do set url4dserver=%%i
+	echo "%url4dserver%"
 	@call %scripts%\get4DServer.bat %url4dserver%
 )
 
@@ -46,5 +39,3 @@ for /f "delims=" %%a in ('dir /b *.4DProject') do (call set projectName=%%projec
 cd ..
 
 %HOMEDRIVE%%HOMEPATH%\Documents\4D\4D\4D.exe --headless --dataless --project %workingDirectory%\Project\%projectName% --user-param "%b64%"
-
-set nextbuildnumber=

@@ -1,12 +1,5 @@
 rem commits, pushes and creates github release of windows standalone
 
-echo jedan
-echo %1%
-echo dva
-echo %2%
-echo tri
-echo %3%
-
 if [%repoURL%] == [null] GOTO isNULL
 
 mkdir %HOMEPATH%\Documents\app_repo
@@ -15,9 +8,7 @@ del /s /q %HOMEPATH%\Documents\app_repo\*.*
 rem WHO_TO_TRUST is secret in environment variable set in main.yml jobs section as first thing before everything
 rem RUNNER_ACTOR is also set in main.yml
 
-git clone https://%RUNNER_ACTOR%:%WHO_TO_TRUST%@%repoURL% %HOMEPATH%\Documents\app_repo\
-
-
+rem git clone https://%RUNNER_ACTOR%:%WHO_TO_TRUST%@%repoURL% %HOMEPATH%\Documents\app_repo\
 
 rem echo "CMD : Making release of windows standalone app ..."
 rem echo "CMD: Copying files ..."

@@ -1,7 +1,6 @@
 mkdir %HOMEDRIVE%%HOMEPATH%\Documents\artifacts
 
-
-rem set env vars to comply with local_mainyml.bat so all the scripts have the same aliases
+echo created artifacts folder
 
 set jq=jq
 set curl=curl
@@ -9,11 +8,20 @@ set sevenzip=7z
 
 rem set env vars used in all batch files
 @call %GITHUB_WORKSPACE%\buildFiles\scripts\setenvvars.bat
+echo env vars set
+
+echo {"version":"%REPO_VERSION%","buildNumber":%REPO_BUILD_NUMBER%} > %HOMEDRIVE%%HOMEPATH%\Documents\artifacts\version_in_artifacts.json
+copy /y %HOMEDRIVE%%HOMEPATH%\Documents\artifacts\version_in_artifacts.json Resources\version.json
+dir Resources\ > %HOMEDRIVE%%HOMEPATH%\Documents\artifacts\reslist.txt
+echo version.json copied to Resources
+
+cat Resources\version.json
+
 
 for /f %%i in ('%jq% -r .actionWin %params%') do set action=%%i
 
-rem we build only from main branch, uncomment for production
-rem git switch main
+echo got action from paramaters.json
+echo %action%
 
 IF NOT DEFINED action GOTO skipall
 

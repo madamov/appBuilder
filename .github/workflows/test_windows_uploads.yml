@@ -9,7 +9,7 @@ on:
        - test
 
 jobs:
-   run-on-win:
+   windowschecker:
       runs-on: windows-latest
       env:
          BINARIES_USER: ${{ secrets.BINARIES_USER }}
@@ -50,4 +50,4 @@ jobs:
 
               C:\ProgramData\chocolatey\bin\curl.exe -s -k -u %UPLOAD_USER%:%UPLOAD_PASSWORD% -T %HOMEDRIVE%%HOMEPATH%\Downloads\dev_lic.zip %uploadURL%/dev_lic_win.zip
 
-        shell: cmd
+           shell: cmd

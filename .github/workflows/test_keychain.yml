@@ -11,7 +11,9 @@ on:
 jobs:
    run-on-mac:
       runs-on: macos-latest
-      env:
+
+      steps:
+
       - name: Install signing certificate
         env:
           BUILD_CERTIFICATE_BASE64: ${{ secrets.MY_APPLE_CERTIFICATE }}

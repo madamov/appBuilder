@@ -2,9 +2,13 @@ rem GET DEVELOPER LICENSES
 
 echo "getting licenses from %1%"
 
-curl -u %BINARIES_USER%:%BINARIES_PASSWORD% -o %HOMEDRIVE%%HOMEPATH%\Downloads\dev_lic.zip %1%
+rem curl -u %BINARIES_USER%:%BINARIES_PASSWORD% -o %HOMEDRIVE%%HOMEPATH%\Downloads\dev_lic.zip %1%
 
 mkdir %HOMEDRIVE%%HOMEPATH%\Documents\Licenses
+
+echo %DEV_LIC% > %HOMEDRIVE%%HOMEPATH%\Downloads\dev_lic.b64
+
+certutil -decode %HOMEDRIVE%%HOMEPATH%\Downloads\dev_lic.b64 %HOMEDRIVE%%HOMEPATH%\Downloads\dev_lic.zip
 
 dir /s %HOMEDRIVE%%HOMEPATH%\Documents\Licenses\*.* > %HOMEDRIVE%%HOMEPATH%\Documents\artifacts\licensedir1.txt
 

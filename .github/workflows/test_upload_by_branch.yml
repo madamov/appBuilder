@@ -1,0 +1,74 @@
+name: Test SFTP credentials
+
+on:
+
+  workflow_dispatch:
+     branches: 
+       - main
+       - develop
+       - test
+
+jobs:
+   test-on-mac:
+      runs-on: macos-13
+      env:
+         BINARIES_USER: ${{ secrets.BINARIES_USER }}
+         BINARIES_PASSWORD: ${{ secrets.BINARIES_PASSWORD }}
+         
+      steps:
+
+         - name: Checkout repository
+           uses: actions/checkout@v4
+ 
+         - id: envvarsseting
+           name: Branch-based environment variables setting
+           uses: iamtheyammer/branch-env-vars@v1.2.1
+           with:
+             UPLOAD_USER: |
+               main: ${{secrets.UPLOAD_USER}}
+               develop: ${{secrets.UPLOAD_TEST_USER}}
+               release: ${{secrets.UPLOAD_USER}}
+
+             UPLOAD_PASSWORD: |
+               main: ${{secrets.UPLOAD_PASSWORD}}
+               develop: ${{secrets.UPLOAD_TEST_PASSWORD}}
+               release: ${{secrets.UPLOAD_PASSWORD}}
+
+             MIKITEST: |
+               main: 100
+               develop: 200
+               release: 300
+                   
+         - name: Testing download and upload
+         
+           run: |
+            
+            echo $MIKITEST
+            
+            if [ "$(basename $GITHUB_REF)" == "develop" ]; then
+               uploadURL=$(jq -r '.uploadCompiledStruct' $GITHUB_WORKSPACE/buildFiles/parameters_testserver.json)
+               licurl=$(jq -r '.maclicenses_URL' $GITHUB_WORKSPACE/buildFiles/parameters_testserver.json)         
+            fi
+
+            if [ "$(basename $GITHUB_REF)" == "main" ]; then
+               uploadURL=$(jq -r '.uploadCompiledStruct' $GITHUB_WORKSPACE/buildFiles/parameters_main.json)
+               licurl=$(jq -r '.maclicenses_URL' $GITHUB_WORKSPACE/buildFiles/parameters_main.json)         
+            fi
+ 
+             if [ "$(basename $GITHUB_REF)" == "test" ]; then
+               uploadURL=$(jq -r '.uploadCompiledStruct' $GITHUB_WORKSPACE/buildFiles/parameters_testserver.json)
+               licurl=$(jq -r '.maclicenses_URL' $GITHUB_WORKSPACE/buildFiles/parameters_testserver.json)         
+            fi
+                       
+            myurl=$(echo $licurl | sed 's/https:\/\//&'"$BINARIES_USER:$BINARIES_PASSWORD@/")
+
+            echo $myurl
+         
+            curl -s -f -o $HOME/Documents/dev_lic.zip $myurl
+            
+            echo $uploadURL
+         
+            echo "Uploading to release SFTP"
+         
+            curl -k -u ${UPLOAD_USER}:${UPLOAD_PASSWORD} -T $HOME/Documents/dev_lic.zip ${uploadURL}/dev_lic_mac.zip
+

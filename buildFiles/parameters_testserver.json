@@ -1,8 +1,8 @@
 {
   "actionMac": "BUILD_COMPILED_STRUCTURE",
-  "actionWin": "BUILD_APP",
+  "actionWin": "BUILD_APP#BUILD_SERVER#BUILD_CLIENT",
   "appName": "App4D",
-  "version": "7.200",
+  "version": "1.200",
   "buildDestinationFolder": "MyBuild",
   "uploadMacStandalone": "sftp://upgrades.4d.rs/home/dh_etq7u9/upgrades.4d.rs/appBuilder/",
   "uploadWinStandalone": "sftp://upgrades.4d.rs/home/dh_etq7u9/upgrades.4d.rs/appBuilder/",

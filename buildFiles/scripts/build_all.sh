@@ -66,11 +66,6 @@ compiler="/Applications/4D.app/Contents/MacOS/4D"
 # run 4D and let 4D do the work
 echo "🐚: Starting 4D at $(date)"
 
-# some examples:
-#"$compiler" $compilerOptions --project "$projectFile" --user-param "{\"action\":\"COMPILE_ONLY\"}"
-#"$compiler" --headless --dataless --project "Project/CXR7.4DProject" --user-param "{\"action\":\"COMPILE_ONLY\"}"
-#"$compiler" --headless --dataless --project "Project/CXR7.4DProject" --user-param "{\"action\":\"COMPILED_STRUCTURE\"}"
-
 userParams=$(jq -r '.' $workingDirectory/buildFiles/parameters.json)
 
 "$compiler" --headless --dataless --project "$projectFile" --user-param "$userParams"

@@ -38,7 +38,12 @@ jobs:
                main: 100
                develop: 200
                release: 300
-                   
+           
+           run: |
+              
+              echo promenljiva je
+              echo $MIKITEST
+                      
          - name: Testing download and upload
          
            run: |

@@ -38,29 +38,21 @@ jobs:
                main: 100
                develop: 200
                release: 300
-
+           
+           run: |
+              
+              echo promenljiva je
+              echo $MIKITEST
                       
          - name: Testing download and upload
          
            run: |
-
-            licurl=$(jq -r '.maclicenses_URL' $GITHUB_WORKSPACE/buildFiles/parameters_testserver.json)
-
-            myurl=$(echo $licurl | sed 's/https:\/\//&'"$BINARIES_USER:$BINARIES_PASSWORD@/")
-
-            echo $myurl
-         
-            curl -s -f -o $HOME/Documents/dev_lic.zip $myurl
-
             
             echo $MIKITEST
             
-            ls -al $HOME/Documents/
-            
             if [ "$(basename $GITHUB_REF)" == "develop" ]; then
                uploadURL=$(jq -r '.uploadCompiledStruct' $GITHUB_WORKSPACE/buildFiles/parameters_testserver.json)
-               licurl=$(jq -r '.maclicenses_URL' $GITHUB_WORKSPACE/buildFiles/parameters_testserver.json)
-               echo in develop branch        
+               licurl=$(jq -r '.maclicenses_URL' $GITHUB_WORKSPACE/buildFiles/parameters_testserver.json)         
             fi
 
             if [ "$(basename $GITHUB_REF)" == "main" ]; then
@@ -73,6 +65,11 @@ jobs:
                licurl=$(jq -r '.maclicenses_URL' $GITHUB_WORKSPACE/buildFiles/parameters_testserver.json)         
             fi
                        
+            myurl=$(echo $licurl | sed 's/https:\/\//&'"$BINARIES_USER:$BINARIES_PASSWORD@/")
+
+            echo $myurl
+         
+            curl -s -f -o $HOME/Documents/dev_lic.zip $myurl
             
             echo $uploadURL
          

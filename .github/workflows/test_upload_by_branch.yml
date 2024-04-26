@@ -1,4 +1,4 @@
-name: Test SFTP credentials
+name: Test branch based uploads
 
 on:
 

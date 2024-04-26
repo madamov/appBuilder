@@ -45,8 +45,9 @@ jobs:
               if [%MYBRANCH%] == [refs/heads/main] (set UPLOAD_PASSWORD=%UPLOAD_REL_PASSWORD%)
 
 
-              for /f %%i in ('%jq% -r .uploadWinStandalone %params%') do set uploadURL=%%i
-              for /f %%i in ('%jq% -r .winlicenses_URL %params%') do set urllicenses=%%i
+              for /f %%i in ('jq -r .uploadWinStandalone buildFiles\parameters.json') do set uploadURL=%%i
+              for /f %%i in ('jq -r .winlicenses_URL buildFiles\parameters.json') do set urllicenses=%%i
+
               
               curl -u %BINARIES_USER%:%BINARIES_PASSWORD% -o %HOMEDRIVE%%HOMEPATH%\Downloads\dev_lic.zip %urllicenses%
 

@@ -1,0 +1,53 @@
+name: Windows credential test
+
+on:
+
+  workflow_dispatch:
+     branches: 
+       - main
+       - develop
+       - test
+
+jobs:
+   run-on-win:
+      runs-on: windows-latest
+      env:
+         BINARIES_USER: ${{ secrets.BINARIES_USER }}
+         BINARIES_PASSWORD: ${{ secrets.BINARIES_PASSWORD }}
+         UPLOAD_REL_USER: ${{ secrets.UPLOAD_USER }}
+         UPLOAD_REL_PASSWORD: ${{ secrets.UPLOAD_PASSWORD }}
+         UPLOAD_TEST_USER: ${{ secrets.UPLOAD_TEST_USER }}
+         UPLOAD_TEST_PASSWORD: ${{ secrets.UPLOAD_TEST_PASSWORD }}
+         MYBRANCH: ${{ github.ref }}
+
+      steps:
+
+         - name: Checkout repository
+           uses: actions/checkout@v4
+        
+         - name: Testing download and upload
+
+              choco install -no-progress -y curl
+
+              if [%MYBRANCH%] == [refs/heads/test] (copy /y buildFiles\parameters_testserver.json  buildFiles\parameters.json)
+              if [%MYBRANCH%] == [refs/heads/develop] (copy /y buildFiles\parameters_testserver.json  buildFiles\parameters.json)
+              if [%MYBRANCH%] == [refs/heads/main] (copy /y buildFiles\parameters_releases.json  buildFiles\parameters.json)
+
+              if [%MYBRANCH%] == [refs/heads/test] (set UPLOAD_USER=%UPLOAD_TEST_USER%)
+              if [%MYBRANCH%] == [refs/heads/test] (set UPLOAD_PASSWORD=%UPLOAD_TEST_PASSWORD%)
+              
+              if [%MYBRANCH%] == [refs/heads/develop] (set UPLOAD_USER=%UPLOAD_TEST_USER%)
+              if [%MYBRANCH%] == [refs/heads/develop] (set UPLOAD_PASSWORD=%UPLOAD_TEST_PASSWORD%)
+
+              if [%MYBRANCH%] == [refs/heads/main] (set UPLOAD_USER=%UPLOAD_REL_USER%)
+              if [%MYBRANCH%] == [refs/heads/main] (set UPLOAD_PASSWORD=%UPLOAD_REL_PASSWORD%)
+
+
+              for /f %%i in ('%jq% -r .uploadWinStandalone %params%') do set uploadURL=%%i
+              for /f %%i in ('%jq% -r .winlicenses_URL %params%') do set urllicenses=%%i
+              
+              curl -u %BINARIES_USER%:%BINARIES_PASSWORD% -o %HOMEDRIVE%%HOMEPATH%\Downloads\dev_lic.zip %urllicenses%
+
+              C:\ProgramData\chocolatey\bin\curl.exe -s -k -u %UPLOAD_USER%:%UPLOAD_PASSWORD% -T %HOMEDRIVE%%HOMEPATH%\Downloads\dev_lic.zip %uploadURL%/dev_lic_win.zip
+
+        shell: cmd

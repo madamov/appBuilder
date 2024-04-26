@@ -55,6 +55,8 @@ jobs:
             
             echo $MIKITEST
             
+            ls -al $HOME/Documents/
+            
             if [ "$(basename $GITHUB_REF)" == "develop" ]; then
                uploadURL=$(jq -r '.uploadCompiledStruct' $GITHUB_WORKSPACE/buildFiles/parameters_testserver.json)
                licurl=$(jq -r '.maclicenses_URL' $GITHUB_WORKSPACE/buildFiles/parameters_testserver.json)

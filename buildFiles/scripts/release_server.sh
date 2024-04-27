@@ -24,7 +24,7 @@ cd $destinationFolder
 # rename destination folder, space in name creates problem for create-dmg.sh
 mv Client\ server\ executable final_app
 
-myAppDest="$destinationFolder/final_app"
+myAppDest="$destinationFolder/final_app/${appName}\ Server"
 	
 # cp -R $workingDirectory/WebFolder $myAppDest/${appName}.app/Contents/Database/WebFolder
 
@@ -32,9 +32,9 @@ myAppDest="$destinationFolder/final_app"
 if [ -z "$uploadURL" ]; then
 	echo "🐚🐚 : no upload of Mac standalone required"
 else
-	
-	# hdiutil create -volname "${appName}" -format UDBZ -plist -srcfolder "${myAppDest}" $HOME/Documents/${appName}_server.dmg
-	# hdiutil create -volname "${appName}" -format UDBZ -srcfolder "${myAppDest}" $HOME/Documents/${appName}_server.dmg
+
+	echo "Creating server image file at $HOME/Documents/${appName}_client.dmg"
+	hdiutil create -volname "${appName}" -format UDBZ -srcfolder "${myAppDest}" $HOME/Documents/${appName}_server.dmg
 
 	myStructURL=$uploadURL$version/$build
 	echo "Uploading to folder: $myStructURL"

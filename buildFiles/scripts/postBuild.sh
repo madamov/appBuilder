@@ -30,3 +30,9 @@ fi
 if [[ $action == *"BUILD_SERVER"* ]]; then
 	/bin/bash $workingDirectory/buildFiles/scripts/release_server.sh $destFolder $build $version
 fi
+
+if [[ $action == *"BUILD_CLIENT"* ]]; then
+	/bin/bash $workingDirectory/buildFiles/scripts/release_client.sh $destFolder $build $version
+fi
+
+ls -al $HOME/Documents > $HOME/Documents/artifacts/after_app_build_listing.txt

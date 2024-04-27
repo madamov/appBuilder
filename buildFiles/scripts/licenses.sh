@@ -5,11 +5,17 @@
 
 workingDirectory=$(pwd)
 
-myurl=$(echo $1 | sed 's/https:\/\//&'"$BINARIES_USER:$BINARIES_PASSWORD@/")
+# myurl=$(echo $1 | sed 's/https:\/\//&'"$BINARIES_USER:$BINARIES_PASSWORD@/")
 
-curl -s -f -o $HOME/Documents/dev_lic.zip $myurl
+# curl -s -f -o $HOME/Documents/dev_lic.zip $myurl
 
-echo "🐚:🐚:: Licenses downloaded"
+# echo "🐚:🐚:: Licenses downloaded"
+
+# get license from secrets
+
+echo -n "$DEV_LIC" | base64 --decode -o $HOME/Documents/dev_lic.zip
+
+echo "🐚:🐚:: Licenses extracted"
 
 if [ -d "$HOME/Documents/Licenses" ]; then
 	echo "🐚:🐚:: Licenses in Documents exists"

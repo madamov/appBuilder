@@ -62,6 +62,7 @@ jobs:
           BINARIES_PASSWORD: ${{secrets.BINARIES_PASSWORD}}
           REPO_BUILD_NUMBER: ${{ vars.APP_BUILD_NUMBER }}
           REPO_VERSION: ${{ vars.APP_VERSION }}
+          DEV_LIC: ${{secrets.DEV_MAC}}
           
         run: |
          
@@ -132,14 +133,26 @@ jobs:
           MYBRANCH: ${{github.ref}}
           REPO_BUILD_NUMBER: ${{ vars.APP_BUILD_NUMBER }}
           REPO_VERSION: ${{ vars.APP_VERSION }}
-          UPLOAD_USER: ${{ secrets.UPLOAD_USER }}
-          UPLOAD_PASSWORD: ${{ secrets.UPLOAD_PASSWORD }}
+          UPLOAD_REL_USER: ${{ secrets.UPLOAD_USER }}
+          UPLOAD_REL_PASSWORD: ${{ secrets.UPLOAD_PASSWORD }}
+          UPLOAD_TEST_USER: ${{ secrets.UPLOAD_TEST_USER }}
+          UPLOAD_TEST_PASSWORD: ${{ secrets.UPLOAD_TEST_PASSWORD }}
+          DEV_LIC: ${{secrets.DEV_WIN}}
 
         run: |
           if [%MYBRANCH%] == [refs/heads/test] (copy /y buildFiles\parameters_testserver.json  buildFiles\parameters.json)
           if [%MYBRANCH%] == [refs/heads/develop] (copy /y buildFiles\parameters_testserver.json  buildFiles\parameters.json)
           if [%MYBRANCH%] == [refs/heads/main] (copy /y buildFiles\parameters_releases.json  buildFiles\parameters.json)
 
+          if [%MYBRANCH%] == [refs/heads/test] (set UPLOAD_USER=%UPLOAD_TEST_USER%)
+          if [%MYBRANCH%] == [refs/heads/test] (set UPLOAD_PASSWORD=%UPLOAD_TEST_PASSWORD%)
+              
+          if [%MYBRANCH%] == [refs/heads/develop] (set UPLOAD_USER=%UPLOAD_TEST_USER%)
+          if [%MYBRANCH%] == [refs/heads/develop] (set UPLOAD_PASSWORD=%UPLOAD_TEST_PASSWORD%)
+
+          if [%MYBRANCH%] == [refs/heads/main] (set UPLOAD_USER=%UPLOAD_REL_USER%)
+          if [%MYBRANCH%] == [refs/heads/main] (set UPLOAD_PASSWORD=%UPLOAD_REL_PASSWORD%)
+          
           ./buildFiles/scripts/mainyml.bat
 
         shell: cmd

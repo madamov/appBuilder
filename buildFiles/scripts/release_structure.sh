@@ -18,9 +18,7 @@ echo "Destination folder path in release_structure.sh: $destinationFolder"
 repoURL=$(jq -r '.repo' $workingDirectory/buildFiles/parameters.json)
 uploadURL=$(jq -r '.uploadCompiledStruct' $workingDirectory/buildFiles/parameters.json)
 appName=$(jq -r '.appName' $workingDirectory/buildFiles/parameters.json)
-version=$(jq -r '.version' $workingDirectory/buildFiles/parameters.json)
 
-buildnumber=$REPO_BUILD_NUMBER
 releasetag=v"$version"_build_"$buildnumber" 
 
 echo "Repo for compiled structure is $repoURL, release tag is $releasetag"
@@ -44,12 +42,13 @@ if [ -z "$uploadURL" ]; then
 	echo "no upload of compiled structure"
 else
 
-	#   hdiutil create -format UDBZ -plist -srcfolder "${myStructDest}" $HOME/Documents/${appName}_struct.dmg
+	hdiutil create -format UDBZ -plist -srcfolder "${myStructDest}" $HOME/Documents/${appName}_struct.dmg
 	
 	myStructURL=$uploadURL$version/$build
 	echo "Uploading to folder: $myStructURL"
 	
 	/usr/local/opt/curl/bin/curl -k -s -u ${UPLOAD_USER}:${UPLOAD_PASSWORD} --ftp-create-dirs -T $HOME/Documents/${appName}_struct.zip ${myStructURL}/${appName}_struct.zip
+	/usr/local/opt/curl/bin/curl -k -s -u ${UPLOAD_USER}:${UPLOAD_PASSWORD} --ftp-create-dirs -T $HOME/Documents/${appName}_struct.dmg ${myStructURL}/${appName}_struct.dmg
 
 fi
 

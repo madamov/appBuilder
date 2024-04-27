@@ -100,6 +100,17 @@ $new_xml:=build_setAppName($parameters.appName; $new_xml)
 
 logLineInLogEvent("App name set to "+$parameters.appName)
 
+// always set VL path even if we don't need it afterwards
+// in order not to call Convert path POSIX to system twice on the path
+
+If ($parameters.pathToVL=Null)
+	$parameters.pathToVL:=build_getDefaultVLPath
+Else 
+	If (Is macOS)
+		$parameters.pathToVL:=Convert path POSIX to system($parameters.pathToVL)
+	End if 
+End if 
+
 //========================================================
 // action specific settings in build file
 
@@ -124,13 +135,13 @@ For each ($oneaction; $actions)
 		
 		logLineInLogEvent("Serialized set")
 		
-		If ($parameters.pathToVL=Null)
-			$parameters.pathToVL:=build_getDefaultVLPath
-		Else 
-			If (Is macOS)
-				$parameters.pathToVL:=Convert path POSIX to system($parameters.pathToVL)
-			End if 
-		End if 
+		//If ($parameters.pathToVL=Null)
+		//$parameters.pathToVL:=build_getDefaultVLPath
+		//Else 
+		//If (Is macOS)
+		//$parameters.pathToVL:=Convert path POSIX to system($parameters.pathToVL)
+		//End if 
+		//End if 
 		
 		$new_xml:=build_setVLLocation($parameters.pathToVL; $new_xml)
 		
@@ -181,13 +192,15 @@ For each ($oneaction; $actions)
 		
 		$buildClientOn:=True  // allow building of clients and including them for automatic update
 		
-		If ($parameters.pathToVL=Null)
-			$parameters.pathToVL:=build_getDefaultVLPath
-		Else 
-			If (Is macOS)
-				$parameters.pathToVL:=Convert path POSIX to system($parameters.pathToVL)
-			End if 
-		End if 
+		//If ($parameters.pathToVL=Null)
+		//$parameters.pathToVL:=build_getDefaultVLPath
+		//Else 
+		//If (Is macOS)
+		//$parameters.pathToVL:=Convert path POSIX to system($parameters.pathToVL)
+		//End if 
+		//End if 
+		
+		// path is already set
 		
 		$new_xml:=build_setClientLocation($parameters.pathToVL; $new_xml)
 		

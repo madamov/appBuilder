@@ -24,10 +24,16 @@ jobs:
            
            run: |
 
-              echo %DEV_LIC% > %HOMEDRIVE%%HOMEPATH%\Downloads\dev_lic.b64
+              rem echo %DEV_LIC% > %HOMEDRIVE%%HOMEPATH%\Downloads\dev_lic.b64
 
-              certutil -decode %HOMEDRIVE%%HOMEPATH%\Downloads\dev_lic.b64 %HOMEDRIVE%%HOMEPATH%\Downloads\dev_lic.zip   
+              rem type %HOMEDRIVE%%HOMEPATH%\Downloads\dev_lic.b64
               
+              rem certutil -decode %HOMEDRIVE%%HOMEPATH%\Downloads\dev_lic.b64 %HOMEDRIVE%%HOMEPATH%\Downloads\dev_lic.zip   
+              
+              powershell -command "Set-Content -Path %HOMEDRIVE%%HOMEPATH%\Downloads\dev_lic.txt -Value $env:DEV_LIC"
+              
+              certutil -decode %HOMEDRIVE%%HOMEPATH%\Downloads\dev_lic.txt %HOMEDRIVE%%HOMEPATH%\Downloads\dev_lic1.zip
+
               dir %HOMEDRIVE%%HOMEPATH%\Downloads\
-              
+
            shell: cmd

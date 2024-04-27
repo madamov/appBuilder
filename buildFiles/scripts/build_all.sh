@@ -24,12 +24,12 @@ if [[ $action == *"BUILD_APP"* ]] || [[ $action == *"BUILD_CLIENT"* ]]; then
 fi
 
 if [[ $action == *"BUILD_SERVER"* ]]; then
-	url4dvl=$(jq -r '.macServer_URL' $workingDirectory/buildFiles/parameters.json)
-	/bin/bash $workingDirectory/buildFiles/scripts/get4DServer.sh $url4dvl
+	url4dserver=$(jq -r '.macServer_URL' $workingDirectory/buildFiles/parameters.json)
+	/bin/bash $workingDirectory/buildFiles/scripts/get4DServer.sh $url4dserver
 	if [[ $action == *"INCLUDE_WIN_CLIENT"* ]]; then
 		# if we have t oinclude Windows client in macOS server we need Windows Volume Desktop
-		url4dvl=$(jq -r '.winVL_URL' $workingDirectory/buildFiles/parameters.json)
-		/bin/bash $workingDirectory/buildFiles/scripts/get4Win4DVL.sh $url4dvl
+		url4dwinvl=$(jq -r '.winVL_URL' $workingDirectory/buildFiles/parameters.json)
+		/bin/bash $workingDirectory/buildFiles/scripts/get4Win4DVL.sh $url4dwinvl
 	fi
 fi
 

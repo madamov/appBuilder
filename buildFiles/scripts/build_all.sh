@@ -27,7 +27,7 @@ if [[ $action == *"BUILD_SERVER"* ]]; then
 	url4dserver=$(jq -r '.macServer_URL' $workingDirectory/buildFiles/parameters.json)
 	/bin/bash $workingDirectory/buildFiles/scripts/get4DServer.sh $url4dserver
 	if [[ $action == *"INCLUDE_WIN_CLIENT"* ]]; then
-		# if we have t oinclude Windows client in macOS server we need Windows Volume Desktop
+		# if we have to include Windows client in macOS server we need Windows Volume Desktop
 		url4dwinvl=$(jq -r '.winVL_URL' $workingDirectory/buildFiles/parameters.json)
 		/bin/bash $workingDirectory/buildFiles/scripts/get4Win4DVL.sh $url4dwinvl
 	fi
@@ -39,6 +39,10 @@ fi
 # get and extract 4D standalone
 url4d=$(jq -r '.mac4D_URL' $workingDirectory/buildFiles/parameters.json)
 /bin/bash $workingDirectory/buildFiles/scripts/get4D.sh $url4d
+
+# create version file and copy it to resources folder
+/bin/bash $workingDirectory/buildFiles/scripts/createversionfile.sh
+cp -f $HOME/version.json $workingDirectory/Resources/version.json
 
 # get project name from a 4DProject filename
 project4DFile=$(find ./Project -type f -name "*.4DProject")

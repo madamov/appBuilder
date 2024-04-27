@@ -35,3 +35,5 @@ jobs:
               certutil -decode %HOMEDRIVE%%HOMEPATH%\Downloads\dev_lic.txt %HOMEDRIVE%%HOMEPATH%\Downloads\dev_lic1.zip
 
               dir %HOMEDRIVE%%HOMEPATH%\Downloads\
+
+           shell: cmd

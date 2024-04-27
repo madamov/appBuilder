@@ -1,0 +1,33 @@
+name: Windows licenses test
+
+on:
+
+  workflow_dispatch:
+     branches: 
+       - main
+       - develop
+       - test
+
+jobs:
+   windowschecker:
+      runs-on: windows-latest
+      env:
+          DEV_LIC: ${{secrets.DEV_WIN}}
+
+
+      steps:
+
+         - name: Checkout repository
+           uses: actions/checkout@v4
+        
+         - name: Testing download and upload
+           
+           run: |
+
+              echo %DEV_LIC% > %HOMEDRIVE%%HOMEPATH%\Downloads\dev_lic.b64
+
+              certutil -decode %HOMEDRIVE%%HOMEPATH%\Downloads\dev_lic.b64 %HOMEDRIVE%%HOMEPATH%\Downloads\dev_lic.zip   
+              
+              dir %HOMEDRIVE%%HOMEPATH%\Downloads\
+              
+           shell: cmd

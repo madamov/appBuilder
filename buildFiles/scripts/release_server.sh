@@ -33,8 +33,8 @@ if [ -z "$uploadURL" ]; then
 	echo "🐚🐚 : no upload of Mac standalone required"
 else
 
-	echo "Creating server image file at $HOME/Documents/${appName}_client.dmg"
-	hdiutil create -volname "${appName}" -format UDBZ -srcfolder "${myAppDest}" $HOME/Documents/${appName}_server.dmg
+	echo "Creating server image file at $HOME/Documents/${appName}_server.dmg"
+	hdiutil create -volname "${appName}_server" -format UDBZ -srcfolder "${myAppDest}" $HOME/Documents/${appName}_server.dmg
 
 	myStructURL=$uploadURL$version/$build
 	echo "Uploading to folder: $myStructURL"

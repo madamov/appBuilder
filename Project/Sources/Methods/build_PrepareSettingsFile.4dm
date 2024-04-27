@@ -20,7 +20,7 @@ BUILD_APP#COMPILE_ONLY#BUILD_COMPILED_STRUCTURE#BUILD_SERVER#BUILD_CLIENT#INCLUD
 
 var $localDevLicensePaths : Collection
 var $old_xml; $new_xml; $oneaction : Text
-var $projectFolder; $signingObject : Object
+var $projectFolder : Object
 var $actions : Collection
 var $buildClientOn : Boolean
 
@@ -111,29 +111,6 @@ Else
 	End if 
 End if 
 
-If (Is macOS)
-	
-	If ($parameters.macOS.signing#Null) && ($parameters.macOS.signing.sign#Null)
-		
-		$signingObject:=New object
-		$signingObject.MacSignature:="False"
-		$signingObject.MacCertificate:=""
-		$signingObject.AdHocSign:="False"
-		
-		If ($parameters.macOS.signing.adHoc#Null) && ($parameters.macOS.signing.adHoc="True")
-			$signingObject.AdHocSign:="True"
-		End if 
-		
-		If ($parameters.macOS.signing.sign="True") && ($parameters.macOS.signing.certificateName#Null)
-			$signingObject.MacSignature:="True"
-			$signingObject.MacCertificate:=$parameters.macOS.signing.certificateName
-			$new_xml:=build_setmacOSSigning($signingObject; $new_xml)
-		End if 
-		
-	End if 
-	
-End if 
-
 //========================================================
 // action specific settings in build file
 
@@ -158,10 +135,32 @@ For each ($oneaction; $actions)
 		
 		logLineInLogEvent("Serialized set")
 		
+		//If ($parameters.pathToVL=Null)
+		//$parameters.pathToVL:=build_getDefaultVLPath
+		//Else 
+		//If (Is macOS)
+		//$parameters.pathToVL:=Convert path POSIX to system($parameters.pathToVL)
+		//End if 
+		//End if 
+		
 		$new_xml:=build_setVLLocation($parameters.pathToVL; $new_xml)
 		
 		logLineInLogEvent("Setting Volume License location to "+$parameters.pathToVL)
 		
+		If (Is macOS)
+			// adhoc signing for now only, not Apple developer yet
+			If ($parameters.macOS.signing#Null)
+				If ($parameters.macOS.signing.sign#Null)
+					If ($parameters.macOS.signing.sign="True")
+						If ($parameters.macOS.signing.adHoc#Null)
+							If ($parameters.macOS.signing.adHoc="True")
+								$new_xml:=build_setmacOSAdHocSigning($parameters.macOS.signing; $new_xml)
+							End if 
+						End if 
+					End if 
+				End if 
+			End if 
+		End if 
 	End if 
 	
 	
@@ -193,6 +192,16 @@ For each ($oneaction; $actions)
 		
 		$buildClientOn:=True  // allow building of clients and including them for automatic update
 		
+		//If ($parameters.pathToVL=Null)
+		//$parameters.pathToVL:=build_getDefaultVLPath
+		//Else 
+		//If (Is macOS)
+		//$parameters.pathToVL:=Convert path POSIX to system($parameters.pathToVL)
+		//End if 
+		//End if 
+		
+		// path is already set
+		
 		$new_xml:=build_setClientLocation($parameters.pathToVL; $new_xml)
 		
 	End if 
@@ -218,9 +227,6 @@ For each ($oneaction; $actions)
 	If (($oneaction="INCLUDE_MAC_CLIENT") & $buildClientOn)  // include Mac client on Windows
 		If (Is Windows)
 			$new_xml:=build_setBuildCSUpgradeable($new_xml)  // set BuildCSUpgradeable to True
-			If ($parameters.pathToMacArchive=Null)
-				$parameters.pathToMacArchive:=build_getDefaultMacArchivePath
-			End if 
 			$new_xml:=build_setClientMacFolderToWin($parameters.pathToMacArchive; $new_xml)
 		End if 
 	End if 

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<Preferences4D>
+
+  <BuildApp>
+    <BuildCompiled>True</BuildCompiled>
+    <IncludeAssociatedFolders>True</IncludeAssociatedFolders>
+    <BuildComponent>False</BuildComponent>
+    <BuildApplicationSerialized>True</BuildApplicationSerialized>
+    <RuntimeVL>
+      <LastDataPathLookup>ByAppName</LastDataPathLookup>
+    </RuntimeVL>
+    <SourcesFiles>
+      <RuntimeVL>
+        <RuntimeVLIncludeIt>True</RuntimeVLIncludeIt>
+        <RuntimeVLMacFolder>Macintosh HD:Applications:4D 20.3:4D Volume Desktop.app:</RuntimeVLMacFolder>
+      </RuntimeVL>
+      <CS>
+        <ServerIncludeIt>True</ServerIncludeIt>
+        <ClientMacIncludeIt>True</ClientMacIncludeIt>
+        <ClientWinIncludeIt>False</ClientWinIncludeIt>
+        <ClientMacFolderToMac>Macintosh HD:Applications:4D 20.3:4D Volume Desktop.app:</ClientMacFolderToMac>
+        <ServerMacFolder>Macintosh HD:Applications:4D 20.3:4D Server.app:</ServerMacFolder>
+      </CS>
+    </SourcesFiles>
+    <CS>
+      <BuildServerApplication>True</BuildServerApplication>
+      <LastDataPathLookup>ByAppName</LastDataPathLookup>
+      <MacCompiledDatabaseToWinIncludeIt>False</MacCompiledDatabaseToWinIncludeIt>
+      <MacCompiledDatabaseToWin></MacCompiledDatabaseToWin>
+      <ServerEmbedsProjectDirectoryFile>False</ServerEmbedsProjectDirectoryFile>
+      <BuildCSUpgradeable>True</BuildCSUpgradeable>
+      <CurrentVers>44</CurrentVers>
+      <HardLink></HardLink>
+    </CS>
+    <BuildApplicationName>appBuilder</BuildApplicationName>
+    <BuildMacDestFolder>::appBuilder_Build:</BuildMacDestFolder>
+    <ArrayExcludedPluginName>
+      <ItemsCount>0</ItemsCount>
+    </ArrayExcludedPluginName>
+    <ArrayExcludedPluginID>
+      <ItemsCount>0</ItemsCount>
+    </ArrayExcludedPluginID>
+    <ArrayExcludedComponentName>
+      <ItemsCount>0</ItemsCount>
+    </ArrayExcludedComponentName>
+    <ArrayExcludedModuleName>
+      <ItemsCount>0</ItemsCount>
+    </ArrayExcludedModuleName>
+    <Licenses>
+      <ArrayLicenseMac>
+        <ItemsCount>2</ItemsCount>
+        <Item1>Radni:madamov:Library:Application Support:4D:Licenses:PNUD200UUC0019D1QE0CFE5.license4D</Item1>
+        <Item2>Radni:madamov:Library:Application Support:4D:Licenses:PNDP200UUC00181DQE1EC50.license4D</Item2></ArrayLicenseMac>
+    </Licenses>
+    <SignApplication>
+      <MacSignature>False</MacSignature>
+      <MacCertificate></MacCertificate>
+      <AdHocSign>True</AdHocSign>
+    </SignApplication>
+  </BuildApp>
+
+
+</Preferences4D>

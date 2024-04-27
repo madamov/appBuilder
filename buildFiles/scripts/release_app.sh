@@ -25,7 +25,7 @@ echo "🐚🐚 : Making release of Mac standalone app ..."
 
 cd $destinationFolder
 	
-# rename destination folder, space in name creates problem for create-dmg.sh
+# rename destination folder, space in name creates problem
 mv Final\ Application final_app
 
 myAppDest="$destinationFolder/final_app"

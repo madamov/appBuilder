@@ -22,10 +22,12 @@ cd $destinationFolder
 # cp $workingDirectory/buildFiles/directory.json Settings/directory.json
 	
 # rename destination folder, space in name creates problem for create-dmg.sh
-mv Client\ server\ executable final_app
+# mv Client\ server\ executable final_app
 
-myAppDest="$destinationFolder/final_app/${appName}\ Server"
-	
+mkdir $destinationFolder/Server
+mv "$destinationFolder/Client\ Server\ executable/{appName}\ Server.app" "$destinationFolder/Server/${appName}\ Server.app"
+myAppDest="$destinationFolder/Server"
+
 # cp -R $workingDirectory/WebFolder $myAppDest/${appName}.app/Contents/Database/WebFolder
 
 
@@ -46,4 +48,3 @@ fi
 ls -al $HOME/Documents > $HOME/Documents/artifacts/after_app_build_listing.txt
 
 cd $workingDirectory
-       

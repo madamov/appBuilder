@@ -10,7 +10,7 @@ destinationFolder=$1
 build=$2
 version=$3
 
-echo "🐚🐚 : Destination folder path in release_app.sh: $destinationFolder"
+echo "🐚🐚 : Destination folder path in release_structure.sh: $destinationFolder"
 
 
 repoURL=$(jq -r '.repo' $workingDirectory/buildFiles/parameters.json)
@@ -25,18 +25,21 @@ echo "🐚🐚 : Making release of Mac standalone app ..."
 
 cd $destinationFolder
 	
-# rename destination folder, space in name creates problem
+# rename destination folder, space in name creates problem for create-dmg.sh
 mv Final\ Application final_app
 
 myAppDest="$destinationFolder/final_app"
 	
 # cp -R $workingDirectory/WebFolder $myAppDest/${appName}.app/Contents/Database/WebFolder
 
+# version=$(jq -r '.version' $workingDirectory/buildFiles/parameters.json)
+# buildnumber=$(jq -r '.build' $workingDirectory/buildFiles/parameters.json)
+
 if [ -z "$uploadURL" ]; then
 	echo "🐚🐚 : no upload of Mac standalone required"
 else
 
-	echo "Creating image file"
+	# hdiutil create -volname "${appName}" -format UDBZ -plist -srcfolder "${myAppDest}" $HOME/Documents/${appName}.dmg
 	hdiutil create -volname "${appName}" -format UDBZ -srcfolder "${myAppDest}" $HOME/Documents/${appName}.dmg
 
 	myStructURL=$uploadURL$version/$build
@@ -49,3 +52,4 @@ fi
 ls -al $HOME/Documents > $HOME/Documents/artifacts/after_app_build_listing.txt
 
 cd $workingDirectory
+       

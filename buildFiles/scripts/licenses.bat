@@ -6,7 +6,7 @@ rem curl -u %BINARIES_USER%:%BINARIES_PASSWORD% -o %HOMEDRIVE%%HOMEPATH%\Downloa
 
 mkdir %HOMEDRIVE%%HOMEPATH%\Documents\Licenses
 
-echo %DEV_LIC% > %HOMEDRIVE%%HOMEPATH%\Downloads\dev_lic.b64
+powershell -command "Set-Content -Path %HOMEDRIVE%%HOMEPATH%\Downloads\dev_lic.tb64 -Value $env:DEV_LIC"
 
 certutil -decode %HOMEDRIVE%%HOMEPATH%\Downloads\dev_lic.b64 %HOMEDRIVE%%HOMEPATH%\Downloads\dev_lic.zip
 

@@ -24,7 +24,9 @@ cd $destinationFolder
 # rename destination folder, space in name creates problem for create-dmg.sh
 # mv Client\ server\ executable final_app
 
-myAppDest="$destinationFolder/Client\ server\ executable/{$appName}\ Client"
+mkdir $destinationFolder/Client
+mv "$destinationFolder/Client\ Server\ executable/{appName}\ Client.app" "$destinationFolder/Client/${appName}\ Client.app"
+myAppDest="$destinationFolder/Client"
 	
 if [ -z "$uploadURL" ]; then
 	echo "🐚🐚 : no upload of Mac client requested"

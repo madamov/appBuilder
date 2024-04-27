@@ -2,7 +2,7 @@
 <Preferences4D>
 
   <BuildApp>
-    <BuildCompiled>False</BuildCompiled>
+    <BuildCompiled>True</BuildCompiled>
     <IncludeAssociatedFolders>True</IncludeAssociatedFolders>
     <BuildComponent>False</BuildComponent>
     <BuildApplicationSerialized>True</BuildApplicationSerialized>
@@ -15,21 +15,21 @@
         <RuntimeVLMacFolder>Macintosh HD:Applications:4D 20.3:4D Volume Desktop.app:</RuntimeVLMacFolder>
       </RuntimeVL>
       <CS>
-        <ServerIncludeIt>False</ServerIncludeIt>
-        <ClientMacIncludeIt>False</ClientMacIncludeIt>
-        <ClientWinIncludeIt>True</ClientWinIncludeIt>
+        <ServerIncludeIt>True</ServerIncludeIt>
+        <ClientMacIncludeIt>True</ClientMacIncludeIt>
+        <ClientWinIncludeIt>False</ClientWinIncludeIt>
         <ClientMacFolderToMac>Macintosh HD:Applications:4D 20.3:4D Volume Desktop.app:</ClientMacFolderToMac>
         <ServerMacFolder>Macintosh HD:Applications:4D 20.3:4D Server.app:</ServerMacFolder>
-        <ClientWinFolderToMac>Radni:no_time_machine_backup:4d_binaries:4d_win_binaries:4D Volume Desktop 20.3:</ClientWinFolderToMac></CS>
+      </CS>
     </SourcesFiles>
     <CS>
-      <BuildServerApplication>False</BuildServerApplication>
+      <BuildServerApplication>True</BuildServerApplication>
       <LastDataPathLookup>ByAppName</LastDataPathLookup>
       <MacCompiledDatabaseToWinIncludeIt>False</MacCompiledDatabaseToWinIncludeIt>
       <MacCompiledDatabaseToWin></MacCompiledDatabaseToWin>
       <ServerEmbedsProjectDirectoryFile>False</ServerEmbedsProjectDirectoryFile>
       <BuildCSUpgradeable>True</BuildCSUpgradeable>
-      <CurrentVers>98</CurrentVers>
+      <CurrentVers>44</CurrentVers>
       <HardLink></HardLink>
     </CS>
     <BuildApplicationName>appBuilder</BuildApplicationName>
@@ -41,9 +41,7 @@
       <ItemsCount>0</ItemsCount>
     </ArrayExcludedPluginID>
     <ArrayExcludedComponentName>
-      <ItemsCount>2</ItemsCount>
-      <Item1>Build4D</Item1>
-      <Item2>4D WritePro Interface</Item2>
+      <ItemsCount>0</ItemsCount>
     </ArrayExcludedComponentName>
     <ArrayExcludedModuleName>
       <ItemsCount>0</ItemsCount>
@@ -55,12 +53,11 @@
         <Item2>Radni:madamov:Library:Application Support:4D:Licenses:PNDP200UUC00181DQE1EC50.license4D</Item2></ArrayLicenseMac>
     </Licenses>
     <SignApplication>
-      <MacSignature>True</MacSignature>
-      <MacCertificate>Developer ID Application: ADAMOV KONSULTACIJE DOO BEOGRAD (JZ5A5UZ7M5)</MacCertificate>
+      <MacSignature>False</MacSignature>
+      <MacCertificate></MacCertificate>
       <AdHocSign>True</AdHocSign>
     </SignApplication>
   </BuildApp>
-
 
 
 </Preferences4D>

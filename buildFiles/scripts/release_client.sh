@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# make release of macOS Client
+# make release of macOS Server
 
 workingDirectory=$(pwd)
 
@@ -21,13 +21,10 @@ cd $destinationFolder
 # mkdir Settings
 # cp $workingDirectory/buildFiles/directory.json Settings/directory.json
 	
-# Server and client applications are both in Client Server executable folder
-# we want to make separate dmg files for client and server
-# move Client.app to separate folder
+# rename destination folder, space in name creates problem for create-dmg.sh
+# mv Client\ server\ executable final_app
 
-mkdir $destinationFolder/Client
-mv $destinationFolder/Client\ Server\ executable/${appName}\ Client.app $destinationFolder/Client/${appName}\ Client.app
-myAppDest="$destinationFolder/Client"
+myAppDest="$destinationFolder/Client\ server\ executable/{$appName}\ Client"
 	
 if [ -z "$uploadURL" ]; then
 	echo "🐚🐚 : no upload of Mac client requested"
@@ -44,3 +41,4 @@ else
 fi
 
 cd $workingDirectory
+       

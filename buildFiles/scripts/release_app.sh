@@ -32,29 +32,17 @@ myAppDest="$destinationFolder/final_app"
 	
 # cp -R $workingDirectory/WebFolder $myAppDest/${appName}.app/Contents/Database/WebFolder
 
-version=$(jq -r '.version' $workingDirectory/buildFiles/parameters.json)
+# version=$(jq -r '.version' $workingDirectory/buildFiles/parameters.json)
 # buildnumber=$(jq -r '.build' $workingDirectory/buildFiles/parameters.json)
-buildnumber=$REPO_BUILD_NUMBER
-releasetag=v"$version"_build_"$buildnumber"
 
 if [ -z "$uploadURL" ]; then
 	echo "🐚🐚 : no upload of Mac standalone required"
 else
 
-#	$HOME/Documents/createdmg/create-dmg --volname "${appName}" --app-drop-link 600 185 $HOME/Documents/${appName}.dmg $destinationFolder/Final\ Application/*
-#	$HOME/Documents/createdmg/create-dmg --volname "${appName}" --app-drop-link 600 185 $HOME/Documents/${appName}.dmg ${myAppDest}
-#	$workingDirectory/buildFiles/scripts/create-dmg/create-dmg-patched.sh --volname "${appName}" --app-drop-link 600 185 $HOME/Documents/${appName}.dmg ${myAppDest}
-
-	# create dmg using hdiutil directly without mounting the image, it takes long time and the image can't be detached
-	# hdiutil create -volname "${appName}" -srcfolder ${myAppDest} $HOME/Documents/${appName}_tmp.dmg
-	
-	# compress image
-	# hdiutil convert $HOME/Documents/${appName}_tmp.dmg -format UDBZ -o $HOME/Documents/${appName}.dmg
-	
 	# hdiutil create -volname "${appName}" -format UDBZ -plist -srcfolder "${myAppDest}" $HOME/Documents/${appName}.dmg
-	# hdiutil create -volname "${appName}" -format UDBZ -srcfolder "${myAppDest}" $HOME/Documents/${appName}.dmg
+	hdiutil create -volname "${appName}" -format UDBZ -srcfolder "${myAppDest}" $HOME/Documents/${appName}.dmg
 
-	myStructURL=$uploadURL$version/$buildnumber
+	myStructURL=$uploadURL$version/$build
 	echo "Uploading to folder: $myStructURL"
 
 	/usr/local/opt/curl/bin/curl -k -s -u ${UPLOAD_USER}:${UPLOAD_PASSWORD} --ftp-create-dirs -T $HOME/Documents/${appName}.dmg ${myStructURL}/${appName}.dmg

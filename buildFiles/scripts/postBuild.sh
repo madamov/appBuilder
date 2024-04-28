@@ -36,3 +36,4 @@ if [[ $action == *"BUILD_CLIENT"* ]]; then
 fi
 
 ls -al $HOME/Documents > $HOME/Documents/artifacts/after_app_build_listing.txt
+ls -alR $destFolder > $HOME/Documents/artifacts/after_app_build_destinationfolderonly.txt

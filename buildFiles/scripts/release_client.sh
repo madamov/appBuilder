@@ -25,7 +25,7 @@ cd $destinationFolder
 # mv Client\ server\ executable final_app
 
 mkdir $destinationFolder/Client
-mv "$destinationFolder/Client\ Server\ executable/${appName}\ Client.app" "$destinationFolder/Client/${appName}\ Client.app"
+mv $destinationFolder/Client\ Server\ executable/${appName}\ Client.app $destinationFolder/Client/${appName}\ Client.app
 myAppDest="$destinationFolder/Client"
 	
 if [ -z "$uploadURL" ]; then
@@ -43,4 +43,3 @@ else
 fi
 
 cd $workingDirectory
-       

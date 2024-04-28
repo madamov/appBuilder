@@ -20,15 +20,15 @@ cd $destinationFolder
 # make Settings folder for directory.json file
 # mkdir Settings
 # cp $workingDirectory/buildFiles/directory.json Settings/directory.json
-	
+# cp -R $workingDirectory/WebFolder $myAppDest/${appName}.app/Contents/Database/WebFolder
+
 # rename destination folder, space in name creates problem for create-dmg.sh
 # mv Client\ server\ executable final_app
 
 mkdir $destinationFolder/Server
-mv "$destinationFolder/Client\ Server\ executable/${appName}\ Server.app" "$destinationFolder/Server/${appName}\ Server.app"
+mv $destinationFolder/Client\ Server\ executable/${appName}\ Server.app $destinationFolder/Server/${appName}\ Server.app
 myAppDest="$destinationFolder/Server"
 
-# cp -R $workingDirectory/WebFolder $myAppDest/${appName}.app/Contents/Database/WebFolder
 
 
 if [ -z "$uploadURL" ]; then

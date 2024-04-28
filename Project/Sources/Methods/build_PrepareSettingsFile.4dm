@@ -135,14 +135,6 @@ For each ($oneaction; $actions)
 		
 		logLineInLogEvent("Serialized set")
 		
-		//If ($parameters.pathToVL=Null)
-		//$parameters.pathToVL:=build_getDefaultVLPath
-		//Else 
-		//If (Is macOS)
-		//$parameters.pathToVL:=Convert path POSIX to system($parameters.pathToVL)
-		//End if 
-		//End if 
-		
 		$new_xml:=build_setVLLocation($parameters.pathToVL; $new_xml)
 		
 		logLineInLogEvent("Setting Volume License location to "+$parameters.pathToVL)
@@ -191,16 +183,6 @@ For each ($oneaction; $actions)
 	If ($oneaction="BUILD_CLIENT")
 		
 		$buildClientOn:=True  // allow building of clients and including them for automatic update
-		
-		//If ($parameters.pathToVL=Null)
-		//$parameters.pathToVL:=build_getDefaultVLPath
-		//Else 
-		//If (Is macOS)
-		//$parameters.pathToVL:=Convert path POSIX to system($parameters.pathToVL)
-		//End if 
-		//End if 
-		
-		// path is already set
 		
 		$new_xml:=build_setClientLocation($parameters.pathToVL; $new_xml)
 		

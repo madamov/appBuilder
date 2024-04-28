@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# download 4D Volume Desktop for Windows, leave it in Documents folder, we will refer to it in buildApp.4DSettings XML file
+# download 4D Volume Desktop for Windows on macOS, leave it in Documents folder, we will refer to it in buildApp.4DSettings XML file
 
 workingDirectory=$(pwd)
 

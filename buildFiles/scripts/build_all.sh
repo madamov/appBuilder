@@ -12,13 +12,15 @@ echo "🐚 : macOS Gatekeeper disabled"
 action=$(jq -r '.actionMac' $workingDirectory/buildFiles/parameters.json)
 
 rm $workingDirectory/Project/settings.4DSettings
+
+# some debugging information do console
 ls -al $workingDirectory/Project/
 
-#copy correct Project settings file because of user settings
+# copy correct Project settings file because of user settings
 cp -fv $workingDirectory/buildFiles/Default_settings.4DSettings $workingDirectory/Project/Sources/settings.4DSettings
 echo "settings file copied to repository"
 
-if [[ $action == *"BUILD_APP"* ]] || [[ $action == *"BUILD_CLIENT"* ]]; then
+if [[ $action == *"BUILD_APP"* ]] || [[ $action == *"BUILD_CLIENT"* ]] || [[ $action == *"INCLUDE_CLIENT"* ]]; then
 	url4dvl=$(jq -r '.macVL_URL' $workingDirectory/buildFiles/parameters.json)
 	/bin/bash $workingDirectory/buildFiles/scripts/get4DVL.sh $url4dvl
 fi
@@ -33,7 +35,7 @@ if [[ $action == *"BUILD_SERVER"* ]]; then
 	fi
 fi
 
-# get developer licenses archive, extract it and move them in correct location for 4D to use them
+# get developer licenses archive, extract it and move them to correct location for 4D to use them
 /bin/bash $workingDirectory/buildFiles/scripts/licenses.sh
 
 # get and extract 4D standalone

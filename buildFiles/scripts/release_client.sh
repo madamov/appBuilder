@@ -21,8 +21,9 @@ cd $destinationFolder
 # mkdir Settings
 # cp $workingDirectory/buildFiles/directory.json Settings/directory.json
 	
-# rename destination folder, space in name creates problem for create-dmg.sh
-# mv Client\ server\ executable final_app
+# Server and client applications are both in Client Server executable folder
+# we want to make separate dmg files for client and server
+# move Client.app to separate folder
 
 mkdir $destinationFolder/Client
 mv $destinationFolder/Client\ Server\ executable/${appName}\ Client.app $destinationFolder/Client/${appName}\ Client.app

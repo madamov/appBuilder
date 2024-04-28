@@ -18,7 +18,7 @@ jobs:
     runs-on: macos-13
     outputs:
       out_mac: ${{ steps.step1.outputs.status }}
-      release_tag: ${{ steps.step1.outputs.release_tag }}
+      client_passed: ${{ steps.step1.outputs.passed }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -107,6 +107,7 @@ jobs:
         with:
           name: macos-client-archive
           path: /Users/runner/Documents/update.mac.4darchive
+          if: pass_mac_client == 'true'
           retention-days: 2
 
       - uses: actions/upload-artifact@v4.3.3
@@ -121,6 +122,7 @@ jobs:
     outputs:
       out_win: ${{ steps.step2.outputs.status }}
     steps:
+
       - name: Checkout repository
         uses: actions/checkout@v4
         
@@ -129,6 +131,7 @@ jobs:
         with:
           name: macos-client-archive
           path: C:\Users\runneradmin\Documents\update.mac.4darchive
+          if: ${{ needs.build-on-mac.outputs.client_passed=='OK' }}
           
       - id: step1
         name: Build Action Windows

@@ -13,12 +13,14 @@ appName=$(jq -r '.appName' $workingDirectory/buildFiles/parameters.json)
 
 if [[ $macAction == *"BUILD_SERVER"* ]]; then
 	archivePath=$destinationFolder/Server/${appName}\ Server.app/Contents/Upgrade4DClient/update.mac.4darchive
+	cp $destinationFolder/Server/${appName}\ Server.app/Contents/Upgrade4DClient/update.mac.4darchive $HOME/Documents/update.mac.4darchive
 else
 	archivePath=$destinationFolder/Client\ Server\ executable/Upgrade4DClient/update.mac.4darchive
+	cp $destinationFolder/Client\ Server\ executable/Upgrade4DClient/update.mac.4darchive $HOME/Documents/update.mac.4darchive
 fi
 
 # copy it to location easily pickable by next step in macOS job
-cp $archivePath $HOME/Documents/update.mac.4darchive
+# cp $archivePath $HOME/Documents/update.mac.4darchive
 
 # tell uploading step there is something to upload
 echo "pass_mac_client=true" >> $GITHUB_ENV   

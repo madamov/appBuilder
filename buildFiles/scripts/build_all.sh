@@ -29,7 +29,7 @@ if [[ $action == *"BUILD_SERVER"* ]]; then
 	if [[ $action == *"INCLUDE_WIN_CLIENT"* ]]; then
 		# if we have to include Windows client in macOS server we need Windows Volume Desktop
 		url4dwinvl=$(jq -r '.winVL_URL' $workingDirectory/buildFiles/parameters.json)
-		/bin/bash $workingDirectory/buildFiles/scripts/get4Win4DVL.sh $url4dwinvl
+		/bin/bash $workingDirectory/buildFiles/scripts/getWin4DVL.sh $url4dwinvl
 	fi
 fi
 

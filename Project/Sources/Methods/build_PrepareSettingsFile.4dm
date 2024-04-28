@@ -74,7 +74,7 @@ logLineInLogEvent("Getting dev licenses from "+$parameters.pathToLicenses)
 
 $localDevLicensePaths:=build_getLocalDevLicenses($parameters.pathToLicenses)
 
-logLineInLogEvent("Setting dev licenses path")
+logLineInLogEvent("SettinRadni:madamov:Downloads:Uploading Windows artifacts:buildApp.4DSettingsg dev licenses path")
 
 $new_xml:=build_setLicensesPath($localDevLicensePaths; $old_xml)
 
@@ -209,6 +209,9 @@ For each ($oneaction; $actions)
 	If (($oneaction="INCLUDE_MAC_CLIENT") & $buildClientOn)  // include Mac client on Windows
 		If (Is Windows)
 			$new_xml:=build_setBuildCSUpgradeable($new_xml)  // set BuildCSUpgradeable to True
+			If ($parameters.pathToMacArchive=Null)
+				$parameters.pathToMacArchive:=build_getDefaultMacArchivePath
+			End if 
 			$new_xml:=build_setClientMacFolderToWin($parameters.pathToMacArchive; $new_xml)
 		End if 
 	End if 

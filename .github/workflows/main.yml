@@ -102,6 +102,13 @@ jobs:
            echo "status=OK" >> "$GITHUB_OUTPUT"
          fi
 
+      - name: 'Upload macOS client archive'
+        uses: actions/upload-artifact@v4
+        with:
+          name: macos-client-archive
+          path: /Users/runner/Documents/update.mac.4darchive
+          retention-days: 2
+
       - uses: actions/upload-artifact@v4.3.3
         with:
          name: 'Uploading macOS artifacts'
@@ -116,7 +123,13 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
+        
+      - name: Download a macOS client archive
+        uses: actions/download-artifact@v4
+        with:
+          name: macos-client-archive
+          path: C:\Users\runneradmin\Documents\update.mac.4darchive
+          
       - id: step1
         name: Build Action Windows
         timeout-minutes: 45

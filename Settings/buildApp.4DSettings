@@ -2,10 +2,10 @@
 <Preferences4D>
 
   <BuildApp>
-    <BuildCompiled>True</BuildCompiled>
+    <BuildCompiled>False</BuildCompiled>
     <IncludeAssociatedFolders>True</IncludeAssociatedFolders>
     <BuildComponent>False</BuildComponent>
-    <BuildApplicationSerialized>True</BuildApplicationSerialized>
+    <BuildApplicationSerialized>False</BuildApplicationSerialized>
     <RuntimeVL>
       <LastDataPathLookup>ByAppName</LastDataPathLookup>
     </RuntimeVL>
@@ -15,7 +15,7 @@
         <RuntimeVLMacFolder>Macintosh HD:Applications:4D 20.3:4D Volume Desktop.app:</RuntimeVLMacFolder>
       </RuntimeVL>
       <CS>
-        <ServerIncludeIt>True</ServerIncludeIt>
+        <ServerIncludeIt>False</ServerIncludeIt>
         <ClientMacIncludeIt>True</ClientMacIncludeIt>
         <ClientWinIncludeIt>True</ClientWinIncludeIt>
         <ClientMacFolderToMac>Macintosh HD:Applications:4D 20.3:4D Volume Desktop.app:</ClientMacFolderToMac>
@@ -23,7 +23,7 @@
         <ClientWinFolderToMac>Radni:no_time_machine_backup:4d_binaries:4d_win_binaries:4D Volume Desktop 20.3:</ClientWinFolderToMac></CS>
     </SourcesFiles>
     <CS>
-      <BuildServerApplication>True</BuildServerApplication>
+      <BuildServerApplication>False</BuildServerApplication>
       <LastDataPathLookup>ByAppName</LastDataPathLookup>
       <MacCompiledDatabaseToWinIncludeIt>False</MacCompiledDatabaseToWinIncludeIt>
       <MacCompiledDatabaseToWin></MacCompiledDatabaseToWin>

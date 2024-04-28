@@ -19,3 +19,9 @@ fi
 
 # move it to location easily pickable by next step in macOS job
 mv $archivePath $HOME/Documents/update.mac.4darchive
+
+# tell uploading step there is something to upload
+echo "pass_mac_client=true" >> $GITHUB_ENV   
+
+# tell windows runner we actually uploaded the file
+echo "passed=OK" >> "$GITHUB_OUTPUT"

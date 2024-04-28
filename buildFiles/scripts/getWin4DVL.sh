@@ -7,7 +7,8 @@ workingDirectory=$(pwd)
 myurl=$(echo $1 | sed 's/https:\/\//&'"$BINARIES_USER:$BINARIES_PASSWORD@/")
 
 echo "🐚:🐚: Downloading 4D Volume Desktop ..."
-curl -s -o $HOME/Documents/4D_VL.zip $myurl
+curl -s -o $HOME/Documents/4D_VL_WIN.zip $myurl
 echo "🐚:🐚: 4D Volume Desktop $1 downloaded, unzipping archive ..."
-unzip -q $HOME/Documents/4D_VL_WIN -d $HOME/Documents/
+mkdir $HOME/Documents/4D_VL_WIN
+unzip -q $HOME/Documents/4D_VL_WIN.zip -d $HOME/Documents/4D_VL_WIN
 echo "🐚:🐚: 4D Volume Desktop FOR WINDOWS unzipped"

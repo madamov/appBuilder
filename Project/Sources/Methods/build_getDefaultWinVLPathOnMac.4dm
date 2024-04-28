@@ -4,5 +4,5 @@
 #DECLARE->$path : Text
 
 If (Is macOS)
-	$path:=System folder(Documents folder)+"4D_VL_WIN:4D Client:4D Volume Desktop:"
+	$path:=System folder(Documents folder)+"4D_VL_WIN:4D Volume Desktop:"
 End if 

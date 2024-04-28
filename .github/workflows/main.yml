@@ -107,7 +107,8 @@ jobs:
         with:
           name: macos-client-archive
           path: /Users/runner/Documents/update.mac.4darchive
-          if: pass_mac_client == 'true'
+          if-no-files-found: warn
+          compression-level: 0 # no compression, already compressed by 4D
           retention-days: 2
 
       - uses: actions/upload-artifact@v4.3.3
@@ -131,7 +132,6 @@ jobs:
         with:
           name: macos-client-archive
           path: C:\Users\runneradmin\Documents\update.mac.4darchive
-          if: ${{ needs.build-on-mac.outputs.client_passed=='OK' }}
           
       - id: step1
         name: Build Action Windows

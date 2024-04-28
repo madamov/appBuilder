@@ -17,8 +17,8 @@ else
 	archivePath=$destinationFolder/Client\ Server\ executable/Upgrade4DClient/update.mac.4darchive
 fi
 
-# move it to location easily pickable by next step in macOS job
-mv $archivePath $HOME/Documents/update.mac.4darchive
+# copy it to location easily pickable by next step in macOS job
+cp $archivePath $HOME/Documents/update.mac.4darchive
 
 # tell uploading step there is something to upload
 echo "pass_mac_client=true" >> $GITHUB_ENV   

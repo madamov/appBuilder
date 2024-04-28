@@ -13,15 +13,8 @@ version=$3
 
 echo "Destination folder path in release_structure.sh: $destinationFolder"
 
-
-# repoURL=$(jq -r '.repoCompiledStruct' $workingDirectory/buildFiles/parameters.json)
-repoURL=$(jq -r '.repo' $workingDirectory/buildFiles/parameters.json)
 uploadURL=$(jq -r '.uploadCompiledStruct' $workingDirectory/buildFiles/parameters.json)
 appName=$(jq -r '.appName' $workingDirectory/buildFiles/parameters.json)
-
-releasetag=v"$version"_build_"$buildnumber" 
-
-echo "Repo for compiled structure is $repoURL, release tag is $releasetag"
 
 cd $destinationFolder
 mv Compiled\ Database comp_struct
@@ -42,7 +35,7 @@ if [ -z "$uploadURL" ]; then
 	echo "no upload of compiled structure"
 else
 
-	hdiutil create -format UDBZ -plist -srcfolder "${myStructDest}" $HOME/Documents/${appName}_struct.dmg
+	hdiutil create -format UDBZ -srcfolder "${myStructDest}" $HOME/Documents/${appName}_struct.dmg
 	
 	myStructURL=$uploadURL$version/$build
 	echo "Uploading to folder: $myStructURL"

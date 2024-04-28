@@ -17,10 +17,10 @@
       <CS>
         <ServerIncludeIt>True</ServerIncludeIt>
         <ClientMacIncludeIt>True</ClientMacIncludeIt>
-        <ClientWinIncludeIt>False</ClientWinIncludeIt>
+        <ClientWinIncludeIt>True</ClientWinIncludeIt>
         <ClientMacFolderToMac>Macintosh HD:Applications:4D 20.3:4D Volume Desktop.app:</ClientMacFolderToMac>
         <ServerMacFolder>Macintosh HD:Applications:4D 20.3:4D Server.app:</ServerMacFolder>
-      </CS>
+        <ClientWinFolderToMac>Radni:no_time_machine_backup:4d_binaries:4d_win_binaries:4D Volume Desktop 20.3:</ClientWinFolderToMac></CS>
     </SourcesFiles>
     <CS>
       <BuildServerApplication>True</BuildServerApplication>
@@ -29,7 +29,7 @@
       <MacCompiledDatabaseToWin></MacCompiledDatabaseToWin>
       <ServerEmbedsProjectDirectoryFile>False</ServerEmbedsProjectDirectoryFile>
       <BuildCSUpgradeable>True</BuildCSUpgradeable>
-      <CurrentVers>44</CurrentVers>
+      <CurrentVers>98</CurrentVers>
       <HardLink></HardLink>
     </CS>
     <BuildApplicationName>appBuilder</BuildApplicationName>
@@ -41,7 +41,9 @@
       <ItemsCount>0</ItemsCount>
     </ArrayExcludedPluginID>
     <ArrayExcludedComponentName>
-      <ItemsCount>0</ItemsCount>
+      <ItemsCount>2</ItemsCount>
+      <Item1>Build4D</Item1>
+      <Item2>4D WritePro Interface</Item2>
     </ArrayExcludedComponentName>
     <ArrayExcludedModuleName>
       <ItemsCount>0</ItemsCount>
@@ -58,6 +60,7 @@
       <AdHocSign>True</AdHocSign>
     </SignApplication>
   </BuildApp>
+
 
 
 </Preferences4D>

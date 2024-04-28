@@ -74,7 +74,7 @@ logLineInLogEvent("Getting dev licenses from "+$parameters.pathToLicenses)
 
 $localDevLicensePaths:=build_getLocalDevLicenses($parameters.pathToLicenses)
 
-logLineInLogEvent("SettinRadni:madamov:Downloads:Uploading Windows artifacts:buildApp.4DSettingsg dev licenses path")
+logLineInLogEvent("Setting dev licenses path")
 
 $new_xml:=build_setLicensesPath($localDevLicensePaths; $old_xml)
 

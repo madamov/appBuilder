@@ -1,6 +1,6 @@
 {
-  "actionMac": "BUILD_COMPILED_STRUCTURE",
-  "actionWin": "BUILD_APP#BUILD_SERVER#BUILD_CLIENT",
+  "actionMac": "BUILD_COMPILED_STRUCTURE#BUILD_APP#BUILD_SERVER#BUILD_CLIENT#INCLUDE_CLIENT#INCLUDE_WIN_CLIENT",
+  "actionWin": "BUILD_APP#BUILD_SERVER#BUILD_CLIENT#INCLUDE_CLIENT#INCLUDE_MAC_CLIENT",
   "appName": "App4D",
   "buildDestinationFolder": "MyBuild",
   "uploadMacStandalone": "sftp://4dmethod.4d.rs//home/dh_tz8msi/4dmethod.4d.rs/appBuilder/",
@@ -11,8 +11,6 @@
   "versionFileUploadURL": "sftp://4dmethod.4d.rs//home/dh_tz8msi/4dmethod.4d.rs/appBuilder/",
   "versionURL": "http://4dmethod.4d.rs/appBuilder/version.json",
   "repo": "github.com/madamov/appBuilder_public",
-  "maclicenses_URL": "https://binaries.4d.rs/dev_mac.zip",
-  "winlicenses_URL": "https://binaries.4d.rs/dev_win.zip",
   "mac4D_URL": "https://binaries.4d.rs/4D_20_mac.zip",
   "win4D_URL": "https://binaries.4d.rs/4D_20_win.zip",
   "macServer_URL": "https://binaries.4d.rs/4D_Server_203_mac.zip",

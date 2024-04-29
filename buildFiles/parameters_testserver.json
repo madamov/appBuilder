@@ -11,8 +11,6 @@
   "versionFileUploadURL": "sftp://upgrades.4d.rs/home/dh_etq7u9/upgrades.4d.rs/appBuilder/",
   "versionURL": "https://upgrades.4d.rs/appBuilder/version.json",
   "repo": "github.com/madamov/appBuilder_public",
-  "maclicenses_URL": "https://binaries.4d.rs/dev_mac.zip",
-  "winlicenses_URL": "https://binaries.4d.rs/dev_win.zip",
   "mac4D_URL": "https://binaries.4d.rs/4D_203_mac.zip",
   "win4D_URL": "https://binaries.4d.rs/4D_203_win.zip",
   "macServer_URL": "https://binaries.4d.rs/4D_Server_203_mac.zip",

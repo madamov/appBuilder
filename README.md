@@ -12,8 +12,8 @@ If you are going to fork it, here is the list of repository secrets you need to 
 | **BINARIES_USER**          | Username for above                                           |
 | **UPLOAD_USER**            | Username of destination SFTP server for releases             |
 | **UPLOAD_PASSWORD**        | Password for above                                           |
-| **UPLOAD_USER**            | Username of destination SFTP server for test releases        |
-| **UPLOAD_PASSWORD**        | Password for above                                           |
+| **UPLOAD_TEST_USER**       | Username of destination SFTP server for test releases        |
+| **UPLOAD_TEST_PASSWORD**   | Password for above                                           |
 | **MILANTOK**               | GitHub token for GitHub account                              |
 | **DEV_MAC**                | Base64 encoded zip archive of 4D Developer Professional licenses (macOS) |
 | **DEV_WIN**                | Base64 encoded zip archive of 4D Developer Professional licenses (Windows) |

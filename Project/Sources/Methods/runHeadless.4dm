@@ -4,7 +4,7 @@
 #DECLARE->$inHeadless : Boolean
 
 var $getDBParValue : Real
-var $startupParam; $oldErrorHandler; $myParams : Text
+var $startupParam; $myParams : Text
 var $config; $status; $buildStatus; $compilerOptions : Object
 
 $inHeadless:=Get application info.headless
@@ -21,7 +21,7 @@ If ($inHeadless)
 		logLineInLogEvent("parsing user parameters passed to 4D\n"+$startupParam+"\n\n")
 		If (Is Windows)
 			// we use Base64 encoding to pass parameters on Windows because of the spaces and special characters \
-				in JSON causing issues in Windows command prompt
+								in JSON causing issues in Windows command prompt
 			logLineInLogEvent("decoding parameters from Base64\n")
 			BASE64 DECODE($startupParam; $myParams)
 		Else 
@@ -31,9 +31,8 @@ If ($inHeadless)
 		$config:=JSON Parse($myParams)
 		If ($config#Null)
 			build_logMe("config not null")
-			build_logMe("build number is: "+String($config.build))
 		Else 
-			build_logMe("It is null, quitting 4D later")
+			build_logMe("Config is null, quitting 4D later")
 		End if 
 	Else 
 		logLineInLogEvent("no user parameters passed to 4D")

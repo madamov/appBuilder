@@ -99,3 +99,6 @@ C_TEXT(build_setStartElevated; $1)
 
 //myAlert
 C_TEXT(myAlert; $1)
+
+//build_getDefaultMacArchivePath
+C_TEXT(build_getDefaultMacArchivePath; $0)

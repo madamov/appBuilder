@@ -3,6 +3,6 @@
 
 #DECLARE->$path : Text
 
-If (Is macOS:C1572)
-	$path:=System folder:C487(Documents folder:K41:18)+"4DVL:4D Client:4D Volume Desktop:"
+If (Is macOS)
+	$path:=System folder(Documents folder)+"4D_VL_WIN:4D Volume Desktop:"
 End if 

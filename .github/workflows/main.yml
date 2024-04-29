@@ -1,9 +1,6 @@
 name: myApp builder
 
 on:
-  push:
-    branches: 
-      - main
   workflow_dispatch:
      branches: 
        - main
@@ -21,7 +18,7 @@ jobs:
     runs-on: macos-13
     outputs:
       out_mac: ${{ steps.step1.outputs.status }}
-      release_tag: ${{ steps.step1.outputs.release_tag }}
+      client_passed: ${{ steps.step1.outputs.passed }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -53,7 +50,6 @@ jobs:
           
       - id: step1
         name: Build Action Mac
-        timeout-minutes: 30
         
         env:
           RUNNER_ACTOR: ${{github.actor}}
@@ -96,15 +92,24 @@ jobs:
          
          STATUSFILE=/Users/runner/Documents/artifacts/status.log
          if [[ -f "$STATUSFILE" ]]; then
-           msg="*Compilation or build failed!* at $(date)"
            echo "status=FAIL" >> "$GITHUB_OUTPUT"
          else
            ./buildFiles/scripts/postBuild.sh
            echo "🐚: POSTBUILD done at $(date)"
-           msg="**macOS Build of version $version build $buildnumber successful!** at $(date)"
-           # set output so the next runner will know if we are succesful
+
+           # set output so the next runner will know that we are succesful
            echo "status=OK" >> "$GITHUB_OUTPUT"
+           
          fi
+
+      - name: 'Upload macOS client archive'
+        uses: actions/upload-artifact@v4.3.3
+        with:
+          name: macos-client-archive
+          path: /Users/runner/Documents/update.mac.4darchive
+          if-no-files-found: warn
+          compression-level: 0 # no compression, already compressed by 4D
+          retention-days: 2
 
       - uses: actions/upload-artifact@v4.3.3
         with:
@@ -118,12 +123,19 @@ jobs:
     outputs:
       out_win: ${{ steps.step2.outputs.status }}
     steps:
+
       - name: Checkout repository
         uses: actions/checkout@v4
-
+        
+      - name: Download a macOS client archive
+        uses: actions/download-artifact@v4.1.7
+        with:
+          name: macos-client-archive
+          path: C:\Users\runneradmin\Documents\update.mac.4darchive
+          
       - id: step1
         name: Build Action Windows
-        timeout-minutes: 30
+        timeout-minutes: 45
 
         env:
           RUNNER_ACTOR: ${{github.actor}}
@@ -190,10 +202,10 @@ jobs:
         run: |
          
           # set new build number in repository variable
-           
-          REPO_BUILD_NUMBER=$((REPO_BUILD_NUMBER+1))
-          echo "new build number in repo var is $REPO_BUILD_NUMBER"
+          echo "old values are:"
           gh variable list
+          REPO_BUILD_NUMBER=$((REPO_BUILD_NUMBER+1))
+          echo "new build number in repo var will be $REPO_BUILD_NUMBER"
           gh variable set APP_BUILD_NUMBER --body "$REPO_BUILD_NUMBER"
           gh variable list
           

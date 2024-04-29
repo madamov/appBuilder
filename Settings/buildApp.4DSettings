@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<Preferences4D>
+
+  <BuildApp>
+    <BuildCompiled>False</BuildCompiled>
+    <IncludeAssociatedFolders>True</IncludeAssociatedFolders>
+    <BuildComponent>False</BuildComponent>
+    <BuildApplicationSerialized>False</BuildApplicationSerialized>
+    <RuntimeVL>
+      <LastDataPathLookup>ByAppName</LastDataPathLookup>
+    </RuntimeVL>
+    <SourcesFiles>
+      <RuntimeVL>
+        <RuntimeVLIncludeIt>True</RuntimeVLIncludeIt>
+        <RuntimeVLMacFolder>Macintosh HD:Applications:4D 20.3:4D Volume Desktop.app:</RuntimeVLMacFolder>
+      </RuntimeVL>
+      <CS>
+        <ServerIncludeIt>False</ServerIncludeIt>
+        <ClientMacIncludeIt>True</ClientMacIncludeIt>
+        <ClientWinIncludeIt>True</ClientWinIncludeIt>
+        <ClientMacFolderToMac>Macintosh HD:Applications:4D 20.3:4D Volume Desktop.app:</ClientMacFolderToMac>
+        <ServerMacFolder>Macintosh HD:Applications:4D 20.3:4D Server.app:</ServerMacFolder>
+        <ClientWinFolderToMac>Radni:no_time_machine_backup:4d_binaries:4d_win_binaries:4D Volume Desktop 20.3:</ClientWinFolderToMac></CS>
+    </SourcesFiles>
+    <CS>
+      <BuildServerApplication>False</BuildServerApplication>
+      <LastDataPathLookup>ByAppName</LastDataPathLookup>
+      <MacCompiledDatabaseToWinIncludeIt>False</MacCompiledDatabaseToWinIncludeIt>
+      <MacCompiledDatabaseToWin></MacCompiledDatabaseToWin>
+      <ServerEmbedsProjectDirectoryFile>False</ServerEmbedsProjectDirectoryFile>
+      <BuildCSUpgradeable>True</BuildCSUpgradeable>
+      <CurrentVers>98</CurrentVers>
+      <HardLink></HardLink>
+    </CS>
+    <BuildApplicationName>appBuilder</BuildApplicationName>
+    <BuildMacDestFolder>::appBuilder_Build:</BuildMacDestFolder>
+    <ArrayExcludedPluginName>
+      <ItemsCount>0</ItemsCount>
+    </ArrayExcludedPluginName>
+    <ArrayExcludedPluginID>
+      <ItemsCount>0</ItemsCount>
+    </ArrayExcludedPluginID>
+    <ArrayExcludedComponentName>
+      <ItemsCount>2</ItemsCount>
+      <Item1>Build4D</Item1>
+      <Item2>4D WritePro Interface</Item2>
+    </ArrayExcludedComponentName>
+    <ArrayExcludedModuleName>
+      <ItemsCount>0</ItemsCount>
+    </ArrayExcludedModuleName>
+    <Licenses>
+      <ArrayLicenseMac>
+        <ItemsCount>2</ItemsCount>
+        <Item1>Radni:madamov:Library:Application Support:4D:Licenses:PNUD200UUC0019D1QE0CFE5.license4D</Item1>
+        <Item2>Radni:madamov:Library:Application Support:4D:Licenses:PNDP200UUC00181DQE1EC50.license4D</Item2></ArrayLicenseMac>
+    </Licenses>
+    <SignApplication>
+      <MacSignature>False</MacSignature>
+      <MacCertificate></MacCertificate>
+      <AdHocSign>True</AdHocSign>
+    </SignApplication>
+  </BuildApp>
+
+
+
+</Preferences4D>

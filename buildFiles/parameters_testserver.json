@@ -1,8 +1,7 @@
 {
-  "actionMac": "BUILD_COMPILED_STRUCTURE",
-  "actionWin": "BUILD_APP#BUILD_SERVER#BUILD_CLIENT",
+  "actionMac": "BUILD_COMPILED_STRUCTURE#BUILD_APP#BUILD_SERVER#BUILD_CLIENT#INCLUDE_CLIENT#INCLUDE_WIN_CLIENT",
+  "actionWin": "BUILD_APP#BUILD_SERVER#BUILD_CLIENT#INCLUDE_CLIENT#INCLUDE_MAC_CLIENT",
   "appName": "App4D",
-  "version": "1.200",
   "buildDestinationFolder": "MyBuild",
   "uploadMacStandalone": "sftp://upgrades.4d.rs/home/dh_etq7u9/upgrades.4d.rs/appBuilder/",
   "uploadWinStandalone": "sftp://upgrades.4d.rs/home/dh_etq7u9/upgrades.4d.rs/appBuilder/",

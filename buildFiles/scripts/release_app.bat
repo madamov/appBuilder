@@ -23,6 +23,6 @@ if [%zipme%] == [ok] (%sevenzip% a %HOMEPATH%\Documents\%appName%.zip *)
 
 IF DEFINED uploadURL (@call %scripts%\release_app_upload.bat)
 
-IF DEFINED repoURL (@call %scripts%\release_app_gh.bat %1% %2% %3%)
+rem IF DEFINED repoURL (@call %scripts%\release_app_gh.bat %1% %2% %3%)
 
 set zipme=

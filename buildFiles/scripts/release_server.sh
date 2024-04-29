@@ -20,21 +20,24 @@ cd $destinationFolder
 # make Settings folder for directory.json file
 # mkdir Settings
 # cp $workingDirectory/buildFiles/directory.json Settings/directory.json
-	
-# rename destination folder, space in name creates problem for create-dmg.sh
-mv Client\ server\ executable final_app
-
-myAppDest="$destinationFolder/final_app"
-	
 # cp -R $workingDirectory/WebFolder $myAppDest/${appName}.app/Contents/Database/WebFolder
+
+# Server and client applications are both in Client Server executable folder
+# we want to make separate dmg files for client and server
+# move Server.app to separate folder
+
+mkdir $destinationFolder/Server
+mv $destinationFolder/Client\ Server\ executable/${appName}\ Server.app $destinationFolder/Server/${appName}\ Server.app
+myAppDest="$destinationFolder/Server"
+
 
 
 if [ -z "$uploadURL" ]; then
 	echo "🐚🐚 : no upload of Mac standalone required"
 else
-	
-	# hdiutil create -volname "${appName}" -format UDBZ -plist -srcfolder "${myAppDest}" $HOME/Documents/${appName}_server.dmg
-	# hdiutil create -volname "${appName}" -format UDBZ -srcfolder "${myAppDest}" $HOME/Documents/${appName}_server.dmg
+
+	echo "Creating server image file at $HOME/Documents/${appName}_server.dmg"
+	hdiutil create -volname "${appName}_server" -format UDBZ -srcfolder "${myAppDest}" $HOME/Documents/${appName}_server.dmg
 
 	myStructURL=$uploadURL$version/$build
 	echo "Uploading to folder: $myStructURL"
@@ -46,4 +49,3 @@ fi
 ls -al $HOME/Documents > $HOME/Documents/artifacts/after_app_build_listing.txt
 
 cd $workingDirectory
-       

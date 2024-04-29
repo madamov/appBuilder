@@ -92,14 +92,14 @@ jobs:
          
          STATUSFILE=/Users/runner/Documents/artifacts/status.log
          if [[ -f "$STATUSFILE" ]]; then
-           msg="*Compilation or build failed!* at $(date)"
            echo "status=FAIL" >> "$GITHUB_OUTPUT"
          else
            ./buildFiles/scripts/postBuild.sh
            echo "🐚: POSTBUILD done at $(date)"
-           msg="**macOS Build of version $version build $buildnumber successful!** at $(date)"
-           # set output so the next runner will know if we are succesful
+
+           # set output so the next runner will know that we are succesful
            echo "status=OK" >> "$GITHUB_OUTPUT"
+           
          fi
 
       - name: 'Upload macOS client archive'
@@ -202,10 +202,10 @@ jobs:
         run: |
          
           # set new build number in repository variable
-           
-          REPO_BUILD_NUMBER=$((REPO_BUILD_NUMBER+1))
-          echo "new build number in repo var is $REPO_BUILD_NUMBER"
+          echo "old values are:"
           gh variable list
+          REPO_BUILD_NUMBER=$((REPO_BUILD_NUMBER+1))
+          echo "new build number in repo var will be $REPO_BUILD_NUMBER"
           gh variable set APP_BUILD_NUMBER --body "$REPO_BUILD_NUMBER"
           gh variable list
           

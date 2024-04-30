@@ -42,7 +42,7 @@ ls -al $HOME/Documents > $HOME/Documents/artifacts/after_app_build_listing.txt
 ls -alR $destFolder > $HOME/Documents/artifacts/after_app_build_destinationfolderonly.txt
 
 # workaround for downloading missing macos client archive artifact in WIndows runner
-# create dummy file at particular destination if $HOME/Documents/update.mac.4darchive doesn;t exists
+# create dummy file at particular destination if $HOME/Documents/update.mac.4darchive doesn't exists
 
 if [[ -f "$HOME/Documents/update.mac.4darchive" ]]; then
 	echo "$HOME/Documents/update.mac.4darchive already exists"

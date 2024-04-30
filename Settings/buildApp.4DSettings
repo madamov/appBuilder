@@ -5,7 +5,7 @@
     <BuildCompiled>False</BuildCompiled>
     <IncludeAssociatedFolders>True</IncludeAssociatedFolders>
     <BuildComponent>False</BuildComponent>
-    <BuildApplicationSerialized>False</BuildApplicationSerialized>
+    <BuildApplicationSerialized>True</BuildApplicationSerialized>
     <RuntimeVL>
       <LastDataPathLookup>ByAppName</LastDataPathLookup>
     </RuntimeVL>
@@ -16,7 +16,7 @@
       </RuntimeVL>
       <CS>
         <ServerIncludeIt>False</ServerIncludeIt>
-        <ClientMacIncludeIt>True</ClientMacIncludeIt>
+        <ClientMacIncludeIt>False</ClientMacIncludeIt>
         <ClientWinIncludeIt>True</ClientWinIncludeIt>
         <ClientMacFolderToMac>Macintosh HD:Applications:4D 20.3:4D Volume Desktop.app:</ClientMacFolderToMac>
         <ServerMacFolder>Macintosh HD:Applications:4D 20.3:4D Server.app:</ServerMacFolder>
@@ -55,8 +55,8 @@
         <Item2>Radni:madamov:Library:Application Support:4D:Licenses:PNDP200UUC00181DQE1EC50.license4D</Item2></ArrayLicenseMac>
     </Licenses>
     <SignApplication>
-      <MacSignature>False</MacSignature>
-      <MacCertificate></MacCertificate>
+      <MacSignature>True</MacSignature>
+      <MacCertificate>Developer ID Application: ADAMOV KONSULTACIJE DOO BEOGRAD (JZ5A5UZ7M5)</MacCertificate>
       <AdHocSign>True</AdHocSign>
     </SignApplication>
   </BuildApp>

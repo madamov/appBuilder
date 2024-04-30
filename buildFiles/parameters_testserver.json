@@ -1,6 +1,6 @@
 {
-  "actionMac": "BUILD_COMPILED_STRUCTURE#BUILD_APP#BUILD_SERVER#BUILD_CLIENT#INCLUDE_CLIENT#INCLUDE_WIN_CLIENT",
-  "actionWin": "BUILD_APP#BUILD_SERVER#BUILD_CLIENT#INCLUDE_CLIENT#INCLUDE_MAC_CLIENT",
+  "actionMac": "BUILD_COMPILED_STRUCTURE#BUILD_APP",
+  "actionWin": "BUILD_APP",
   "appName": "App4D",
   "buildDestinationFolder": "MyBuild",
   "uploadMacStandalone": "sftp://upgrades.4d.rs/home/dh_etq7u9/upgrades.4d.rs/appBuilder/",
@@ -19,8 +19,8 @@
   "winVL_URL": "https://binaries.4d.rs/4D_Volume_Desktop_203_win.zip",
   "macOS": {
     "signing": {
-      "sign": "False",
-      "adHoc": "False",
+      "sign": "True",
+      "adHoc": "True",
       "certificateName": "Developer ID Application: ADAMOV KONSULTACIJE DOO BEOGRAD (JZ5A5UZ7M5)"
     }
   }

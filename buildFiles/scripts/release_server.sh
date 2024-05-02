@@ -33,7 +33,7 @@ myAppDest="$destinationFolder/Server"
 
 
 if [ -z "$uploadURL" ]; then
-	echo "🐚🐚 : no upload of Mac standalone required"
+	echo "🐚🐚 : no upload of Mac server required"
 else
 
 	echo "Creating server image file at $HOME/Documents/${appName}_server.dmg"

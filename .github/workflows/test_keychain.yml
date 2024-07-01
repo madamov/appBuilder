@@ -19,6 +19,9 @@ jobs:
           BUILD_CERTIFICATE_BASE64: ${{ secrets.MY_APPLE_CERTIFICATE }}
           P12_PASSWORD: ${{ secrets.MY_APPLE_CERT_PASSWORD }}
           KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
+          APPLE_ID: ${{ secrets.MY_APPLE_ID }}
+          TEAM_ID: ${{ secrets.MY_TEAM_ID }}
+          APP_SPECIFIC_PASSWORD: ${{ secrets.MY_APP_SPECIFIC_PASSWORD }}
 
         run: |
           # create variables
@@ -37,3 +40,6 @@ jobs:
           security import $CERTIFICATE_PATH -P "$P12_PASSWORD" -A -t cert -f pkcs12 -k $KEYCHAIN_PATH
           security set-key-partition-list -S apple-tool:,apple: -k "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
           security list-keychain -d user -s $KEYCHAIN_PATH
+
+          # setting up things for notarization
+          xcrun notarytool store-credentials myApp_profile --keychain "$KEYCHAIN_PATH" --apple-id "$APPLE_ID" --team-id "$TEAM_ID" --password "$APP_SPECIFIC_PASSWORD"

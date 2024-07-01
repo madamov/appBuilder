@@ -47,6 +47,16 @@ jobs:
           security set-key-partition-list -S apple-tool:,apple: -k "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
           security list-keychain -d user -s $KEYCHAIN_PATH
           
+      - name: Create keychain profile for notarization
+        env:
+          APPLE_ID: ${{ secrets.MY_APPLE_ID }}
+          TEAM_ID: ${{ secrets.MY_TEAM_ID }}
+          APP_SPECIFIC_PASSWORD: ${{ secrets.MY_APP_SPECIFIC_PASSWORD }}
+
+        run: |
+          # setting up things for notarization
+
+          xcrun notarytool store-credentials myApp_profile --apple-id "$APPLE_ID" --team-id "$TEAM_ID" --password "$APP_SPECIFIC_PASSWORD"
           
       - id: step1
         name: Build Action Mac

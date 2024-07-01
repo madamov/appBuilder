@@ -42,4 +42,4 @@ jobs:
           security list-keychain -d user -s $KEYCHAIN_PATH
 
           # setting up things for notarization
-          xcrun notarytool store-credentials myApp_profile --keychain "$KEYCHAIN_PATH" --apple-id "$APPLE_ID" --team-id "$TEAM_ID" --password "$APP_SPECIFIC_PASSWORD"
+          # xcrun notarytool store-credentials myApp_profile --keychain "$KEYCHAIN_PATH" --apple-id "$APPLE_ID" --team-id "$TEAM_ID" --password "$APP_SPECIFIC_PASSWORD"

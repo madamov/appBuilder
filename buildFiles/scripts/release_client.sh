@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# make release of macOS Server
+# make release of macOS Client
 
 workingDirectory=$(pwd)
 

@@ -43,4 +43,6 @@ jobs:
 
           # setting up things for notarization
           # xcrun notarytool store-credentials myApp_profile --keychain "$KEYCHAIN_PATH" --apple-id "$APPLE_ID" --team-id "$TEAM_ID" --password "$APP_SPECIFIC_PASSWORD"
-          xcrun notarytool store-credentials notarizeProfile --apple-id "madamov@adamov.rs" --team-id "JZ5A5UZ7M5" --password "ndyh-ltgo-roba-ulnn"
+          # xcrun notarytool store-credentials notarizeProfile --apple-id "madamov@adamov.rs" --team-id "JZ5A5UZ7M5" --password "ndyh-ltgo-roba-ulnn"
+          xcrun notarytool store-credentials myApp_profile --apple-id "$APPLE_ID" --team-id "$TEAM_ID" --password "$APP_SPECIFIC_PASSWORD"
+          

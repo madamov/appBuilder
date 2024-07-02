@@ -21,8 +21,8 @@ BUILD_APP#COMPILE_ONLY#BUILD_COMPILED_STRUCTURE#BUILD_SERVER#BUILD_CLIENT#INCLUD
 var $localDevLicensePaths : Collection
 var $old_xml; $new_xml; $oneaction : Text
 var $projectFolder; $signingObject : Object
-var $actions : Collection
-var $buildClientOn : Boolean
+var $actions; $otherPlatformActions : Collection
+var $buildClientOn; $currVersionSet : Boolean
 
 logLineInLogEvent("Preparing settings file ...")
 
@@ -37,6 +37,16 @@ $buildClientOn:=False
 
 $actions:=Split string($parameters.action; "#")
 
+If (Is macOS)
+	$otherPlatformActions:=Split string($parameters.actionWin; "#")
+Else 
+	If (Is Windows)
+		$otherPlatformActions:=Split string($parameters.actionMac; "#")
+	Else 
+		$otherPlatformActions:=New collection  // just not to be null
+	End if 
+End if 
+
 If ($parameters.buildSettingsFileName=Null)
 	$parameters.buildSettingsFileName:="buildApp.4DSettings"
 End if 
@@ -45,7 +55,7 @@ $path:=System folder(Documents folder)+$parameters.buildSettingsFileName
 
 logLineInLogEvent("Build settings file path is "+$path)
 
-// common code for building settings file regardless of action
+//MARK: - common code for building settings file regardless of action
 
 If ($parameters.templatePath=Null)
 	$parameters.templatePath:=build_getTemplatePath
@@ -61,6 +71,8 @@ logLineInLogEvent("Getting XML content from "+$parameters.templatePath)
 $old_xml:=build_getBuildXMLFileContent($parameters.templatePath)
 
 build_dumpVar2File($old_xml; "buildTemplateAtStart.xml")  // dump template file to artifacts folder for debugging
+
+//MARK: - handle licensing information
 
 If ($parameters.pathToLicenses=Null)
 	$parameters.pathToLicenses:=System folder(Documents folder)+"Licenses"+Folder separator
@@ -80,6 +92,8 @@ $new_xml:=build_setLicensesPath($localDevLicensePaths; $old_xml)
 
 build_dumpVar2File($new_xml; "new_withlicenses.xml")
 
+//MARK: - handle build destination information
+
 If ($parameters.destinationPath=Null)
 	$parameters.destinationPath:=System folder(Documents folder)+"MyBuild"+Folder separator
 Else 
@@ -92,6 +106,8 @@ logLineInLogEvent("Setting destination path to: "+$parameters.destinationPath)
 
 $new_xml:=build_setDestinationPath($parameters.destinationPath; $new_xml)
 
+//MARK: - handle application name information
+
 If ($parameters.appName=Null)
 	$parameters.appName:="DefaultAppName"
 End if 
@@ -99,6 +115,8 @@ End if
 $new_xml:=build_setAppName($parameters.appName; $new_xml)
 
 logLineInLogEvent("App name set to "+$parameters.appName)
+
+//MARK: - get default path to 4D Volume Desktop
 
 // always set VL path even if we don't need it afterwards
 // in order not to call Convert path POSIX to system twice on the path
@@ -110,6 +128,9 @@ Else
 		$parameters.pathToVL:=Convert path POSIX to system($parameters.pathToVL)
 	End if 
 End if 
+
+
+//MARK: - handle macOS signing information
 
 If (Is macOS)
 	
@@ -134,8 +155,8 @@ If (Is macOS)
 	
 End if 
 
-//========================================================
-// action specific settings in build file
+//MARK: - action specific settings in build file
+//MARK: build compiled structure
 
 For each ($oneaction; $actions)
 	
@@ -149,6 +170,7 @@ For each ($oneaction; $actions)
 		
 	End if 
 	
+	//MARK: build app
 	
 	If ($oneaction="BUILD_APP")
 		
@@ -164,6 +186,7 @@ For each ($oneaction; $actions)
 		
 	End if 
 	
+	//MARK: build server
 	
 	If ($oneaction="BUILD_SERVER")
 		
@@ -189,21 +212,39 @@ For each ($oneaction; $actions)
 		
 	End if 
 	
+	//MARK: build client
+	
+	
 	If ($oneaction="BUILD_CLIENT")
 		
 		$buildClientOn:=True  // allow building of clients and including them for automatic update
 		
 		$new_xml:=build_setClientLocation($parameters.pathToVL; $new_xml)
 		
+		If (Not($currVersionSet))
+			$new_xml:=build_setCurrentVers($new_xml; Num($parameters.build))  // set CurrentVers to build number we are currently building
+			$currVersionSet:=True
+		End if 
+		
 	End if 
+	
 	
 	If (($oneaction="INCLUDE_CLIENT") & $buildClientOn)
 		
 		$new_xml:=build_setBuildCSUpgradeable($new_xml)  // set BuildCSUpgradeable to True
 		
+		If (Not($currVersionSet))
+			$new_xml:=build_setCurrentVers($new_xml; Num($parameters.build))  // set CurrentVers to build number we are currently building
+			$currVersionSet:=True
+		End if 
+		
 	End if 
 	
 	If (($oneaction="INCLUDE_WIN_CLIENT") & $buildClientOn)  // include Windows client on mac
+		If (Not($currVersionSet))
+			$new_xml:=build_setCurrentVers($new_xml; Num($parameters.build))  // set CurrentVers to build number we are currently building
+			$currVersionSet:=True
+		End if 
 		If (Is macOS)  // we do this only on macOS
 			$new_xml:=build_setBuildCSUpgradeable($new_xml)  // set BuildCSUpgradeable to True
 			If ($parameters.pathToWindowsVL=Null)
@@ -216,6 +257,10 @@ For each ($oneaction; $actions)
 	End if 
 	
 	If (($oneaction="INCLUDE_MAC_CLIENT") & $buildClientOn)  // include Mac client on Windows
+		If (Not($currVersionSet))
+			$new_xml:=build_setCurrentVers($new_xml; Num($parameters.build))  // set CurrentVers to build number we are currently building
+			$currVersionSet:=True
+		End if 
 		If (Is Windows)
 			$new_xml:=build_setBuildCSUpgradeable($new_xml)  // set BuildCSUpgradeable to True
 			If ($parameters.pathToMacArchive=Null)

@@ -1,5 +1,5 @@
 {
-  "actionMac": "BUILD_COMPILED_STRUCTURE",
+  "actionMac": "BUILD_APP#BUILD_COMPILED_STRUCTURE",
   "actionWin": "BUILD_APP#BUILD_SERVER#BUILD_CLIENT",
   "appName": "App4D",
   "buildDestinationFolder": "MyBuild",
@@ -20,9 +20,10 @@
   "macVL_URL": "https://binaries.4d.rs/4D_Volume_Desktop_203_mac.zip",
   "winVL_URL": "https://binaries.4d.rs/4D_Volume_Desktop_203_win.zip",
   "macOS": {
+    "notarize": "True",
     "signing": {
-      "sign": "False",
-      "adHoc": "False",
+      "sign": "True",
+      "adHoc": "True",
       "certificateName": "Developer ID Application: ADAMOV KONSULTACIJE DOO BEOGRAD (JZ5A5UZ7M5)"
     }
   }

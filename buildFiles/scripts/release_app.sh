@@ -46,13 +46,15 @@ else
 	
 		xcrun notarytool submit $HOME/Documents/${appName}.dmg --keychain-profile "myApp_profile" --wait --output-format json > $HOME/Documents/artifacts/notarization.json
 
+		cat $HOME/Documents/artifacts/notarization.json
+
 		status=$(jq -r '.status' $HOME/Documents/artifacts/notarization.json)
 	
 		if [[ $status == *"Accepted"* ]]; then
 
-			id=$(jq -r '.id' $HOME/Documents/artifacts/notarization.json
+			id=$(jq -r '.id' $HOME/Documents/artifacts/notarization.json)
 
-			echo "Stapling: $id"
+			echo "Stapling image $HOME/Documents/${appName}.dmg with $id"
 	
 			xcrun stapler staple $HOME/Documents/${appName}.dmg
 	

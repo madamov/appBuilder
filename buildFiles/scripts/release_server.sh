@@ -39,6 +39,8 @@ else
 	echo "Creating server image file at $HOME/Documents/${appName}_server.dmg"
 	hdiutil create -volname "${appName}_server" -format UDBZ -srcfolder "${myAppDest}" $HOME/Documents/${appName}_server.dmg
 
+	doNotarize=$(jq -r '.macOS.notarize' $workingDirectory/buildFiles/parameters.json)
+
 	if [[ $doNotarize == *"True"* ]]; then
 
 		echo "Notarizing image $HOME/Documents/${appName}_server.dmg starting at $(date)"

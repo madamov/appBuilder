@@ -37,24 +37,29 @@ if [ -z "$uploadURL" ]; then
 	echo "🐚🐚 : no upload of Mac standalone required"
 else
 
-	echo "Creating image file"
 	echo "Creating image file at $HOME/Documents/${appName}.dmg"
 
 	hdiutil create -volname "${appName}" -ov -format UDBZ -srcfolder "${myAppDest}" $HOME/Documents/${appName}.dmg
 
 	if [[ $doNotarize == *"True"* ]]; then
-	
+
+		echo "Notarizing image $HOME/Documents/${appName}.dmg starting at $(date)"
+		
 		xcrun notarytool submit $HOME/Documents/${appName}.dmg --keychain-profile "myApp_profile" --wait --output-format json > $HOME/Documents/artifacts/notarization.json
+
+		echo "End notarizing image $HOME/Documents/${appName}.dmg at $(date)"
 
 		cat $HOME/Documents/artifacts/notarization.json
 
 		status=$(jq -r '.status' $HOME/Documents/artifacts/notarization.json)
-	
+
+		echo "Notarization status is: $status"	
+		
 		if [[ $status == *"Accepted"* ]]; then
 
 			id=$(jq -r '.id' $HOME/Documents/artifacts/notarization.json)
 
-			echo "Stapling image $HOME/Documents/${appName}.dmg with $id"
+			echo "Stapling image $HOME/Documents/${appName}.dmg notarizing id is $id"
 	
 			xcrun stapler staple $HOME/Documents/${appName}.dmg
 	

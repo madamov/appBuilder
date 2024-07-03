@@ -39,6 +39,31 @@ else
 	echo "Creating server image file at $HOME/Documents/${appName}_server.dmg"
 	hdiutil create -volname "${appName}_server" -format UDBZ -srcfolder "${myAppDest}" $HOME/Documents/${appName}_server.dmg
 
+	if [[ $doNotarize == *"True"* ]]; then
+
+		echo "Notarizing image $HOME/Documents/${appName}_server.dmg starting at $(date)"
+		
+		xcrun notarytool submit $HOME/Documents/${appName}_server.dmg --keychain-profile "myApp_profile" --wait --output-format json > $HOME/Documents/artifacts/notarization_server.json
+
+		echo "End notarizing image $HOME/Documents/${appName}_server.dmg at $(date)"
+
+		cat $HOME/Documents/artifacts/notarization_server.json
+
+		status=$(jq -r '.status' $HOME/Documents/artifacts/notarization_server.json)
+
+		echo "Notarization status is: $status"	
+		
+		if [[ $status == *"Accepted"* ]]; then
+
+			id=$(jq -r '.id' $HOME/Documents/artifacts/notarization_server.json)
+
+			echo "Stapling image $HOME/Documents/${appName}_server.dmg notarizing id is $id"
+	
+			xcrun stapler staple $HOME/Documents/${appName}_server.dmg
+	
+		fi		
+	fi
+
 	myStructURL=$uploadURL$version/$build
 	echo "Uploading to folder: $myStructURL"
 

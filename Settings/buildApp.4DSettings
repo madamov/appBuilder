@@ -32,8 +32,8 @@
       <CurrentVers>98</CurrentVers>
       <HardLink></HardLink>
     </CS>
-    <BuildApplicationName>appBuilder</BuildApplicationName>
-    <BuildMacDestFolder>::appBuilder_Build:</BuildMacDestFolder>
+    <BuildApplicationName>App4D</BuildApplicationName>
+    <BuildMacDestFolder>::MyBuild:</BuildMacDestFolder>
     <ArrayExcludedPluginName>
       <ItemsCount>0</ItemsCount>
     </ArrayExcludedPluginName>

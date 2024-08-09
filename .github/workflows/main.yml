@@ -76,7 +76,6 @@ jobs:
             # Use test server for uploads
             echo "Using test server parameters for branch $(basename $GITHUB_REF)"
             cp -f ./buildFiles/parameters_testserver.json ./buildFiles/parameters.json
-            cat ./buildFiles/parameters.json
             export UPLOAD_USER=${{ secrets.UPLOAD_TEST_USER }}
             export UPLOAD_PASSWORD=${{ secrets.UPLOAD__TEST_PASSWORD }}
          fi
@@ -97,6 +96,8 @@ jobs:
             export UPLOAD_USER=${{ secrets.UPLOAD_USER }}
             export UPLOAD_PASSWORD=${{ secrets.UPLOAD_PASSWORD }}
          fi
+
+         cat ./buildFiles/parameters.json
           
          ./buildFiles/scripts/build_all.sh
          

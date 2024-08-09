@@ -10,6 +10,7 @@ echo "🐚 : macOS Gatekeeper disabled"
 
 # get action, what we have to build or to do
 action=$(jq -r '.actionMac' $workingDirectory/buildFiles/parameters.json)
+winaction=$(jq -r '.actionWin' $workingDirectory/buildFiles/parameters.json)
 
 rm $workingDirectory/Project/settings.4DSettings
 
@@ -20,7 +21,7 @@ ls -al $workingDirectory/Project/
 cp -fv $workingDirectory/buildFiles/Default_settings.4DSettings $workingDirectory/Project/Sources/settings.4DSettings
 echo "settings file copied to repository"
 
-if [[ $action == *"BUILD_APP"* ]] || [[ $action == *"BUILD_CLIENT"* ]] || [[ $action == *"INCLUDE_CLIENT"* ]]; then
+if [[ $action == *"BUILD_APP"* ]] || [[ $action == *"BUILD_CLIENT"* ]] || [[ $action == *"INCLUDE_CLIENT"* ]] || [[ $winaction == *"INCLUDE_MAC_CLIENT"* ]]; then
 	url4dvl=$(jq -r '.macVL_URL' $workingDirectory/buildFiles/parameters.json)
 	/bin/bash $workingDirectory/buildFiles/scripts/get4DVL.sh $url4dvl
 fi

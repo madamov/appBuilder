@@ -18,6 +18,7 @@
   "macVL_URL": "https://binaries.4d.rs/4D_Volume_Desktop_203_mac.zip",
   "winVL_URL": "https://binaries.4d.rs/4D_Volume_Desktop_203_win.zip",
   "macOS": {
+    "notarize": "True",
     "signing": {
       "sign": "False",
       "adHoc": "False",

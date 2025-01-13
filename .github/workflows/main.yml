@@ -11,7 +11,7 @@ concurrency:
    group: ${{ github.workflow }}
    
 env:
-  GH_TOKEN: ${{ secrets.MILANTOK }} # setting GH_TOKEN for the entire workflow
+  GH_TOKEN: ${{ secrets.MY_GH_TOKEN }} # setting GH_TOKEN for the entire workflow
 
 jobs:
   build-on-mac:

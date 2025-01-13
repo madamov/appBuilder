@@ -14,11 +14,11 @@ If you are going to fork it, here is the list of repository secrets you need to 
 | **UPLOAD_PASSWORD**        | Password for above                                           |
 | **UPLOAD_TEST_USER**       | Username of destination SFTP server for test releases        |
 | **UPLOAD_TEST_PASSWORD**   | Password for above                                           |
-| **MILANTOK**               | GitHub token for GitHub account                              |
+| **MY_GH_TOKEN**               | GitHub token for GitHub account                              |
 | **DEV_MAC**                | Base64 encoded zip archive of 4D Developer Professional licenses (macOS) |
 | **DEV_WIN**                | Base64 encoded zip archive of 4D Developer Professional licenses (Windows) |
 | **MY_APPLE_CERTIFICATE**   | Base64 encoded Apple Developer Certificate                   |
-| **MY_APPLE_CERT_PASSWORD** | Password for Apple Developr certificate                      |
+| **MY_APPLE_CERT_PASSWORD** | Password for Apple Developer Certificate                      |
 | **KEYCHAIN_PASSWORD**      | Password for temporary keychain file                         |
 
 Here is the list of repository variables used in workflow for build and version numbers you need to define:

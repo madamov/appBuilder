@@ -1,14 +1,14 @@
 name: Four runners test
 
 on:
-  workflow_dispatch:
-     branches: 
-       - main
-       - develop
-       - 'test/*'
-       
+  workflow_dispatch: {}
+    branches:
+      - main
+      - develop
+      - 'test/*'
+
 env:
-  GH_TOKEN: ${{ secrets.MY_GH_TOKEN }} # setting GH_TOKEN for the entire workflow
+  GH_TOKEN: ${{ secrets.MY_GH_TOKEN }}
   RUNNER_ACTOR: ${{ github.actor }}
   BINARIES_USER: ${{ secrets.BINARIES_USER }}
   BINARIES_PASSWORD: ${{ secrets.BINARIES_PASSWORD }}
@@ -16,80 +16,94 @@ env:
   REPO_VERSION: ${{ vars.APP_VERSION }}
 
 jobs:
-
   preflight:
     runs-on: ubuntu-latest
+    outputs:
+      run_macos: ${{ steps.set_vars.outputs.run_macos }}
+      run_windows: ${{ steps.set_vars.outputs.run_windows }}
 
     steps:
-    
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
       - name: Set preflight env vars
+        id: set_vars
+        shell: bash
+        env:
+          # provide ref name to the script (more reliable than parsing $GITHUB_REF)
+          REF_NAME: ${{ github.ref_name }}
+          UPLOAD_USER_SECRET: ${{ secrets.UPLOAD_USER }}
+          UPLOAD_PASSWORD_SECRET: ${{ secrets.UPLOAD_PASSWORD }}
+          UPLOAD_TEST_USER_SECRET: ${{ secrets.UPLOAD_TEST_USER }}
+          UPLOAD_TEST_PASSWORD_SECRET: ${{ secrets.UPLOAD_TEST_PASSWORD }}
         run: |
-         
-         upload_user=${{ secrets.UPLOAD_USER }}
-         upload_password=${{ secrets.UPLOAD_PASSWORD }}
-         
-         if [ "$(basename $GITHUB_REF)" == "test" ]; then
-            # Use test server for uploads
-            echo "Using test server parameters for branch $(basename $GITHUB_REF)"
-            cp -fv ./buildFiles/parameters_testserver.json ./buildFiles/parameters.json
-            upload_user=${{ secrets.UPLOAD_TEST_USER }}
-            upload_password==${{ secrets.UPLOAD__TEST_PASSWORD }}
-         fi
-         if [ "$(basename $GITHUB_REF)" == "release" ]; then
-            # Use release server for uploads
-            echo Using release branch server parameters
-            cp -fv ./buildFiles/parameters_releases.json ./buildFiles/parameters.json
-         fi
-         if [ "$(basename $GITHUB_REF)" == "develop" ]; then
-            cp -fv ./buildFiles/parameters_testserver.json ./buildFiles/parameters.json
-            upload_user=${{ secrets.UPLOAD_TEST_USER }}
-            upload_password==${{ secrets.UPLOAD_TEST_PASSWORD }}
-         fi
-         if [ "$(basename $GITHUB_REF)" == "main" ]; then
-            cp -fv ./buildFiles/parameters_main.json ./buildFiles/parameters.json
-         fi
+          set -euo pipefail
 
-          # make this global env variable
-          echo "UPLOAD_USER=$upload_user" >> $GITHUB_ENV
-          echo "UPLOAD_PASSWORD=$upload_password" >> $GITHUB_ENV
+          upload_user="$UPLOAD_USER_SECRET"
+          upload_password="$UPLOAD_PASSWORD_SECRET"
 
-          # prepare env vars for other runners
-          macAction=$(jq -r '.actionMac' ./buildFiles/parameters.json)
-          winAction=$(jq -r '.actionWin' ./buildFiles/parameters.json)
-          echo "macAction=$macAction" >> $GITHUB_ENV
-          echo "winAction=$winAction" >> $GITHUB_ENV
-          forceDownload=$(jq -r '.forceDownload' ./buildFiles/parameters.json)
-          forceDownload=$(echo "$forceDownload" | tr '[:lower:]' '[:upper:]') # to lowercase, cover all cases, true, True, TrUe ...
-          echo "forceDownload=$forceDownload" >> $GITHUB_ENV
+          # Choose parameters.json by branch
+          case "$REF_NAME" in
+            release)
+              echo "Using release server parameters for branch: $REF_NAME"
+              cp -fv ./buildFiles/parameters_releases.json ./buildFiles/parameters.json
+              ;;
+            main)
+              echo "Using main server parameters for branch: $REF_NAME"
+              cp -fv ./buildFiles/parameters_main.json ./buildFiles/parameters.json
+              ;;
+            develop|test/*)
+              echo "Using test server parameters for branch: $REF_NAME"
+              cp -fv ./buildFiles/parameters_testserver.json ./buildFiles/parameters.json
+              upload_user="$UPLOAD_TEST_USER_SECRET"
+              upload_password="$UPLOAD_TEST_PASSWORD_SECRET"
+              ;;
+            *)
+              echo "Defaulting parameters.json for branch: $REF_NAME"
+              ;;
+          esac
 
-          # Determine if we need to run macOS runner at all
-          if [ -n "$macAction" ]; then
-            run_macOS='true'
-          else
-            run_macOS='false'
+          # Make these available to subsequent steps (all jobs) via env
+          echo "UPLOAD_USER=$upload_user" >> "$GITHUB_ENV"
+          echo "UPLOAD_PASSWORD=$upload_password" >> "$GITHUB_ENV"
+
+          # Pull action flags from parameters.json
+          macAction="$(jq -r '.actionMac // ""' ./buildFiles/parameters.json)"
+          winAction="$(jq -r '.actionWin // ""' ./buildFiles/parameters.json)"
+          echo "macAction=$macAction" >> "$GITHUB_ENV"
+          echo "winAction=$winAction" >> "$GITHUB_ENV"
+
+          # Normalize forceDownload to UPPERCASE (TRUE/FALSE)
+          forceDownload="$(jq -r '.forceDownload // ""' ./buildFiles/parameters.json)"
+          forceDownload="$(echo "$forceDownload" | tr '[:lower:]' '[:upper:]')"
+          echo "forceDownload=$forceDownload" >> "$GITHUB_ENV"
+
+          # Decide whether to run macOS
+          run_macos='false'
+          if [[ -n "$macAction" ]]; then
+            run_macos='true'
           fi
-          if [[ $winAction == *"INCLUDE_MAC_CLIENT"]]; then
-             run_macOS='true'
+          # Also run mac if Windows action mentions including the Mac client
+          if [[ "$winAction" == *"INCLUDE_MAC_CLIENT"* ]]; then
+            run_macos='true'
           fi
-          echo "RUN_MACOS=$run_macOS" >> $GITHUB_ENV
-          
-          # do same for Windows runner
-          if [ -n "$winAction" ]; then
+          echo "RUN_MACOS=$run_macos" >> "$GITHUB_ENV"
+          echo "run_macos=$run_macos" >> "$GITHUB_OUTPUT"
+
+          # Decide whether to run Windows
+          run_windows='false'
+          if [[ -n "$winAction" ]]; then
             run_windows='true'
-          else
-            run_windows='false'
           fi
-          echo "RUN_WINDOWS=$run_windows" >> $GITHUB_ENV
+          echo "RUN_WINDOWS=$run_windows" >> "$GITHUB_ENV"
+          echo "run_windows=$run_windows" >> "$GITHUB_OUTPUT"
 
   build-on-mac:
     runs-on: macos-latest
     needs: preflight
-    if: ${{ env.RUN_MACOS == 'true' }}
+    if: ${{ needs.preflight.outputs.run_macos == 'true' }}
 
     steps:
       - name: Checkout repository
@@ -98,69 +112,75 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Choose correct paramaters.json file based on branch
+      - name: Choose correct parameters.json file (idempotent)
         id: set-parameters-file
+        shell: bash
+        env:
+          REF_NAME: ${{ github.ref_name }}
         run: |
-          if [ "$(basename $GITHUB_REF)" == "release" ]; then
-            echo Using release branch server parameters
-            cp -fv ./buildFiles/parameters_releases.json ./buildFiles/parameters.json
-          fi
-          if [[ $GITHUB_REF == *"test/"* ]] || [ "$(basename $GITHUB_REF)" == "develop" ]; then
-            echo "Using test server parameters for branch $(basename $GITHUB_REF)"
-            cp -fv ./buildFiles/parameters_testserver.json ./buildFiles/parameters.json
-          fi
-          if [ "$(basename $GITHUB_REF)" == "main" ]; then
-            cp -fv ./buildFiles/parameters_nightly.json ./buildFiles/parameters.json
-          fi
+          set -euo pipefail
+          case "$REF_NAME" in
+            release)
+              echo "Using release parameters on mac"
+              cp -fv ./buildFiles/parameters_releases.json ./buildFiles/parameters.json
+              ;;
+            main)
+              echo "Using nightly parameters on mac"
+              cp -fv ./buildFiles/parameters_nightly.json ./buildFiles/parameters.json
+              ;;
+            develop|test/*)
+              echo "Using test parameters on mac"
+              cp -fv ./buildFiles/parameters_testserver.json ./buildFiles/parameters.json
+              ;;
+            *)
+              echo "Leaving parameters.json as-is on mac"
+              ;;
+          esac
 
       - name: Install signing certificate
         env:
           BUILD_CERTIFICATE_BASE64: ${{ secrets.MY_APPLE_CERTIFICATE }}
-          P12_PASSWORD: ${{ secrets.MY_APPLE_CERT_PASSWORD }}
+          P12_PASSWORD: ${{ secrets.MY_APP_CERT_PASSWORD }}
           KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
-
         run: |
-          # create variables
-          CERTIFICATE_PATH=$RUNNER_TEMP/cxr.p12
-          KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
+          set -euo pipefail
+          CERTIFICATE_PATH="$RUNNER_TEMP/cxr.p12"
+          KEYCHAIN_PATH="$RUNNER_TEMP/app-signing.keychain-db"
 
-          # import certificate from secrets
-          echo -n "$BUILD_CERTIFICATE_BASE64" | base64 --decode -o $CERTIFICATE_PATH
+          echo -n "$BUILD_CERTIFICATE_BASE64" | base64 --decode -o "$CERTIFICATE_PATH"
 
-          # create temporary keychain
-          security create-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
-          security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
-          security unlock-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+          security create-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+          security set-keychain-settings -lut 21600 "$KEYCHAIN_PATH"
+          security unlock-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
 
-          # import certificate to keychain
-          security import $CERTIFICATE_PATH -P "$P12_PASSWORD" -A -t cert -f pkcs12 -k $KEYCHAIN_PATH
-          security set-key-partition-list -S apple-tool:,apple: -k "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
-          security list-keychain -d user -s $KEYCHAIN_PATH
-          
+          security import "$CERTIFICATE_PATH" -P "$P12_PASSWORD" -A -t cert -f pkcs12 -k "$KEYCHAIN_PATH"
+          security set-key-partition-list -S apple-tool:,apple: -k "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+          security list-keychain -d user -s "$KEYCHAIN_PATH"
+
       - name: Create keychain profile for notarization
         env:
           APPLE_ID: ${{ secrets.MY_APPLE_ID }}
           TEAM_ID: ${{ secrets.MY_TEAM_ID }}
           APP_SPECIFIC_PASSWORD: ${{ secrets.MY_APP_SPECIFIC_PASSWORD }}
-
         run: |
-          # setting up things for notarization
-
-          xcrun notarytool store-credentials myApp_profile --apple-id "$APPLE_ID" --team-id "$TEAM_ID" --password "$APP_SPECIFIC_PASSWORD"
+          set -euo pipefail
+          xcrun notarytool store-credentials myApp_profile \
+            --apple-id "$APPLE_ID" \
+            --team-id "$TEAM_ID" \
+            --password "$APP_SPECIFIC_PASSWORD"
 
   build-on-windows:
     runs-on: windows-latest
-    needs: build-on-mac
-    if: ${{ env.RUN_WINDOWS == 'true' }}
+    # If Windows depends on Mac artifacts, keep build-on-mac here too; otherwise remove it.
+    needs: [preflight, build-on-mac]
+    if: ${{ needs.preflight.outputs.run_windows == 'true' }}
     env:
       DEV_LIC: ${{ secrets.DEV_WIN }}
       SCRIPTS: ${{ github.workspace }}\buildFiles\scripts
       PARAMS: ${{ github.workspace }}\buildFiles\parameters.json
       MYBRANCH: ${{ github.ref }}
-      
+
     steps:
       - name: Checkout repository
         timeout-minutes: 10
         uses: actions/checkout@v4
-
-

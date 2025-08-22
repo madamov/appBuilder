@@ -12,10 +12,15 @@ concurrency:
    
 env:
   GH_TOKEN: ${{ secrets.MY_GH_TOKEN }} # setting GH_TOKEN for the entire workflow
-
+  RUNNER_ACTOR: ${{ github.actor }}
+  BINARIES_USER: ${{ secrets.BINARIES_USER }}
+  BINARIES_PASSWORD: ${{ secrets.BINARIES_PASSWORD }}
+  REPO_BUILD_NUMBER: ${{ vars.APP_BUILD_NUMBER }}
+  REPO_VERSION: ${{ vars.APP_VERSION }}
+  
 jobs:
   build-on-mac:
-    runs-on: macos-13
+    runs-on: macos-latest
     outputs:
       out_mac: ${{ steps.step1.outputs.status }}
       client_passed: ${{ steps.step1.outputs.passed }}
@@ -62,12 +67,6 @@ jobs:
         name: Build Action Mac
         
         env:
-          RUNNER_ACTOR: ${{github.actor}}
-          RUNNER: GIT
-          BINARIES_USER: ${{secrets.BINARIES_USER}}
-          BINARIES_PASSWORD: ${{secrets.BINARIES_PASSWORD}}
-          REPO_BUILD_NUMBER: ${{ vars.APP_BUILD_NUMBER }}
-          REPO_VERSION: ${{ vars.APP_VERSION }}
           DEV_LIC: ${{secrets.DEV_MAC}}
           
         run: |
@@ -114,7 +113,7 @@ jobs:
          fi
 
       - name: 'Upload macOS client archive'
-        uses: actions/upload-artifact@v4.3.3
+        uses: actions/upload-artifact@v4
         with:
           name: macos-client-archive
           path: /Users/runner/Documents/update.mac.4darchive
@@ -122,7 +121,7 @@ jobs:
           compression-level: 0 # no compression, already compressed by 4D
           retention-days: 2
 
-      - uses: actions/upload-artifact@v4.3.3
+      - uses: actions/upload-artifact@v4
         with:
          name: 'Uploading macOS artifacts'
          path: /Users/runner/Documents/artifacts/           
@@ -139,7 +138,7 @@ jobs:
         uses: actions/checkout@v4
         
       - name: Download a macOS client archive
-        uses: actions/download-artifact@v4.1.7
+        uses: actions/download-artifact@v4
         with:
           name: macos-client-archive
           path: C:\Users\runneradmin\Documents\update.mac.4darchive
@@ -149,13 +148,7 @@ jobs:
         timeout-minutes: 45
 
         env:
-          RUNNER_ACTOR: ${{github.actor}}
-          RUNNER: GIT
-          BINARIES_USER: ${{secrets.BINARIES_USER}}
-          BINARIES_PASSWORD: ${{secrets.BINARIES_PASSWORD}}
           MYBRANCH: ${{github.ref}}
-          REPO_BUILD_NUMBER: ${{ vars.APP_BUILD_NUMBER }}
-          REPO_VERSION: ${{ vars.APP_VERSION }}
           UPLOAD_REL_USER: ${{ secrets.UPLOAD_USER }}
           UPLOAD_REL_PASSWORD: ${{ secrets.UPLOAD_PASSWORD }}
           UPLOAD_TEST_USER: ${{ secrets.UPLOAD_TEST_USER }}
@@ -192,7 +185,7 @@ jobs:
         shell: pwsh
 
 
-      - uses: actions/upload-artifact@v4.3.3
+      - uses: actions/upload-artifact@v4
         with:
          name: 'Uploading Windows artifacts'
          path: C:\Users\runneradmin\Documents\artifacts\
@@ -205,10 +198,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Increase build number
-        env:
-          RUNNER: GIT
-          REPO_BUILD_NUMBER: ${{ vars.APP_BUILD_NUMBER }}
-          REPO_VERSION: ${{ vars.APP_VERSION }}
                    
         run: |
          

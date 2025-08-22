@@ -1,4 +1,4 @@
-name: Four runners test
+name: Four runners test backup
 
 on:
   workflow_dispatch:

@@ -1,7 +1,7 @@
 name: Four runners test
 
 on:
-  workflow_dispatch: {}
+  workflow_dispatch:
     branches:
       - main
       - develop

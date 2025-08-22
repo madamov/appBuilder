@@ -24,6 +24,7 @@ jobs:
     outputs:
       out_mac: ${{ steps.step1.outputs.status }}
       client_passed: ${{ steps.step1.outputs.passed }}
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4

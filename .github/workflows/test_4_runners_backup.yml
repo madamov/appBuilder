@@ -1,0 +1,166 @@
+name: Four runners test
+
+on:
+  workflow_dispatch:
+     branches: 
+       - main
+       - develop
+       - 'test/*'
+       
+env:
+  GH_TOKEN: ${{ secrets.MY_GH_TOKEN }} # setting GH_TOKEN for the entire workflow
+  RUNNER_ACTOR: ${{ github.actor }}
+  BINARIES_USER: ${{ secrets.BINARIES_USER }}
+  BINARIES_PASSWORD: ${{ secrets.BINARIES_PASSWORD }}
+  REPO_BUILD_NUMBER: ${{ vars.APP_BUILD_NUMBER }}
+  REPO_VERSION: ${{ vars.APP_VERSION }}
+
+jobs:
+
+  preflight:
+    runs-on: ubuntu-latest
+
+    steps:
+    
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set preflight env vars
+        run: |
+         
+         upload_user=${{ secrets.UPLOAD_USER }}
+         upload_password=${{ secrets.UPLOAD_PASSWORD }}
+         
+         if [ "$(basename $GITHUB_REF)" == "test" ]; then
+            # Use test server for uploads
+            echo "Using test server parameters for branch $(basename $GITHUB_REF)"
+            cp -fv ./buildFiles/parameters_testserver.json ./buildFiles/parameters.json
+            upload_user=${{ secrets.UPLOAD_TEST_USER }}
+            upload_password==${{ secrets.UPLOAD__TEST_PASSWORD }}
+         fi
+         if [ "$(basename $GITHUB_REF)" == "release" ]; then
+            # Use release server for uploads
+            echo Using release branch server parameters
+            cp -fv ./buildFiles/parameters_releases.json ./buildFiles/parameters.json
+         fi
+         if [ "$(basename $GITHUB_REF)" == "develop" ]; then
+            cp -fv ./buildFiles/parameters_testserver.json ./buildFiles/parameters.json
+            upload_user=${{ secrets.UPLOAD_TEST_USER }}
+            upload_password==${{ secrets.UPLOAD_TEST_PASSWORD }}
+         fi
+         if [ "$(basename $GITHUB_REF)" == "main" ]; then
+            cp -fv ./buildFiles/parameters_main.json ./buildFiles/parameters.json
+         fi
+
+          # make this global env variable
+          echo "UPLOAD_USER=$upload_user" >> $GITHUB_ENV
+          echo "UPLOAD_PASSWORD=$upload_password" >> $GITHUB_ENV
+
+          # prepare env vars for other runners
+          macAction=$(jq -r '.actionMac' ./buildFiles/parameters.json)
+          winAction=$(jq -r '.actionWin' ./buildFiles/parameters.json)
+          echo "macAction=$macAction" >> $GITHUB_ENV
+          echo "winAction=$winAction" >> $GITHUB_ENV
+          forceDownload=$(jq -r '.forceDownload' ./buildFiles/parameters.json)
+          forceDownload=$(echo "$forceDownload" | tr '[:lower:]' '[:upper:]') # to lowercase, cover all cases, true, True, TrUe ...
+          echo "forceDownload=$forceDownload" >> $GITHUB_ENV
+
+          # Determine if we need to run macOS runner at all
+          if [ -n "$macAction" ]; then
+            run_macOS='true'
+          else
+            run_macOS='false'
+          fi
+          if [[ $winAction == *"INCLUDE_MAC_CLIENT"]]; then
+             run_macOS='true'
+          fi
+          echo "RUN_MACOS=$run_macOS" >> $GITHUB_ENV
+          
+          # do same for Windows runner
+          if [ -n "$winAction" ]; then
+            run_windows='true'
+          else
+            run_windows='false'
+          fi
+          echo "RUN_WINDOWS=$run_windows" >> $GITHUB_ENV
+
+  build-on-mac:
+    runs-on: macos-latest
+    needs: preflight
+    if: ${{ env.RUN_MACOS == 'true' }}
+
+    steps:
+      - name: Checkout repository
+        timeout-minutes: 10
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Choose correct paramaters.json file based on branch
+        id: set-parameters-file
+        run: |
+          if [ "$(basename $GITHUB_REF)" == "release" ]; then
+            echo Using release branch server parameters
+            cp -fv ./buildFiles/parameters_releases.json ./buildFiles/parameters.json
+          fi
+          if [[ $GITHUB_REF == *"test/"* ]] || [ "$(basename $GITHUB_REF)" == "develop" ]; then
+            echo "Using test server parameters for branch $(basename $GITHUB_REF)"
+            cp -fv ./buildFiles/parameters_testserver.json ./buildFiles/parameters.json
+          fi
+          if [ "$(basename $GITHUB_REF)" == "main" ]; then
+            cp -fv ./buildFiles/parameters_nightly.json ./buildFiles/parameters.json
+          fi
+
+      - name: Install signing certificate
+        env:
+          BUILD_CERTIFICATE_BASE64: ${{ secrets.MY_APPLE_CERTIFICATE }}
+          P12_PASSWORD: ${{ secrets.MY_APPLE_CERT_PASSWORD }}
+          KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
+
+        run: |
+          # create variables
+          CERTIFICATE_PATH=$RUNNER_TEMP/cxr.p12
+          KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
+
+          # import certificate from secrets
+          echo -n "$BUILD_CERTIFICATE_BASE64" | base64 --decode -o $CERTIFICATE_PATH
+
+          # create temporary keychain
+          security create-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+          security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
+          security unlock-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+
+          # import certificate to keychain
+          security import $CERTIFICATE_PATH -P "$P12_PASSWORD" -A -t cert -f pkcs12 -k $KEYCHAIN_PATH
+          security set-key-partition-list -S apple-tool:,apple: -k "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+          security list-keychain -d user -s $KEYCHAIN_PATH
+          
+      - name: Create keychain profile for notarization
+        env:
+          APPLE_ID: ${{ secrets.MY_APPLE_ID }}
+          TEAM_ID: ${{ secrets.MY_TEAM_ID }}
+          APP_SPECIFIC_PASSWORD: ${{ secrets.MY_APP_SPECIFIC_PASSWORD }}
+
+        run: |
+          # setting up things for notarization
+
+          xcrun notarytool store-credentials myApp_profile --apple-id "$APPLE_ID" --team-id "$TEAM_ID" --password "$APP_SPECIFIC_PASSWORD"
+
+  build-on-windows:
+    runs-on: windows-latest
+    needs: build-on-mac
+    if: ${{ env.RUN_WINDOWS == 'true' }}
+    env:
+      DEV_LIC: ${{ secrets.DEV_WIN }}
+      SCRIPTS: ${{ github.workspace }}\buildFiles\scripts
+      PARAMS: ${{ github.workspace }}\buildFiles\parameters.json
+      MYBRANCH: ${{ github.ref }}
+      
+    steps:
+      - name: Checkout repository
+        timeout-minutes: 10
+        uses: actions/checkout@v4
+
+
